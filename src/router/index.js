@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 10:10:22
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-22 10:21:25
+ * @LastEditTime: 2025-01-23 18:09:37
  * @Description:
  */
 import {
@@ -32,14 +32,14 @@ const routes = [
         path: "datapanel",
         component: () => import("@/views/Home/components/DataPanel/index.vue"),
       },
-      // {
-      //   path: "analysis",
-      //   component: () => import("@/views/Home/components/Analysis.vue"),
-      // },
-      // {
-      //   path: "display",
-      //   component: () => import("@/views/Home/components/Display.vue"),
-      // },
+      {
+        path: "analysis",
+        component: () => import("@/views/Home/components/Analysis/index.vue"),
+      },
+      {
+        path: "mapping",
+        component: () => import("@/views/Home/components/Mapping/index.vue"),
+      },
       // {
       //   path: "manage",
       //   component: () => import("@/views/Home/components/Manage.vue"),

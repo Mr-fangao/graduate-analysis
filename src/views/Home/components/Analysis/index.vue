@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-23 17:51:03
+ * @LastEditTime: 2025-01-22 17:46:56
  * @Description:
 -->
 <script setup>
@@ -12,7 +12,6 @@ import useLoginStore from "@/store/login.js";
 import { storeToRefs } from 'pinia';
 import LoopChart from "@/utils/loopChart.js";
 import { loopShowTooltip } from "@/utils/loopShowTooltip.js";
-import TimeMap from "../TimeMap/index.vue";
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
@@ -621,7 +620,6 @@ onMounted(() => {
 </script>
 <template>
     <div class="Main">
-        <TimeMap></TimeMap>
         <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
             <div class="LabelContent" style="margin-top: 2vh">

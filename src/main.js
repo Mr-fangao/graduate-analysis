@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 09:48:57
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-22 10:39:03
+ * @LastEditTime: 2025-01-23 17:55:23
  * @Description: 
  */
 import { createApp } from 'vue'
@@ -25,5 +25,8 @@ window.echarts = echarts;
 app.use(router);
 app.use(pinia);
 
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/reset.css";
+app.use(Antd);
 
 app.mount('#app');

@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 14:07:20
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-22 17:08:38
+ * @LastEditTime: 2025-01-23 18:13:11
  * @Description: 
 -->
 <template>
@@ -120,12 +120,12 @@ const MenuList = [
         path: "/home/datapanel",
     },
     {
-        title: "数据分析",
+        title: "空间分析",
         path: "/home/analysis",
     },
     {
-        title: "数据展示",
-        path: "/home/display",
+        title: "数据制图",
+        path: "/home/mapping",
     },
     {
         title: "数据管理",
@@ -242,7 +242,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
     requestAnimationFrame(ontrackanitick);
-    initmap();
+    // initmap();
     if (MenuList.length > 0) {
         MenuIndex.value = MenuList[0].path;
         router.push(MenuList[0].path);
@@ -338,7 +338,7 @@ onMounted(() => {
 }
 
 .ul_box {
-    margin-top: 2vh;
+    margin-top: 1vh;
 }
 
 .my_timeline {
