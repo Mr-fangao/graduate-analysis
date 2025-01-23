@@ -10,8 +10,21 @@ import Bus from "@/buss/eventBus";
 import { ref, onMounted, reactive, onUnmounted, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onUpdated, watch, getCurrentInstance } from "vue";
 import useLoginStore from "@/store/login.js";
 import { storeToRefs } from 'pinia';
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import Map from '@arcgis/core/Map';
+import MapView from '@arcgis/core/views/MapView';
+import Basemap from '@arcgis/core/Basemap';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import esriConfig from '@arcgis/core/config';
+import WebMap from '@arcgis/core/WebMap';
+import WMSLayer from '@arcgis/core/layers/WMSLayer';
+
+esriConfig.locale = 'zh';
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
+const view = ref(null);
+const mapView = ref(null);
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 // 左边列表折叠按钮
 function leftPanelClick() {
@@ -31,26 +44,50 @@ const formState = reactive({
     type: [],
     resource: '',
     desc: '',
+    direction: '',
 });
 const onSubmit = () => {
     console.log('submit!', toRaw(formState));
 };
+function initmap() {
+    const map = new Map({
+        basemap: 'streets-night-vector',
+    });
+    const webMap = new WebMap({
+        portalItem: {
+            id: '1211472e6c3d45fe95793af7ad7d3d89' // 替换为实际的 portalId
+        }
+    });
+    webMap.load();
+    view.value = new MapView({
+        container: mapView.value,
+        map: webMap,
+        center: [116.3974, 39.9093], // 设置初始中心点
+        zoom: 5,
+        constraints: {
+            minZoom: 3, // 最小缩放级别
+            maxZoom: 15 // 最大缩放级别
+        }
+    });
+}
 onMounted(() => {
     if (MenuIndex.value == "/home/mapping") {
+        initmap();
     }
 
 });
 </script>
 <template>
     <div class="Main">
+        <div id="viewDiv" ref="mapView"></div>
         <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
             <div class="LabelContent" style="margin-top: 2vh"> <span class="title-ellipsis">版式布局</span> </div>
             <div class="l1">
                 <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
-                    <a-form-item label="Activity name">
+                    <!-- <a-form-item label="Activity name">
                         <a-input v-model:value="formState.name" />
-                    </a-form-item>
+                    </a-form-item> -->
                     <a-form-item label="Activity zone">
                         <a-select v-model:value="formState.region" placeholder="please select your zone">
                             <a-select-option value="shanghai">Zone one</a-select-option>
@@ -70,6 +107,12 @@ onMounted(() => {
                             <a-select-option value="beijing">Zone two</a-select-option>
                         </a-select>
                     </a-form-item>
+                    <a-form-item label="页面方向">
+                        <a-radio-group v-model:value="formState.direction">
+                            <a-radio value="1">横向</a-radio>
+                            <a-radio value="2">纵向</a-radio>
+                        </a-radio-group>
+                    </a-form-item>
                 </a-form>
             </div>
             <div class="LabelContent"><span class="title-ellipsis">地图要素</span></div>
@@ -88,7 +131,6 @@ onMounted(() => {
     font-size: 1.2vh !important;
     color: #FFF !important;
 }
-
 .ant-input {
     color: #FFF;
     font-size: 1.2vh !important;
@@ -101,8 +143,17 @@ onMounted(() => {
 }
 </style>
 <style lang="less" scoped>
+#viewDiv {
+    // width: 4992px !important;
+    // height: 2600px !important;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background: #1a4061;
+    position: absolute;
+}
 .Main {
-
     .l1,
     .l2,
     .l3 {
