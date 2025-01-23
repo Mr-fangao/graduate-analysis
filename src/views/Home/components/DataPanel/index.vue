@@ -664,7 +664,7 @@ onMounted(() => {
     </div>
 
 </template>
-<style lang="less">
+<style scope lang="less">
 .LeftPanel {
     position: absolute;
     z-index: 2;
@@ -699,35 +699,6 @@ onMounted(() => {
     /*background-size: 100% 100%;*/
     background: linear-gradient(to left, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
 }
-
-// .MainLegend {
-// 	@keyframes openLeft {
-// 		from {
-// 			transform: translateX(-35.1vh);
-// 		}
-
-// 		to {
-// 			transform: translateX(0);
-// 		}
-// 	}
-// 	@keyframes closeLeft {
-// 		from {
-// 			transform: translateX(0);
-// 		}
-
-// 		to {
-// 			transform: translateX(-35.1vh);
-// 		}
-// 	}
-// 	&.opened {
-// 		animation: openLeft 1s;
-// 		animation-fill-mode: forwards;
-// 	}
-// 	&.closed {
-// 		animation: closeLeft 1s;
-// 		animation-fill-mode: forwards;
-// 	}
-// }
 .LeftPanel {
     @keyframes openLeft {
         from {
@@ -1084,39 +1055,6 @@ onMounted(() => {
             /* 设置单元格最大宽度，根据实际需要调整 */
             display: inline-block;
         }
-    }
-
-    .LeftPanel {
-        position: absolute;
-        z-index: 2;
-        /*top: 10vh;*/
-        /*left: 1.1vh;*/
-        /*width: 34vh;*/
-        /*height: 86vh;*/
-        /*background: url("../assets/leftPanel.png");*/
-        /*background-size: 100% 100%;*/
-        left: 0;
-        top: 7vh;
-        width: 34vh;
-        height: calc(100% - 10vh);
-        background: linear-gradient(to right, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
-    }
-
-    .RightPanel {
-        position: absolute;
-        z-index: 2;
-        /*top: 10vh;*/
-        /*right: 1.1vh;*/
-        /*width: 34vh;*/
-        /*height: 86vh;*/
-        /*background: url("../assets/leftPanel.png");*/
-        /*background-size: 100% 100%;*/
-        right: 0;
-        width: 34vh;
-        top: 7vh;
-        height: calc(100% - 10vh);
-
-        background: linear-gradient(to left, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
     }
 }
 </style>

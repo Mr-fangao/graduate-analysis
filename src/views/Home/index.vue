@@ -7,28 +7,6 @@
 -->
 <template>
     <div id="threedmap">
-        <div id="viewDiv" ref="mapView"></div>
-        <div class="timeSlider"></div>
-        <div id="timeSlidercontainer" :style="'width:'+(timeLineList.length*8+8)+'vh;'">
-            <div class="ul_box">
-                <ul class="my_timeline" ref="mytimeline">
-                    <li class="my_timeline_item" v-for="(item, index) in timeLineList" :key="index"
-                        @click="chooseyaer(item)">
-                        <div class="my_timeline_item_line_front"></div>
-                        <!--圈圈节点-->
-                        <div class="my_timeline_node">
-                            <div :class="item == currentYear ? 'timeline_selected' : ''" :id="item"></div>
-                        </div>
-                        <!--线-->
-                        <div class="my_timeline_item_line_back"></div>
-                        <!--标注-->
-                        <div
-                            :class="item == currentYear ? 'my_timeline_item_content active' : 'my_timeline_item_content'">
-                            {{ item }}</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
         <div class="header">
             <div class="headerBG">
                 <div class="background-left"></div>
@@ -76,44 +54,17 @@ import DateWeather from "./components/DateWeather/index.vue";
 import Bus from "@/buss/eventBus";
 import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onUpdated, watch, getCurrentInstance } from "vue";
-import Map from '@arcgis/core/Map';
-import MapView from '@arcgis/core/views/MapView';
-import Basemap from '@arcgis/core/Basemap';
-import TileLayer from '@arcgis/core/layers/TileLayer';
-import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer"
-import TimeSlider from '@arcgis/core/widgets/TimeSlider';
-import esriConfig from '@arcgis/core/config';
-import WebMap from '@arcgis/core/WebMap';
-import WMSLayer from '@arcgis/core/layers/WMSLayer';
 import useLoginStore from "@/store/login.js";
 import { storeToRefs } from 'pinia';
 
 const loginStore = useLoginStore();
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 // 设置语言为中文
-esriConfig.locale = 'zh';
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 let tracklineani = -1;
 const tracklineleft = ref(0);
 const tracklinetotalsec = 6;
-const mapView = ref(null);
-let timeSlider = null;
-const timeLineList = ref([2001, 2002, 2003, 2004, 2005, 2006]);
-const currentYear = ref(null);
-// 选择年份
-function chooseyaer(item) {
-    currentYear.value = item;
-    if (timeSlider) {
-        timeSlider.timeExtent = {
-            start: new Date(currentYear.value, 0, 1),
-            end: new Date(currentYear.value, 12, 31),
-        }
-    }
-}
 const MenuList = [
     {
         title: "数据面板",
@@ -150,85 +101,6 @@ function ontrackanitick(a) {
 function remap(x, a, b, c, d) {
     return ((x - a) / (b - a)) * (d - c) + c;
 }
-function initmap() {
-    const map = new Map({
-        basemap: 'streets-night-vector',
-    });
-    const webMap = new WebMap({
-        portalItem: {
-            id: '1211472e6c3d45fe95793af7ad7d3d89' // 替换为实际的 portalId
-        }
-    });
-    webMap.load();
-    const view = new MapView({
-        container: mapView.value,
-        map: webMap,
-        center: [116.3974, 39.9093], // 设置初始中心点
-        zoom: 5,
-        constraints: {
-            minZoom: 3, // 最小缩放级别
-            maxZoom: 15 // 最大缩放级别
-        }
-    });
-    // const wmtLayer = new WMSLayer({
-    //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
-    //     sublayers: [
-    //         {
-    //             name: "行政边界数据", // 替换为实际图层名称
-    //             visible: true,
-    //         },
-    //         {
-    //             name: "行政边界_省级",
-    //             visible: true,
-    //         }
-    //     ],
-    //     spatialReference: { wkid: 4326 }, // 坐标系
-    //     // version: "1.3.0" // WMS 版本
-    // });
-
-    // map.add(wmtLayer);
-    view.when(() => {
-        console.log('Map and View are ready');
-    }, (error) => {
-        console.error('Map and View failed to load:', error);
-    });
-    const featureLayer = new FeatureLayer({
-        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Earthquakes_Since1970/MapServer',
-    });
-
-    webMap.add(featureLayer);
-    timeSlider = new TimeSlider({
-        container: 'timeSlider', // 时间轴的容器
-        view: view,
-        mode: 'time-window',
-        fullTimeExtent: {
-            start: new Date(1970, 0, 1),
-            end: new Date(),
-        },
-        timeExtent: {
-            start: new Date(2009, 0, 1),
-            end: new Date(2010, 0, 1),
-        },
-        stops: {
-            interval: {
-                value: 1,
-                unit: 'years',
-            },
-        },
-    });
-    // setTimeout(() => {
-    //     timeSlider.timeExtent = {
-    //         start: new Date(1970, 0, 1),
-    //         end: new Date(2010, 0, 1),
-    //     }
-    // }, 5000);
-    timeSlider.watch('timeExtent', (timeExtent) => {
-        // 当时间轴变化时，更新图层的时间过滤条件
-        featureLayer.timeExtent = timeExtent;
-    });
-    // 将时间轴添加到视图
-    view.ui.add(timeSlider, 'bottom-center');
-}
 
 onUnmounted(() => {
     if (tracklineani > -1) {
@@ -249,6 +121,144 @@ onMounted(() => {
     }
 });
 </script>
+<style  lang="less">
+.LeftPanel {
+    position: absolute;
+    z-index: 2;
+    // top: 10vh;
+    // left: 1.1vh;
+    // width: 34vh;
+    // height: 86vh;
+    left: 0;
+    top: 7vh;
+    width: 34vh;
+    height: calc(100% - 8vh);
+    // background: url("@/views/assets/leftPanel.png");
+    // background-size: 100% 100%;
+    background: linear-gradient(to right, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
+    padding-top: 1vh;
+    padding-left: 0.5vh;
+}
+
+.RightPanel {
+    position: absolute;
+    padding-top: 1vh;
+    z-index: 2;
+    // top: 10vh;
+    // right: 1.1vh;
+    // width: 34vh;
+    // height: 86vh;
+    right: 0;
+    top: 7vh;
+    width: 34vh;
+    height: calc(100% - 8vh);
+    // background: url("@/views/assets/leftPanel.png");
+    background-size: 100% 100%;
+    // background: linear-gradient(to left, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
+}
+
+.LeftPanel {
+    @keyframes openLeft {
+        from {
+            transform: translateX(-35.1vh);
+        }
+
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes closeLeft {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-35.1vh);
+        }
+    }
+
+    &.opened {
+        animation: openLeft 1s;
+        animation-fill-mode: forwards;
+    }
+
+    &.closed {
+        animation: closeLeft 1s;
+        animation-fill-mode: forwards;
+    }
+
+    .collapse {
+        position: absolute;
+        /*right: -1.85vh;*/
+        right: 0;
+        height: 7.8vh;
+        width: 1.85vh;
+        top: calc((100% - 7.8vh) / 2);
+        cursor: pointer;
+        background: url(@/views/assets/leftArrow.png) no-repeat;
+        background-size: 100%;
+
+        &.active {
+            background: url(@/views/assets/rightArrow.png) no-repeat;
+            background-size: 100%;
+            left: calc(100% + 1.8vh);
+        }
+    }
+}
+
+.RightPanel {
+    @keyframes openRight {
+        from {
+            transform: translateX(35.1vh);
+        }
+
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes closeRight {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(35.1vh);
+        }
+    }
+
+    &.opened {
+        animation: openRight 1s;
+        animation-fill-mode: forwards;
+    }
+
+    &.closed {
+        animation: closeRight 1s;
+        animation-fill-mode: forwards;
+    }
+
+    .collapse {
+        position: absolute;
+        left: -1.85vh;
+        /*left:0;*/
+        height: 7.8vh;
+        width: 1.85vh;
+        top: calc((100% - 7.8vh) / 2);
+        cursor: pointer;
+        background: url(@/views/assets/leftArrow.png) no-repeat;
+        transform: rotate(180deg);
+        background-size: 100%;
+
+        &.active {
+            background: url(@/views/assets/rightArrow.png) no-repeat;
+            background-size: 100%;
+            right: calc(100% + 1.8vh);
+            left: auto;
+        }
+    }
+}
+</style>
 <style lang="less">
 #timeSlider {
     position: absolute;

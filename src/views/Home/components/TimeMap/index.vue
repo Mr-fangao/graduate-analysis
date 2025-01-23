@@ -7,7 +7,7 @@
                 <div class="dataselect">
                     <a-select class="r3select" ref="select" v-model:value="tasktvalue" @focus="focus" allowClear
                         :placeholder="'生源地'" @change="handleChange">
-                        <a-select-option v-for="(item, index) in taskstatus" :value="item.value">{{ item.name }}
+                        <a-select-option v-for="(item, index) in taskstatus" :value="item.value" :key="index">{{item.name }}
                         </a-select-option>
                     </a-select>
                 </div>
@@ -131,6 +131,9 @@ function initmap() {
     });
 
     webMap.add(featureLayer);
+    setTimeout(() => {
+        currentYear.value = timeLineList.value[0];
+    }, 0);
     timeSlider = new TimeSlider({
         container: 'timeSlider', // 时间轴的容器
         view: view,
@@ -140,8 +143,8 @@ function initmap() {
             end: new Date(),
         },
         timeExtent: {
-            start: new Date(2009, 0, 1),
-            end: new Date(2010, 0, 1),
+            start: new Date(timeLineList.value[0], 0, 1),
+            end: new Date(timeLineList.value[0], 12, 31),
         },
         stops: {
             interval: {
@@ -288,6 +291,66 @@ onMounted(() => {
             font-size: 1vh;
         }
 
+        .ant-select-dropdown {
+            border: 1px solid #4d7bc7;
+            background-color: #1b273780 !important;
+        }
+
+        .ant-empty-small {
+            color: #f56a00;
+        }
+
+        .ant-select {
+            .ant-select-selection-placeholder {
+                color: #fff !important;
+                font-size: 1.2vh !important;
+                line-height: 2.2vh !important;
+            }
+
+            .ant-select-clear {
+                background: transparent !important;
+            }
+
+            .ant-select-selector {
+                width: 9vh !important;
+                height: 2.5vh !important;
+                background-color: #ffffff00 !important;
+                border: 1px solid #2a579ab0 !important;
+                color: aliceblue;
+                font-size: 1.2vh !important;
+
+                .ant-select-selection-search-input {
+                    height: 2.5vh !important;
+                    display: flex !important;
+                }
+
+                .ant-select-selection-item {
+                    color: #fff !important;
+                    font-size: 1.2vh !important;
+                    line-height: 2.2vh !important;
+                }
+            }
+
+            .ant-select-arrow {
+                color: #4d7bc7 !important;
+            }
+        }
+
+        .ant-select-item-option {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #fff !important;
+            font-size: 1.2vh !important;
+        }
+
+        .ant-select-item-option-selected {
+            background: transparent !important;
+            color: #fff !important;
+        }
+
+        .ant-select-item-option-active {
+            background: #0f81b7 !important;
+        }
     }
 
 
@@ -295,12 +358,9 @@ onMounted(() => {
 
 .ant-select-dropdown {
     border: 1px solid #4d7bc7;
-    background-color: #1b273780 !important;
+    background-color: #1b2737 !important;
 }
 
-.ant-empty-small {
-    color: #f56a00;
-}
 
 .ant-select {
     .ant-select-selection-placeholder {
@@ -314,11 +374,11 @@ onMounted(() => {
     }
 
     .ant-select-selector {
-        width: 9vh !important;
         height: 2.5vh !important;
         background-color: #ffffff00 !important;
-        border: 1px solid #4d7bc7 !important;
+        border: 1px solid #2a579ab0 !important;
         color: aliceblue;
+        font-size: 1.2vh !important;
 
         .ant-select-selection-search-input {
             height: 2.5vh !important;
@@ -331,7 +391,6 @@ onMounted(() => {
             line-height: 2.2vh !important;
         }
     }
-
     .ant-select-arrow {
         color: #4d7bc7 !important;
     }
