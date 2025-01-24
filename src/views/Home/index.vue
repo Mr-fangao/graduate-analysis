@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 14:07:20
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-23 18:13:11
+ * @LastEditTime: 2025-01-24 11:08:03
  * @Description: 
 -->
 <template>
@@ -257,118 +257,6 @@ onMounted(() => {
             left: auto;
         }
     }
-}
-</style>
-<style lang="less">
-#timeSlider {
-    position: absolute;
-    left: 45%;
-    /* right: 50px; */
-    bottom: 20px;
-    height: 40px;
-    width: 500px;
-    z-index: -10;
-    background-color: white;
-    padding: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-#timeSlidercontainer {
-    overflow: hidden;
-    height: 10vh;
-    position: absolute;
-    background: #031420;
-    border-radius: 0.3vh;
-    bottom: 3%;
-    pointer-events: auto;
-    z-index: 100;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
-
-.ul-box {
-    display: inline-block;
-    // width: 100%;
-    bottom: 1%;
-}
-
-.my_timeline_item {
-    display: inline-block;
-    width: 8vh;
-}
-
-.my_timeline_node {
-    box-sizing: border-box;
-    border-radius: 50%;
-    cursor: pointer;
-    color: #1183c1;
-    width: 0.8vh;
-    height: 0.8vh;
-    border: 0.01vh solid #1183c1;
-    margin-left: calc((100% - 0.8vh) / 2);
-    position: relative;
-}
-
-.my_timeline_item_line_front {
-    border-top: 1px solid #1183c1;
-    width: calc((100% - 0.8vh) / 2);
-    float: left;
-    margin-top: 0.4vh;
-}
-
-.my_timeline_item_line_back {
-    border-top: 1px solid #1183c1;
-    width: calc((100% - 0.8vh - 2px) / 2);
-    float: right;
-    margin-top: -0.4vh;
-}
-
-.my_timeline_item_content {
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: lighter;
-    margin-left: 2.4vh;
-    font-size: 1.4vh;
-    font-family: puhui_Medium_65;
-    margin-top: 0.5vh;
-    font-family: puhui_Medium_65;
-
-    &.active {
-        color: #1183c1;
-    }
-}
-
-#dhTitle {
-    color: #fff;
-    padding-top: 1vh;
-    font-size: 1.4vh;
-    letter-spacing: 0.3vh;
-    text-align: center;
-    font-family: puhui_Medium_65;
-}
-
-.ul_box {
-    margin-top: 1vh;
-}
-
-.my_timeline {
-    /* width: 48vh; */
-    min-width: 20vh;
-    margin: 1vh 2vh 0px;
-    display: flex;
-    justify-content: center;
-}
-
-.timeline_selected {
-    display: block;
-    border-radius: 50%;
-    width: 0.4vh;
-    height: 0.4vh;
-    border: 0;
-    background-color: #1183c1;
-    position: absolute;
-    top: 0.15vh;
-    left: 0.15vh;
 }
 </style>
 <style lang="less" scoped>

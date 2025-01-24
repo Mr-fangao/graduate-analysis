@@ -48,6 +48,7 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer"
 import TimeSlider from '@arcgis/core/widgets/TimeSlider';
 import esriConfig from '@arcgis/core/config';
 import WebMap from '@arcgis/core/WebMap';
+import Compass from '@arcgis/core/widgets/Compass';
 import WMSLayer from '@arcgis/core/layers/WMSLayer';
 import useLoginStore from "@/store/login.js";
 import { storeToRefs } from 'pinia';
@@ -104,6 +105,10 @@ function initmap() {
             maxZoom: 15 // 最大缩放级别
         }
     });
+    const compass = new Compass({
+        view: view
+    });
+    view.ui.add(compass, "top-center");
     // const wmtLayer = new WMSLayer({
     //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
     //     sublayers: [
@@ -421,7 +426,7 @@ onMounted(() => {
 .my_timeline {
     /* width: 48vh; */
     min-width: 20vh;
-    margin: 1vh 0 0px;
+    margin: 1vh -1vh 0px;
     display: flex;
     justify-content: center;
 }

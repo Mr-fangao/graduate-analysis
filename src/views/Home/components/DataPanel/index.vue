@@ -132,7 +132,6 @@ function loadL3Chart(data) {
             item1.push(item.value[index1]);
         });
     });
-    console.log(yData, xData);
     let option = {
         backgroundColor: "transparent",
         legend: {
