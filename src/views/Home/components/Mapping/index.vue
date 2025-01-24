@@ -229,32 +229,80 @@ const exportPDF = () => {
 function toolClick() {
     activeKey.value = !activeKey.value;
 }
-function changeLayer(checkedValue) {
-    if (showLayerList.value.length>0&&showLayerList.value.find(item => item.name === checkedValue)) {
-        let layer = showLayerList.value.find(item => item.name === checkedValue).layer;
-    }
-    let wmtLayer = new WMSLayer({
-        url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
-        sublayers: [
-            {
-                name: "行政边界数据", // 替换为实际图层名称
-                visible: true,
-            },
-            {
-                name: "行政边界_省级",
-                visible: true,
-            }
-        ],
-        spatialReference: { wkid: 4326 }, // 坐标系
-        // version: "1.3.0" // WMS 版本
-    });
-    view.map.add(wmtLayer);
-    showLayerList.value.push(
-        {
-            name:checkedValue,
-            layer:wmtLayer
+const loadedLayers = {};
+function changeLayer(checkedValues) {
+
+    Object.keys(loadedLayers).forEach(value => {
+        if (!checkedValues.includes(value)) {
+            loadedLayers[value].visible = false;
+            // 从显示列表中移除
+            const index = showLayerList.value.findIndex(l => l.name === value);
+            if (index > -1) showLayerList.value.splice(index, 1);
         }
-    )
+    });
+    // 2. 处理需要显示的图层
+    checkedValues.forEach(value => {
+        if (!loadedLayers[value]) {
+            // 创建新图层
+            let wmtLayer = new WMSLayer({
+                url: value,
+                spatialReference: { wkid: 4326 }
+            });
+            wmtLayer.fetchSublayers().then((sublayers) => {
+                wmtLayer.sublayers = sublayers.map((sublayer) => ({
+                    ...sublayer,
+                    visible: true, // 强制设为可见
+                }));
+            });
+            // let wmtLayer = {
+            //     value:value,
+            //     visible : true,
+            // }
+            // 添加图层到地图并保存
+            // view.map.add(wmtLayer);
+            loadedLayers[value] = wmtLayer;
+            // 添加到显示列表
+            showLayerList.value.push({
+                name: value,
+                layer: wmtLayer
+            });
+        } else {
+            // 显示已存在的图层
+            loadedLayers[value].visible = true;
+            // 确保在显示列表中
+            if (!showLayerList.value.some(l => l.name === value)) {
+                showLayerList.value.push({
+                    name: value,
+                    layer: loadedLayers[value]
+                });
+            }
+        }
+    });
+
+
+    // console.log(checkedValues,"loadedLayers:",loadedLayers,"showLayerList:",showLayerList.value);
+    // let wmtLayer = new WMSLayer({
+    //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
+    //     sublayers: [
+    //         {
+    //             name: "行政边界数据", // 替换为实际图层名称
+    //             visible: true,
+    //         },
+    //         {
+    //             name: "行政边界_省级",
+    //             visible: true,
+    //         }
+    //     ],
+    //     spatialReference: { wkid: 4326 }, // 坐标系
+    //     // version: "1.3.0" // WMS 版本
+    // });
+    // view.map.add(wmtLayer);
+    // showLayerList.value.push(
+    //     {
+    //         name:checkedValue,
+    //         layer:wmtLayer
+    //     }
+    // )
 }
 function close() {
     activeKey.value = false;

@@ -99,6 +99,8 @@ let l2_2ChartItem;
 let l3ChartItem;
 let l3ChartLoop;
 let r2ChartItem;
+let r1ChartItem;
+let r3ChartItem;
 function winResize() {
     if (l3ChartItem) {
         l3ChartItem.resize();
@@ -108,6 +110,12 @@ function winResize() {
     }
     if (r2ChartItem) {
         r2ChartItem.resize();
+    }
+    if (r1ChartItem) {
+        r1ChartItem.resize();
+    }
+    if (r3ChartItem) {
+        r3ChartItem.resize();
     }
 }
 function loadL3Chart(data) {
@@ -581,6 +589,781 @@ function loadL2Chart(l2data) {
     l2_2ChartItem.setOption(option3, true);
     loopShowTooltip(l2ChartItem, option, { loopSeries: true, seriesIndex: 0, loopStep: 2 });
 }
+function loadR1Chart() {
+    var source = [{ "industry": "银行", "name": "平安银行", "涨跌幅": -0.14, "量比": 0.83, "Amount": 87362.43 }, { "industry": "全国地产", "name": "万 科Ａ", "涨跌幅": 1.3, "量比": 1.69, "Amount": 197637.2 }, { "industry": "生物制药", "name": "国农科技", "涨跌幅": -3.39, "量比": 0.0, "Amount": 3449.41 }, { "industry": "环境保护", "name": "世纪星源", "涨跌幅": 10.1, "量比": 2.89, "Amount": 12274.01 }, { "industry": "区域地产", "name": "深振业Ａ", "涨跌幅": 1.44, "量比": 2.39, "Amount": 6369.07 }, { "industry": "酒店餐饮", "name": "全新好", "涨跌幅": -0.73, "量比": 1.3, "Amount": 2305.26 }, { "industry": "运输设备", "name": "神州高铁", "涨跌幅": 0.26, "量比": 0.89, "Amount": 4129.22 }, { "industry": "综合类", "name": "中国宝安", "涨跌幅": -0.52, "量比": 0.72, "Amount": 5128.63 }, { "industry": "建筑施工", "name": "*ST美丽", "涨跌幅": 2.04, "量比": 0.0, "Amount": 729.37 }, { "industry": "区域地产", "name": "深物业A", "涨跌幅": 4.24, "量比": 5.19, "Amount": 8691.59 }, { "industry": "玻璃", "name": "南 玻Ａ", "涨跌幅": 0.24, "量比": 0.74, "Amount": 2706.7 }, { "industry": "全国地产", "name": "沙河股份", "涨跌幅": 3.15, "量比": 3.65, "Amount": 8607.37 }, { "industry": "家用电器", "name": "深康佳Ａ", "涨跌幅": 0.47, "量比": 0.88, "Amount": 4960.5 }, { "industry": "文教休闲", "name": "深中华A", "涨跌幅": 0.44, "量比": 0.85, "Amount": 1076.83 }, { "industry": "装修装饰", "name": "*ST神城", "涨跌幅": 5.11, "量比": 0.0, "Amount": 6582.9 }, { "industry": "其他商业", "name": "深粮控股", "涨跌幅": -1.64, "量比": 1.3, "Amount": 5383.55 }, { "industry": "元器件", "name": "深华发Ａ", "涨跌幅": 1.93, "量比": 2.81, "Amount": 2101.73 }, { "industry": "电脑设备", "name": "深科技", "涨跌幅": -0.12, "量比": 0.6, "Amount": 8031.7 }, { "industry": "其他建材", "name": "深天地Ａ", "涨跌幅": 0.92, "量比": 1.4, "Amount": 2597.53 }, { "industry": "汽车服务", "name": "特 力Ａ", "涨跌幅": -0.58, "量比": 0.73, "Amount": 5263.19 }, { "industry": "其他商业", "name": "飞亚达Ａ", "涨跌幅": 0.51, "量比": 1.09, "Amount": 2195.08 }, { "industry": "火力发电", "name": "深圳能源", "涨跌幅": 0.64, "量比": 0.93, "Amount": 3636.08 }, { "industry": "医药商业", "name": "国药一致", "涨跌幅": -0.35, "量比": 1.22, "Amount": 4880.9 }, { "industry": "汽车配件", "name": "富奥股份", "涨跌幅": 0.42, "量比": 0.65, "Amount": 695.9 }, { "industry": "全国地产", "name": "大悦城", "涨跌幅": 2.29, "量比": 1.96, "Amount": 10547.66 }, { "industry": "元器件", "name": "深桑达Ａ", "涨跌幅": 1.6, "量比": 0.75, "Amount": 3038.67 }, { "industry": "综合类", "name": "神州数码", "涨跌幅": -0.3, "量比": 0.79, "Amount": 5104.54 }, { "industry": "环境保护", "name": "中国天楹", "涨跌幅": 1.76, "量比": 0.95, "Amount": 43531.08 }, { "industry": "全国地产", "name": "华联控股", "涨跌幅": 0.2, "量比": 0.76, "Amount": 4961.56 }, { "industry": "火力发电", "name": "深南电A", "涨跌幅": -2.98, "量比": 1.18, "Amount": 5699.69 }, { "industry": "广告包装", "name": "深大通", "涨跌幅": -3.94, "量比": 1.38, "Amount": 16266.95 }, { "industry": "轻工机械", "name": "中集集团", "涨跌幅": 0.0, "量比": 0.68, "Amount": 5116.99 }];
+    var temp = {};
+    for (var i = 0; i < source.length; i++) {
+        var industry = source[i]["industry"];
+        if (!temp[industry]) {
+            temp[industry] = [];
+        }
+        temp[industry].push(source[i]);
+    }
+
+    var data = [];
+    var colors = ['#7591CC', '#5CC9CC', '#CC355B'],
+        idx = 0;
+    for (var industry in temp) {
+        if (!!industry && !!temp[industry] && temp[industry].length > 0) {
+            var item = {
+                name: industry,
+                value: industry.legend,
+                itemStyle: {
+                    color: colors[idx++ % 3],
+                },
+                children: []
+            }
+            for (var i = 0; i < temp[industry].length; i++) {
+                var name = temp[industry][i]["name"],
+                    change = temp[industry][i]["涨跌幅"],
+                    sname = name[i].length;
+                item["children"].push({
+                    name: industry + '-' + name,
+                    value: sname,
+                    value1: change,
+                    itemStyle: {
+                        colorSaturation: change / 10,
+                        colorAlpha: 0.8
+                    }
+                });
+            }
+            data.push(item);
+        }
+    }
+    // var modes = ['2012Budget', '2011Budget', 'Growth'];
+    var option = {
+        title: {
+            left: 0,
+            top: "1%",
+            // text: ['{c|}' + '{d|（行业分类）}'],
+            // text:[],
+            textStyle: {
+                rich: {
+                    c: {
+                        color: '#0000',
+                        fontSize: 25,
+                        fontWeight: 'bold',
+                        width: 4,
+                        height: 15,
+                        backgroundColor: '#2196f3',
+
+                    },
+                    d: {
+                        //   color: '#3e4956',
+                        fontWeight: 'bold',
+                        fontSize: 17,
+                        padding: [0, 0, 0, 30],
+                    },
+                }
+            },
+        },
+        tooltip: {},
+        series: [{
+            name: '全部',
+            type: 'treemap',
+            visibleMin: 300,
+            data: data,
+            leafDepth: 4, //呈现层级，若为1加载时仅展开一层，接下来的每一层通过单击进入，如上面的效果图所示，  
+            //每一层级呈现的样式  
+            label: {
+                show: true,
+                fontSize: 12,
+                color: '#FFFFFF',
+                formatter: function (params) {
+                    var arr = [
+                        params.name,
+                        '涨跌幅: ' + params.value
+                    ];
+                    return arr.join('\n');
+                }
+            },
+
+            levels: [{
+                colorSaturation: [0.3, 0.7],
+                itemStyle: {
+                    normal: {
+                        borderColor: 'black',
+                        borderWidth: 0.5,
+                        gapWidth: 2
+                    }
+                }
+            },
+            {
+                colorSaturation: [0.3, 0.7],
+                colorMappingBy: 'id',
+                itemStyle: {
+                    normal: {
+                        // borderColorSaturation: 0.7,
+                        gapWidth: 1,
+                        borderWidth: 1
+                    }
+                }
+            },
+            ]
+
+
+
+        }]
+    };
+    r1ChartItem = echarts.init(proxy.$refs.r1);
+    r1ChartItem.setOption(option, true);
+}
+function loadR2Chart() {
+    let option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            x: 'center',
+            y: 'bottom',
+            data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel']
+                },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        series: [
+            {
+                name: '面积模式',
+                type: 'pie',
+                radius: [20, 130],
+                center: ['50%', '50%'],
+                roseType: 'area',
+                label: {
+                    show: true,
+                    color: '#fff',
+                    formatter: (params) => {
+                        return ` ${params.name}: ${params.percent}% `;
+                    },
+                    padding: [-30, -50, 0, 0],
+                    textStyle: {
+                        lineHeight: 48
+                    }
+                },
+                data: [
+                    { value: 10, name: '上海市' },
+                    { value: 24, name: '云南省' },
+                    { value: 94, name: '内蒙古' },
+                    { value: 2, name: '北京市' },
+                    { value: 30, name: '四川省' },
+                    { value: 64, name: '天津市' },
+                    { value: 16, name: '宁夏' },
+                    { value: 77, name: '安徽省' },
+                    { value: 116, name: '山东省' },
+                    { value: 103, name: '山西省' },
+                    { value: 12, name: '广东省' },
+                    { value: 36, name: '广西' },
+                    { value: 47, name: '新疆' },
+                    { value: 28, name: '江苏省' },
+                    { value: 86, name: '江西省' },
+                    { value: 161, name: '河北省' },
+                    { value: 164, name: '河南省' },
+                    // { value: 28, name: '浙江省' },
+                    // { value: 26, name: '海南省' },
+                    // { value: 23, name: '湖北省' },
+                    // { value: 31, name: '湖南省' },
+                    // { value: 30, name: '甘肃省' },
+                    // { value: 24, name: '福建省' },
+                    // { value: 6, name: '西藏' },
+                    // { value: 50, name: '贵州省' },
+                    // { value: 100, name: '辽宁省' },
+                    // { value: 19, name: '重庆市' },
+                    // { value: 22, name: '陕西省' },
+                    // { value: 16, name: '青海省' },
+                    // { value: 145, name: '黑龙江省' }
+                ]
+            }
+        ]
+    };
+
+    r2ChartItem = echarts.init(proxy.$refs.r2);
+    r2ChartItem.setOption(option, true);
+}
+function loadR3Chart() {
+    const myData = ['福田区', '罗湖区', '南山区', '盐田区', '宝安区', '龙岗区'];
+    // WebGIS，数据生产，外业测绘，事业单位
+    const offLine = [
+        [20, 40, 60, 60, 10, 20, 40, 20, 20, 10],
+        [10, 30, 50, 20, 50, 30, 30, 40, 10, 20],
+        [50, 20, 40, 10, 20, 40, 20, 30, 30, 30],
+        [20, 10, 30, 40, 10, 10, 10, 40, 40, 40],
+    ];
+
+    const onLine = [
+        [10, 20, 20, 40, 20, 10],
+        [20, 10, 40, 30, 30, 50],
+        [30, 30, 30, 20, 40, 20],
+        [40, 40, 40, 10, 10, 10],
+    ];
+    const offLineSum = [100, 100, 180, 130, 90, 100];
+    const onLineSum = [100, 100, 130, 100, 100, 90];
+    // backgroundColor: '#11356D',
+    let option = {
+        // backgroundColor: '#11356D',
+        /*    title: [
+            {
+                text: '脱机状态',
+                top: '2%',
+                left: '30%',
+                textStyle: {
+                    color: '#DC3239',
+                    fontSize: 14,
+                },
+            },
+            {
+                text: '联机状态',
+                top: '2%',
+                right: '30%',
+                textStyle: {
+                    color: '#2087FE',
+                    fontSize: 14,
+                },
+            },
+        ],*/
+        legend: [
+            {
+                // 图例
+                top: '2%',
+                left: 'center', // 图例距离左侧距离(此处水平居中)
+                textStyle: {
+                    // 图例文本样式
+                    color: '#fff',
+                },
+                itemGap: 100,
+
+                selectedMode: false, //图例点击失效
+                // data: ['脱机状态', '联机状态'],
+                data: ['已就业', '已升学'],
+            },
+            {
+                // 图例
+                bottom: '2%',
+                left: 'center', // 图例距离左侧距离(此处水平居中)
+                textStyle: {
+                    // 图例文本样式
+                    color: '#fff',
+                },
+                selectedMode: false, //图例点击失效
+                data: ['WebGIS', '数据生产', '外业测绘', '事业单位'],
+            },
+        ],
+        tooltip: {
+            // 提示框
+            show: true,
+            trigger: 'axis',
+            axisPointer: {
+                // 坐标轴指示器配置项。
+                type: 'shadow', // 'line' 直线指示器;'shadow' 阴影指示器.
+            },
+            // formatter: '{b}<br/>脱机: {c}' // 提示框所提示的文本内容
+            formatter: function (params) {
+                const fullScreenColor = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#F59A3F;"></span>`; // WebGIS颜色
+                const doubleScreenColor = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#F2C751;"></span>`; // 数据生产颜色
+                const simpleScreenColor = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#296FFB;"></span>`; // 外业测绘颜色
+                const lineScreenColor = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#4AA5EA;"></span>`; // 事业单位颜色
+                const fullScreen = params[0]; // WebGIS序列
+                const doubleScreen = params[1]; // 数据生产序列
+                const simpleScreen = params[2]; // 外业测绘屏序列
+                const lineScreen = params[3]; // 事业单位屏序列
+                const bg = params[4]; // 背景区分联机与脱机
+                const status =
+                    bg.seriesName === '已升学'
+                        ? `<span style="display:inline-block;color:#2087FE;">联机</span>`
+                        : `<span style="display:inline-block;color:#DC3239;">脱机</span>`;
+                return (
+                    `${fullScreen.name}(${status})</br>` +
+                    `${fullScreenColor}${fullScreen.seriesName}：${fullScreen.value}</br>` +
+                    `${doubleScreenColor}${doubleScreen.seriesName}：${doubleScreen.value}</br>` +
+                    `${simpleScreenColor}${simpleScreen.seriesName}：${simpleScreen.value}</br>` +
+                    `${lineScreenColor}${lineScreen.seriesName}：${lineScreen.value}</br>`
+                );
+            },
+        },
+        grid: [
+            {
+                // 左边
+                show: false,
+                left: '2%',
+                top: 40,
+                bottom: 60,
+                containLabel: true,
+                width: '43%',
+            },
+            {
+                // 中间
+                show: false,
+                left: '55%',
+                top: 60,
+                bottom: 60,
+                width: '14%',
+            },
+            {
+                // 右边
+                show: false,
+                right: '2%',
+                top:40,
+                bottom: 60,
+                containLabel: true,
+                width: '43%',
+            },
+        ],
+        // X轴线配置
+        xAxis: [
+            {
+                // 左侧区域
+                gridIndex: 0, // x 轴所在的 grid 的索引，默认位于第一个 grid。[ default: 0 ]
+                type: 'value', // 轴线类型: 数值轴
+                position: 'top', // 轴线位置(此处位于顶部)
+                inverse: true, // 是否是反向坐标轴.[ default: false ]
+                axisLine: {
+                    show: false, // 轴线不显示
+                },
+                axisTick: {
+                    show: false, // 轴线刻度不显示
+                },
+                axisLabel: {
+                    // 轴线刻度标签
+                    show: true, // 显示刻度标签
+                    textStyle: {
+                        // 标签样式
+                        color: '#153D7D64',
+                        fontSize: 12,
+                    },
+                },
+                splitLine: {
+                    // 垂直于X轴的分隔线
+                    show: true, // 显示分隔线
+                    lineStyle: {
+                        // 分隔线样式
+                        color: '#153D7D64',
+                        width: 1,
+                        type: 'solid',
+                    },
+                },
+                // 强制设置坐标轴分割间隔
+                // interval: 50,
+                // min: 0, // 最小值
+                // max: 200 // 最大值
+            },
+            {
+                // 中间区域
+                gridIndex: 1,
+                show: false, // 中间部分不显示X轴
+            },
+            {
+                // 右侧区域
+                gridIndex: 2,
+                type: 'value',
+                position: 'top',
+                inverse: false, // 是否是反向坐标轴.[ default: false ]
+                axisLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#153D7D64',
+                        fontSize: 12,
+                    },
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#153D7D64',
+                        width: 1,
+                        type: 'solid',
+                    },
+                },
+                // 强制设置坐标轴分割间隔
+                // interval: 50,
+                // min: 0, // 最小值
+                // max: 200 // 最大值
+            },
+        ],
+        // Y轴线配置
+        yAxis: [
+            {
+                // 左侧区域
+                gridIndex: 0, // y 轴所在的 grid 的索引，默认位于第一个 grid。[ default: 0 ]
+                type: 'category', // 轴线类型: 类目轴
+                // 类目轴中 boundaryGap 可以配置为 true 和 false。默认为 true，这时候刻度只是作为分隔线，标签和数据点都会在两个刻度之间的带(band)中间。
+                boundaryGap: true, // 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
+                inverse: true, // 是否是反向坐标轴.[ default: false ]
+                position: 'right', // y轴的位置。'left' or 'right'
+                axisLine: {
+                    show: false, // y轴线不显示
+                },
+                axisTick: {
+                    show: false, // y轴线刻度不显示
+                    lineStyle: {
+                        // 刻度线样式
+                        color: '#11356D',
+                    },
+                },
+                axisLabel: {
+                    show: false, // 刻度标签不显示
+                },
+                data: myData, // Y轴(这里是类目轴)的类目数据
+            },
+            {
+                gridIndex: 1, // 中间区域
+                type: 'category',
+                boundaryGap: true,
+                inverse: true,
+                position: 'left', // y轴的位置。'left' or 'right'
+                axisLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
+                axisLabel: {
+                    show: true, // 显示中间部分的Y轴刻度标签(中间的文字)
+                    textStyle: {
+                        // 标签样式
+                        color: '#cccccc',
+                        fontSize: 12,
+                    },
+                },
+                data: myData,
+            },
+            {
+                // 右侧区域
+                gridIndex: 2,
+                type: 'category',
+                boundaryGap: true,
+                inverse: true,
+                position: 'left',
+                axisLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                    lineStyle: {
+                        // 刻度线样式
+                        color: '#153D7D',
+                    },
+                },
+                axisLabel: {
+                    show: false,
+                },
+                data: myData,
+            },
+        ],
+        series: [
+            {
+                name: 'WebGIS', // 系列名称
+                type: 'bar',
+                // barGap: 5, // 柱间距离
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 0, // 对应在X轴的grid索引
+                yAxisIndex: 0, // 对应在Y轴的grid索引
+                stack: '1', // 相同就是堆叠
+                // barGap:'-100%', //重叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#F59A3F',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#F59A3F',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 鼠标指向高亮
+                    show: true,
+                    label: {
+                        color: '#F59A3F96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#F59A3F96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: offLine[0], // 系列中的数据内容数组
+            },
+            {
+                name: '数据生产', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 0, // 对应在X轴的grid索引
+                yAxisIndex: 0, // 对应在Y轴的grid索引
+                stack: '1', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#F2C751',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#F2C751',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#F2C75196', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#F2C75196', // 高亮状态下柱条颜色
+                    },
+                },
+                data: offLine[1], // 系列中的数据内容数组
+            },
+            {
+                name: '外业测绘', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 0, // 对应在X轴的grid索引
+                yAxisIndex: 0, // 对应在Y轴的grid索引
+                stack: '1', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#296FFB',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#296FFB',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#296FFB96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#296FFB96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: offLine[2], // 系列中的数据内容数组
+            },
+            {
+                name: '事业单位', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 0, // 对应在X轴的grid索引
+                yAxisIndex: 0, // 对应在Y轴的grid索引
+                stack: '1', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#4AA5EA',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#4AA5EA',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#4AA5EA96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#4AA5EA96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: offLine[3], // 系列中的数据内容数组
+            },
+            // 脱机背景
+            {
+                name: '已就业', // 系列名称
+                type: 'bar',
+                // barGap: 5, // 柱间距离
+                barWidth: 21, // 柱子宽度
+                xAxisIndex: 0, // 对应在X轴的grid索引
+                yAxisIndex: 0, // 对应在Y轴的grid索引
+                // stack: '1', // 相同就是堆叠
+                barGap: '-120%', //重叠
+                itemStyle: {
+                    // 柱条样式。
+                    // color: '#DC3239',
+                    color: 'transparent',
+                    borderWidth: 1,
+                    borderColor: '#DC3239',
+                    shadowColor: '#DC3239',
+                    shadowBlur: 20,
+                },
+                emphasis: {
+                    scale: false,
+                },
+                data: offLineSum, // 系列中的数据内容数组
+            },
+
+            {
+                name: 'WebGIS', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 2, // 对应在X轴的grid索引
+                yAxisIndex: 2, // 对应在Y轴的grid索引
+                stack: '2', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#F59A3F',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#F59A3F',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 鼠标指向高亮
+                    show: true,
+                    label: {
+                        color: '#F59A3F96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#F59A3F96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: onLine[0], // 系列中的数据内容数组
+            },
+            {
+                name: '数据生产', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 2, // 对应在X轴的grid索引
+                yAxisIndex: 2, // 对应在Y轴的grid索引
+                stack: '2', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#F2C751',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#F2C751',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#F2C75196', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#F2C75196', // 高亮状态下柱条颜色
+                    },
+                },
+                data: onLine[1], // 系列中的数据内容数组
+            },
+            {
+                name: '外业测绘', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 2, // 对应在X轴的grid索引
+                yAxisIndex: 2, // 对应在Y轴的grid索引
+                stack: '2', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#296FFB',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#296FFB',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#296FFB96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#296FFB96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: onLine[2], // 系列中的数据内容数组
+            },
+            {
+                name: '事业单位', // 系列名称
+                type: 'bar',
+                barWidth: 15, // 柱子宽度
+                xAxisIndex: 2, // 对应在X轴的grid索引
+                yAxisIndex: 2, // 对应在Y轴的grid索引
+                stack: '2', // 相同就是堆叠
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#4AA5EA',
+                    fontSize: 10,
+                },
+                itemStyle: {
+                    // 柱条样式。
+                    color: '#4AA5EA',
+                    // borderWidth:1,
+                    // borderColor:'transparent'
+                },
+                emphasis: {
+                    // 高亮
+                    show: true,
+                    label: {
+                        color: '#4AA5EA96', // 高亮状态下柱条颜色
+                    },
+                    itemStyle: {
+                        color: '#4AA5EA96', // 高亮状态下柱条颜色
+                    },
+                },
+                data: onLine[3], // 系列中的数据内容数组
+            },
+            // 联机背景
+            {
+                name: '已升学', // 系列名称
+                type: 'bar',
+                // barGap: 5, // 柱间距离
+                barWidth: 21, // 柱子宽度
+                xAxisIndex: 2, // 对应在X轴的grid索引
+                yAxisIndex: 2, // 对应在Y轴的grid索引
+                // stack: '2', // 相同就是堆叠
+                barGap: '-120%', //重叠
+                itemStyle: {
+                    // 柱条样式。
+                    // color: '#2087FE',
+                    color: 'transparent',
+                    borderWidth: 1,
+                    borderColor: '#2087FE',
+                },
+                data: onLineSum, // 系列中的数据内容数组
+            },
+        ],
+    };
+    r3ChartItem = echarts.init(proxy.$refs.r3);
+    r3ChartItem.setOption(option, true);
+}
 // 左边列表折叠按钮
 function leftPanelClick() {
     leftCollapse.value = !leftCollapse.value;
@@ -594,6 +1377,9 @@ function rightPanelClick() {
 onMounted(() => {
     if (MenuIndex.value == "/home/datapanel") {
         window.addEventListener("resize", winResize);
+        loadR1Chart();
+        loadR2Chart();
+        loadR3Chart();
         loadL2Chart(r2Data);
         setTimeout(() => {
             if (proxy.$refs.l3) {
@@ -651,13 +1437,17 @@ onMounted(() => {
         </div>
         <div :class="['RightPanel', rightCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', rightCollapse ? 'active' : '']" @click="rightPanelClick"></div>
-            <div class="LabelContent" style="margin-top: 2vh"><span class="title-ellipsis"></span></div>
-            <div class="r1">
+            <div class="LabelContent" style="margin-top: 2vh"><span class="title-ellipsis">
+                    2023地信学院毕业生去向
+                </span></div>
+            <div class="r1" ref="r1">
             </div>
-            <div class="LabelContent"><span class="title-ellipsis"></span></div>
+            <div class="LabelContent"><span class="title-ellipsis">
+                    2023地信学院毕业生生源地
+                </span></div>
             <div class="r2" ref="r2"></div>
             <div class="LabelContent"><span class="title-ellipsis"></span></div>
-            <div class="r3" ref="r3Ref">
+            <div class="r3" ref="r3">
             </div>
         </div>
     </div>
@@ -698,6 +1488,7 @@ onMounted(() => {
     /*background-size: 100% 100%;*/
     background: linear-gradient(to left, #010a1bcc 0, #01011bb2 33%, #010a1b99 65%, transparent 100%);
 }
+
 .LeftPanel {
     @keyframes openLeft {
         from {
