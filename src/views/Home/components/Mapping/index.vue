@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-24 16:49:00
+ * @LastEditTime: 2025-01-24 17:24:48
  * @Description:
 -->
 <script setup>
@@ -48,14 +48,32 @@ const formState = reactive({
     northsize: null,
     north: null,
     name: '',
-    subname:'',
+    subname: '',
     scalebarsize: '',
     scalebar: '',
     fillcolor: '',
     filename: '',
 });
 const checkedList = ref([]);
-const plainOptions = ['Apple', 'Pear', 'Orange'];
+const plainOptions = [
+    {
+        label: '2024毕业生生源地分析图',
+        value: '2024'
+    },
+    {
+        label: '2023毕业生生源地分析图',
+        value: '2023'
+    },
+    {
+        label: '2022毕业生生源地分析图',
+        value: '2022'
+    },
+    {
+        label: '2021毕业生生源地分析图',
+        value: '2021'
+    }
+];
+const showLayerList = ref([]);
 // const formState.size = ref('A4')
 // const formState.direction = ref('portrait')
 
@@ -211,6 +229,33 @@ const exportPDF = () => {
 function toolClick() {
     activeKey.value = !activeKey.value;
 }
+function changeLayer(checkedValue) {
+    if (showLayerList.value.length>0&&showLayerList.value.find(item => item.name === checkedValue)) {
+        let layer = showLayerList.value.find(item => item.name === checkedValue).layer;
+    }
+    let wmtLayer = new WMSLayer({
+        url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
+        sublayers: [
+            {
+                name: "行政边界数据", // 替换为实际图层名称
+                visible: true,
+            },
+            {
+                name: "行政边界_省级",
+                visible: true,
+            }
+        ],
+        spatialReference: { wkid: 4326 }, // 坐标系
+        // version: "1.3.0" // WMS 版本
+    });
+    view.map.add(wmtLayer);
+    showLayerList.value.push(
+        {
+            name:checkedValue,
+            layer:wmtLayer
+        }
+    )
+}
 function close() {
     activeKey.value = false;
 }
@@ -351,7 +396,7 @@ onMounted(() => {
                     <img src="../assets/close.svg" class="close" @click="close" />
                 </div>
                 <div class="container">
-                    <a-checkbox-group v-model:value="checkedList" :options="plainOptions" />
+                    <a-checkbox-group v-model:value="checkedList" @change="changeLayer" :options="plainOptions" />
                 </div>
             </div>
         </div>
@@ -415,7 +460,7 @@ onMounted(() => {
         margin-bottom: 1vh;
         display: flex;
         align-items: center;
-        color: #FFF!important;
+        color: #FFF !important;
         font-size: 1.3vh;
     }
 
