@@ -737,7 +737,7 @@ function loadR2Chart() {
             {
                 name: '面积模式',
                 type: 'pie',
-                radius: [20, 130],
+                radius: [20, 90],
                 center: ['50%', '50%'],
                 roseType: 'area',
                 label: {
@@ -746,9 +746,9 @@ function loadR2Chart() {
                     formatter: (params) => {
                         return ` ${params.name}: ${params.percent}% `;
                     },
-                    padding: [-30, -50, 0, 0],
+                    padding: [-3, -5, 0, 0],
                     textStyle: {
-                        lineHeight: 48
+                        lineHeight: 20
                     }
                 },
                 data: [
@@ -840,7 +840,7 @@ function loadR3Chart() {
                     // 图例文本样式
                     color: '#fff',
                 },
-                itemGap: 100,
+                itemGap: 10,
 
                 selectedMode: false, //图例点击失效
                 // data: ['脱机状态', '联机状态'],
@@ -1069,7 +1069,7 @@ function loadR3Chart() {
                 name: 'WebGIS', // 系列名称
                 type: 'bar',
                 // barGap: 5, // 柱间距离
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 0, // 对应在X轴的grid索引
                 yAxisIndex: 0, // 对应在Y轴的grid索引
                 stack: '1', // 相同就是堆叠
@@ -1101,7 +1101,7 @@ function loadR3Chart() {
             {
                 name: '数据生产', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 0, // 对应在X轴的grid索引
                 yAxisIndex: 0, // 对应在Y轴的grid索引
                 stack: '1', // 相同就是堆叠
@@ -1132,7 +1132,7 @@ function loadR3Chart() {
             {
                 name: '外业测绘', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 0, // 对应在X轴的grid索引
                 yAxisIndex: 0, // 对应在Y轴的grid索引
                 stack: '1', // 相同就是堆叠
@@ -1163,7 +1163,7 @@ function loadR3Chart() {
             {
                 name: '事业单位', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 0, // 对应在X轴的grid索引
                 yAxisIndex: 0, // 对应在Y轴的grid索引
                 stack: '1', // 相同就是堆叠
@@ -1219,7 +1219,7 @@ function loadR3Chart() {
             {
                 name: 'WebGIS', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 2, // 对应在X轴的grid索引
                 yAxisIndex: 2, // 对应在Y轴的grid索引
                 stack: '2', // 相同就是堆叠
@@ -1250,7 +1250,7 @@ function loadR3Chart() {
             {
                 name: '数据生产', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 2, // 对应在X轴的grid索引
                 yAxisIndex: 2, // 对应在Y轴的grid索引
                 stack: '2', // 相同就是堆叠
@@ -1281,7 +1281,7 @@ function loadR3Chart() {
             {
                 name: '外业测绘', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 2, // 对应在X轴的grid索引
                 yAxisIndex: 2, // 对应在Y轴的grid索引
                 stack: '2', // 相同就是堆叠
@@ -1312,7 +1312,7 @@ function loadR3Chart() {
             {
                 name: '事业单位', // 系列名称
                 type: 'bar',
-                barWidth: 15, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 2, // 对应在X轴的grid索引
                 yAxisIndex: 2, // 对应在Y轴的grid索引
                 stack: '2', // 相同就是堆叠
