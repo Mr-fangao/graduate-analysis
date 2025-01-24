@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 14:07:20
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-24 11:08:03
+ * @LastEditTime: 2025-01-24 15:38:16
  * @Description: 
 -->
 <template>
@@ -121,7 +121,7 @@ onMounted(() => {
     }
 });
 </script>
-<style  lang="less">
+<style lang="less">
 .LeftPanel {
     position: absolute;
     z-index: 2;
@@ -257,6 +257,62 @@ onMounted(() => {
             left: auto;
         }
     }
+}
+
+@keyframes openLeftPanel {
+    0% {
+        transform: translateX(2vh);
+    }
+
+    100% {
+        transform: translateX(34vh);
+    }
+}
+
+@keyframes closeLeftPanel {
+    0% {
+        transform: translateX(37vh);
+    }
+
+    100% {
+        transform: translateX(2vh);
+    }
+}
+
+@keyframes openRightPanel {
+    0% {
+        transform: translateX(-2vh);
+    }
+
+    100% {
+        transform: translateX(-37vh);
+    }
+}
+
+@keyframes closeRightPanel {
+    0% {
+        transform: translateX(-37vh);
+    }
+
+    100% {
+        transform: translateX(-2vh);
+    }
+}
+
+.openLeftPanel {
+    animation: openLeftPanel 1s ease forwards;
+}
+
+.closeLeftPanel {
+    animation: closeLeftPanel 1s ease forwards;
+}
+
+.openRightPanel {
+    animation: openRightPanel 1s ease forwards;
+}
+
+.closeRightPanel {
+    animation: closeRightPanel 1s ease forwards;
 }
 </style>
 <style lang="less" scoped>

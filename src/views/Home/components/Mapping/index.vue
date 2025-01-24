@@ -2,10 +2,11 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-24 11:56:56
+ * @LastEditTime: 2025-01-24 16:49:00
  * @Description:
 -->
 <script setup>
+
 import Bus from "@/buss/eventBus";
 import { ref, onMounted, reactive, onUnmounted, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onUpdated, watch, getCurrentInstance } from "vue";
 import useLoginStore from "@/store/login.js";
@@ -28,6 +29,7 @@ const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
 let view = null;
 const mapView = ref(null);
+const activeKey = ref(false)
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 // 左边列表折叠按钮
 function leftPanelClick() {
@@ -42,8 +44,18 @@ const formState = reactive({
     bottom: '',
     right: '',
     size: 'A4',
-    dpi: 100
+    dpi: 100,
+    northsize: null,
+    north: null,
+    name: '',
+    subname:'',
+    scalebarsize: '',
+    scalebar: '',
+    fillcolor: '',
+    filename: '',
 });
+const checkedList = ref([]);
+const plainOptions = ['Apple', 'Pear', 'Orange'];
 // const formState.size = ref('A4')
 // const formState.direction = ref('portrait')
 
@@ -144,6 +156,19 @@ const processExport = async (callback) => {
     context.fillStyle = '#FFFFFF';
     context.fillRect(0, 0, width, height);
     context.drawImage(canvas, formState.left, formState.top);
+    if (formState.name) {
+        // 添加图名文本
+        const title = formState.name; // 替换为实际的图名
+        const titleFontSize = 24; // 字体大小
+        const titleColor = '#FFFFFF'; // 字体颜色
+        const titleX = width / 2; // 水平居中
+        const titleY = 50; // 距离顶部50px
+        context.font = `${titleFontSize}px Arial`; // 设置字体
+        context.fillStyle = titleColor; // 设置颜色
+        context.textAlign = 'center'; // 水平居中
+        context.textBaseline = 'top'; // 垂直对齐方式
+        context.fillText(title, titleX, titleY); // 绘制文本
+    }
     console.log('Canvas Size:', { width: finalCanvas.width, height: finalCanvas.height });
     callback(finalCanvas);
 }
@@ -152,7 +177,11 @@ const processExport = async (callback) => {
 const exportImage = () => {
     processExport((canvas) => {
         const link = document.createElement('a')
-        link.download = `map_${formState.size}_${formState.direction}.png`
+        let name = `map_${formState.size}_${formState.direction}.png`
+        if (formState.filename) {
+            name = formState.filename + '.png'
+        }
+        link.download = name;
         link.href = canvas.toDataURL('image/png')
         link.click()
     })
@@ -172,8 +201,18 @@ const exportPDF = () => {
         const pdfHeight = pdf.internal.pageSize.getHeight()
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-        pdf.save(`map_${formState.size}_${formState.direction}.pdf`)
+        let name = `map_${formState.size}_${formState.direction}.pdf`
+        if (formState.filename) {
+            name = formState.filename + '.pdf'
+        }
+        pdf.save(name)
     })
+}
+function toolClick() {
+    activeKey.value = !activeKey.value;
+}
+function close() {
+    activeKey.value = false;
 }
 onMounted(() => {
     if (MenuIndex.value == "/home/mapping") {
@@ -186,7 +225,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="Main">
+    <div class="Mapping">
         <div id="mappingview" ref="mapView"></div>
         <div id="printArea" class="print-area">
             <div class="map-wrapper">
@@ -205,13 +244,13 @@ onMounted(() => {
                         <a-input v-model:value="formState.name" />
                     </a-form-item> -->
                     <a-form-item label="页面尺寸">
-                        <a-select v-model:value="formState.size" placeholder="please select your zone">
+                        <a-select v-model:value="formState.size" style="width: 16vh;" placeholder="">
                             <a-select-option v-for="(item, index) in paperSizes" :value="item" :key="index">{{ item
                                 }}</a-select-option>
                         </a-select>
                     </a-form-item>
                     <a-form-item label="缩放比例">
-                        <a-select v-model:value="formState.rate" placeholder="please select your zone">
+                        <a-select v-model:value="formState.rate" placeholder="" style="width: 16vh;">
                             <a-select-option value="2">200%</a-select-option>
                             <a-select-option value="1">100%</a-select-option>
                             <a-select-option value="0.75">75%</a-select-option>
@@ -235,14 +274,85 @@ onMounted(() => {
             </div>
             <div class="LabelContent"><span class="title-ellipsis">地图要素</span></div>
             <div class="l2">
+                <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <!-- <a-form-item label="Activity name">
+                        <a-input v-model:value="formState.name" />
+                    </a-form-item> -->
+                    <a-form-item label="添加图名">
+                        <a-input placeholder="请输入图名" v-model:value="formState.name" />
+                    </a-form-item>
+                    <a-form-item label="添加副标题">
+                        <a-input placeholder="请输入副标题" v-model:value="formState.subname" />
+                    </a-form-item>
+                    <a-form-item label="添加指北针">
+                        <a-select style="width: 10vh;" v-model:value="formState.north" placeholder="选择指北针">
+                            <a-select-option value="2">样式一</a-select-option>
+                            <a-select-option value="1">样式二</a-select-option>
+                            <a-select-option value="0.75">样式三</a-select-option>
+                        </a-select>
+                        <a-select style="width: 10vh;" v-model:value="formState.northsize" placeholder="选择尺寸">
+                            <a-select-option value="2">200px</a-select-option>
+                            <a-select-option value="1">100px</a-select-option>
+                            <a-select-option value="0.75">50px</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item label="添加比例尺">
+                        <a-select style="width: 10vh;" v-model:value="formState.scalebar" placeholder="选择比例尺">
+                            <a-select-option value="2">样式一</a-select-option>
+                            <a-select-option value="1">样式二</a-select-option>
+                            <a-select-option value="0.75">样式三</a-select-option>
+                        </a-select>
+                        <a-select style="width: 10vh;" v-model:value="formState.scalebarsize" placeholder="选择尺寸">
+                            <a-select-option value="2">200px</a-select-option>
+                            <a-select-option value="1">100px</a-select-option>
+                            <a-select-option value="0.75">50px</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                </a-form>
             </div>
             <div class="LabelContent"><span class="title-ellipsis">出图设置</span></div>
             <div class="l3" ref="l3">
+                <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-form-item label="成像质量">
+                        <a-select v-model:value="formState.dpi" placeholder="选择成像质量" style="width: 16vh;">
+                            <a-select-option value="300">300</a-select-option>
+                            <a-select-option value="120">120</a-select-option>
+                            <a-select-option value="100">100</a-select-option>
+                            <a-select-option value="72">72</a-select-option>
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item label="地图背景色">
+                        <a-input placeholder="请输入16进制颜色" v-model:value="formState.fillcolor" />
+                    </a-form-item>
+                    <a-form-item label="添加文件名">
+                        <a-input placeholder="请输入文件名" v-model:value="formState.filename" />
+                    </a-form-item>
+                    <a-form-item label="导出设置">
+                        <a-button size="small" style="margin-right: 1vh;    font-size: 1.2vh;" @click="exportImage"
+                            type="primary">导出图片</a-button>
+                        <a-button size="small" style=" font-size: 1.2vh;" @click="exportPDF"
+                            type="primary">导出PDF</a-button>
+                    </a-form-item>
+                </a-form>
+                <!-- <button @click="exportImage">导出图片</button>
+                <button @click="exportPDF">导出PDF</button> -->
 
-                <button @click="exportImage">导出图片</button>
-                <button @click="exportPDF">导出PDF</button>
 
-
+            </div>
+        </div>
+        <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']" v-show="!isFly">
+            <div class="ButtonContent" @click="toolClick">
+                <span class="label ellipsis"> 图层选择 </span>
+                <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" />
+            </div>
+            <div class="AreaContainer" v-show="activeKey">
+                <div class="title">
+                    <span>图层列表</span>
+                    <img src="../assets/close.svg" class="close" @click="close" />
+                </div>
+                <div class="container">
+                    <a-checkbox-group v-model:value="checkedList" :options="plainOptions" />
+                </div>
             </div>
         </div>
     </div>
@@ -250,42 +360,82 @@ onMounted(() => {
 </template>
 
 <style lang="less">
-.esri-scale-bar{
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    height: 30px;
-    width: 100px;
+.Mapping {
+    .esri-scale-bar {
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        height: 30px;
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        color: #FFF;
+    }
+
+    .esri-compass {
+        top: 100px !important;
+        right: 25px !important;
+        position: absolute !important;
+        height: 65px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        color: #FFF !important;
+    }
+
+    .esri-zoom {
+        bottom: 100px;
+        right: 25px;
+        position: absolute;
+        height: 65px;
+        display: flex;
+        flex-direction: column;
+        color: #FFF;
+    }
+
+    .esri-widget {
+        position: absolute;
+        color: #FFF;
+    }
+
+    .esri-widget--button {
+        background-color: #266ad165;
+        margin-bottom: 1vh;
+    }
+}
+
+.ant-checkbox-group {
     display: flex;
+    flex-wrap: wrap;
+    column-gap: 8px;
     flex-direction: column;
-    color: #FFF;
+    width: 24vh;
+
+    .ant-checkbox-wrapper {
+        height: 3vh;
+        margin-bottom: 1vh;
+        display: flex;
+        align-items: center;
+        color: #FFF!important;
+        font-size: 1.3vh;
+    }
+
+    .ant-checkbox {
+        color: #FFF;
+        font-size: 1.3vh;
+
+        span {
+            color: #FFF !important;
+        }
+    }
+
+    .ant-checkbox-inner {
+        width: 1.5vh;
+        height: 1.5vh;
+        background-color: #3e7dcf;
+        border-color: #3e7dcf;
+    }
 }
-.esri-compass{
-    top: 100px;
-    right: 25px;
-    position: absolute;
-    height: 65px;
-    display: flex;
-    flex-direction: column;
-    color: #FFF;
-}
-.esri-zoom{
-    bottom: 100px;
-    right: 25px;
-    position: absolute;
-    height: 65px;
-    display: flex;
-    flex-direction: column;
-    color: #FFF;
-}
-.esri-widget{
-    position: absolute;
-    color: #FFF;
-}
-.esri-widget--button{
-    background-color: #266ad165;
-    margin-bottom: 1vh;
-}
+
 .ant-form label {
     font-size: 1.4vh !important;
     color: #FFF !important;
@@ -330,7 +480,7 @@ onMounted(() => {
     position: absolute;
 }
 
-.Main {
+.Mapping {
 
     .l1,
     .l2,
@@ -343,7 +493,7 @@ onMounted(() => {
         color: #fff;
         font-size: 1.2vh;
         align-items: center;
-        padding: 3vh;
+        padding: 1.5vh;
     }
 
     .LabelContent {
@@ -380,6 +530,91 @@ onMounted(() => {
             max-width: 20vh;
             /* 设置单元格最大宽度，根据实际需要调整 */
             display: inline-block;
+        }
+    }
+}
+</style>
+<style lang="less" scoped>
+.AreaSelect {
+    z-index: 99;
+    position: absolute;
+    left: 0;
+    top: 9.8vh;
+
+    .ButtonContent {
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 11.2vh;
+        height: 3.2vh;
+        background: #07152fcc;
+        border-radius: 4px;
+        line-height: 3.2vh;
+
+        .label {
+            font-size: 1.6vh;
+            font-family: puhui_Regular_55;
+            color: #ffffffcc;
+            width: 10vh;
+            height: 3.2vh;
+            line-height: 3.2vh;
+            display: inline-block;
+            margin-left: 1.3vh;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 1vh;
+            right: 1vh;
+            top: 1.2vh;
+            // cursor: pointer;
+            transform: rotateZ(180deg);
+
+            &.active {
+                transform: rotateZ(0deg);
+            }
+        }
+    }
+
+    .AreaContainer {
+        position: relative;
+        width: 30vh;
+        left: 0;
+        top: 0.8vh;
+
+        .title {
+            position: relative;
+            width: 100%;
+            height: 3.4vh;
+            line-height: 3.4vh;
+            // background: #2280cc;
+            background: url("/img/modal/header-middle.svg#svgView(preserveAspectRatio(none))") no-repeat;
+            text-align: left;
+            padding-left: 1.4vh;
+
+            // text-align: center;
+            span {
+                font-size: 1.6vh;
+                font-family: puhui_SemiBold_75;
+                color: #fff;
+            }
+
+            .close {
+                width: 1.6vh;
+                height: 1.6vh;
+                position: absolute;
+                right: 0.8vh;
+                top: 0.9vh;
+                cursor: pointer;
+            }
+        }
+
+        .container {
+            // background: #07152fcc;
+            background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
+            margin-top: -0.2vh;
+            height: 40vh;
+            padding: 3vh;
         }
     }
 }
