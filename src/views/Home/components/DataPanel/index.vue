@@ -791,7 +791,7 @@ function loadR2Chart() {
     r2ChartItem.setOption(option, true);
 }
 function loadR3Chart() {
-    const myData = ['福田区', '罗湖区', '南山区', '盐田区', '宝安区', '龙岗区'];
+    const myData = ['南京市', '苏州市', '滁州市', '合肥市', '上海市', '杭州市'];
     // WebGIS，数据生产，外业测绘，事业单位
     const offLine = [
         [20, 40, 60, 60, 10, 20, 40, 20, 20, 10],
@@ -1438,7 +1438,7 @@ onMounted(() => {
         <div :class="['RightPanel', rightCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', rightCollapse ? 'active' : '']" @click="rightPanelClick"></div>
             <div class="LabelContent" style="margin-top: 2vh"><span class="title-ellipsis">
-                    2023地信学院毕业生去向
+                    2023地信学院毕业生就业分布
                 </span></div>
             <div class="r1" ref="r1">
             </div>
@@ -1446,7 +1446,9 @@ onMounted(() => {
                     2023地信学院毕业生生源地
                 </span></div>
             <div class="r2" ref="r2"></div>
-            <div class="LabelContent"><span class="title-ellipsis"></span></div>
+            <div class="LabelContent"><span class="title-ellipsis">
+                2023地信学院毕业生去向
+            </span></div>
             <div class="r3" ref="r3">
             </div>
         </div>
@@ -1841,7 +1843,7 @@ onMounted(() => {
             /* 隐藏超出部分 */
             text-overflow: ellipsis;
             /* 超出部分显示省略号 */
-            max-width: 20vh;
+            max-width: 25vh;
             /* 设置单元格最大宽度，根据实际需要调整 */
             display: inline-block;
         }
