@@ -322,6 +322,8 @@ onMounted(() => {
     // height: 2600px !important;
     width: 100%;
     height: 100%;
+    // width: 1272px;
+    // height: 716px;
     overflow-y: hidden;
     overflow-x: hidden;
     background: #1a4061;
