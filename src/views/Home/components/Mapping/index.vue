@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-24 17:24:48
+ * @LastEditTime: 2025-02-18 17:36:39
  * @Description:
 -->
 <script setup>
@@ -25,6 +25,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
+import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import Basemap from "@arcgis/core/Basemap";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import esriConfig from "@arcgis/core/config";
@@ -68,13 +69,11 @@ const checkedList = ref([]);
 const plainOptions = [
   {
     label: "2024毕业生生源地分析图",
-    // value:"http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
-    value:'http://localhost:6080/arcgis/rest/services/2020生源地/MapServer/0'
+    value: 'http://localhost:6080/arcgis/rest/services/2020生源地/MapServer/0'
   },
   {
     label: "2023毕业生生源地分析图",
-        value:'http://localhost:6080/arcgis/rest/services/中国地图市级面数据/MapServer/0'
-    // value:"http://localhost:6080/arcgis/services/中国地图市级面数据/MapServer/WMSServer",
+
   },
   {
     label: "2022毕业生生源地分析图",
@@ -256,32 +255,16 @@ function changeLayer(checkedValues) {
   // 2. 处理需要显示的图层
   checkedValues.forEach((value) => {
     if (!loadedLayers[value]) {
-      // 创建新图层
-      let wmtLayer = new WMSLayer({
-        url: value,
-        spatialReference: { wkid: 4326 },
-      });
-    //   wmtLayer.fetchSublayers().then((sublayers) => {
-    //     wmtLayer.sublayers = sublayers.map((sublayer) => ({
-    //       ...sublayer,
-    //       visible: true, // 强制设为可见
-    //     }));
-    //   });
       let feature = new FeatureLayer({
         url: value,
       });
       view.map.add(feature);
-      // let wmtLayer = {
-      //     value:value,
-      //     visible : true,
-      // }
-      // 添加图层到地图并保存
-      // view.map.add(wmtLayer);
-      loadedLayers[value] = wmtLayer;
+
+      loadedLayers[value] = feature;
       // 添加到显示列表
       showLayerList.value.push({
         name: value,
-        layer: wmtLayer,
+        layer: feature,
       });
     } else {
       // 显示已存在的图层
@@ -297,7 +280,7 @@ function changeLayer(checkedValues) {
   });
 
   // console.log(checkedValues,"loadedLayers:",loadedLayers,"showLayerList:",showLayerList.value);
-  // let wmtLayer = new WMSLayer({
+  // let feature = new WMSLayer({
   //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
   //     sublayers: [
   //         {
@@ -312,11 +295,11 @@ function changeLayer(checkedValues) {
   //     spatialReference: { wkid: 4326 }, // 坐标系
   //     // version: "1.3.0" // WMS 版本
   // });
-  // view.map.add(wmtLayer);
+  // view.map.add(feature);
   // showLayerList.value.push(
   //     {
   //         name:checkedValue,
-  //         layer:wmtLayer
+  //         layer:feature
   //     }
   // )
 }
@@ -344,42 +327,23 @@ onMounted(() => {
             </div> -->
     </div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
-      <div
-        :class="['collapse', leftCollapse ? 'active' : '']"
-        @click="leftPanelClick"
-      ></div>
+      <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
         <span class="title-ellipsis">版式布局</span>
       </div>
       <div class="l1">
-        <a-form
-          :model="formState"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol"
-        >
+        <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
           <!-- <a-form-item label="Activity name">
                         <a-input v-model:value="formState.name" />
                     </a-form-item> -->
           <a-form-item label="页面尺寸">
-            <a-select
-              v-model:value="formState.size"
-              style="width: 16vh"
-              placeholder=""
-            >
-              <a-select-option
-                v-for="(item, index) in paperSizes"
-                :value="item"
-                :key="index"
-                >{{ item }}</a-select-option
-              >
+            <a-select v-model:value="formState.size" style="width: 16vh" placeholder="">
+              <a-select-option v-for="(item, index) in paperSizes" :value="item" :key="index">{{ item
+                }}</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="缩放比例">
-            <a-select
-              v-model:value="formState.rate"
-              placeholder=""
-              style="width: 16vh"
-            >
+            <a-select v-model:value="formState.rate" placeholder="" style="width: 16vh">
               <a-select-option value="2">200%</a-select-option>
               <a-select-option value="1">100%</a-select-option>
               <a-select-option value="0.75">75%</a-select-option>
@@ -387,29 +351,12 @@ onMounted(() => {
             </a-select>
           </a-form-item>
           <a-form-item label="页面边距">
-            <a-input
-              placeholder="上"
-              style="width: 3vh"
-              v-model:value="formState.top"
-            />
-            <a-input
-              placeholder="左"
-              style="width: 3vh"
-              v-model:value="formState.left"
-            />
-            <a-input
-              placeholder="下"
-              style="width: 3vh"
-              v-model:value="formState.bottom"
-            />
-            <a-input
-              placeholder="右"
-              style="width: 3vh"
-              v-model:value="formState.right"
-            />
+            <a-input placeholder="上" style="width: 3vh" v-model:value="formState.top" />
+            <a-input placeholder="左" style="width: 3vh" v-model:value="formState.left" />
+            <a-input placeholder="下" style="width: 3vh" v-model:value="formState.bottom" />
+            <a-input placeholder="右" style="width: 3vh" v-model:value="formState.right" />
             <span style="font-size: 1vh; color: #ffffff; margin-left: 0.6vh">
-              单位:mm</span
-            >
+              单位:mm</span>
           </a-form-item>
           <a-form-item label="页面方向">
             <a-radio-group v-model:value="formState.direction">
@@ -423,11 +370,7 @@ onMounted(() => {
         <span class="title-ellipsis">地图要素</span>
       </div>
       <div class="l2">
-        <a-form
-          :model="formState"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol"
-        >
+        <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
           <!-- <a-form-item label="Activity name">
                         <a-input v-model:value="formState.name" />
                     </a-form-item> -->
@@ -435,46 +378,27 @@ onMounted(() => {
             <a-input placeholder="请输入图名" v-model:value="formState.name" />
           </a-form-item>
           <a-form-item label="添加副标题">
-            <a-input
-              placeholder="请输入副标题"
-              v-model:value="formState.subname"
-            />
+            <a-input placeholder="请输入副标题" v-model:value="formState.subname" />
           </a-form-item>
           <a-form-item label="添加指北针">
-            <a-select
-              style="width: 10vh"
-              v-model:value="formState.north"
-              placeholder="选择指北针"
-            >
+            <a-select style="width: 10vh" v-model:value="formState.north" placeholder="选择指北针">
               <a-select-option value="2">样式一</a-select-option>
               <a-select-option value="1">样式二</a-select-option>
               <a-select-option value="0.75">样式三</a-select-option>
             </a-select>
-            <a-select
-              style="width: 10vh"
-              v-model:value="formState.northsize"
-              placeholder="选择尺寸"
-            >
+            <a-select style="width: 10vh" v-model:value="formState.northsize" placeholder="选择尺寸">
               <a-select-option value="2">200px</a-select-option>
               <a-select-option value="1">100px</a-select-option>
               <a-select-option value="0.75">50px</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="添加比例尺">
-            <a-select
-              style="width: 10vh"
-              v-model:value="formState.scalebar"
-              placeholder="选择比例尺"
-            >
+            <a-select style="width: 10vh" v-model:value="formState.scalebar" placeholder="选择比例尺">
               <a-select-option value="2">样式一</a-select-option>
               <a-select-option value="1">样式二</a-select-option>
               <a-select-option value="0.75">样式三</a-select-option>
             </a-select>
-            <a-select
-              style="width: 10vh"
-              v-model:value="formState.scalebarsize"
-              placeholder="选择尺寸"
-            >
+            <a-select style="width: 10vh" v-model:value="formState.scalebarsize" placeholder="选择尺寸">
               <a-select-option value="2">200px</a-select-option>
               <a-select-option value="1">100px</a-select-option>
               <a-select-option value="0.75">50px</a-select-option>
@@ -486,17 +410,9 @@ onMounted(() => {
         <span class="title-ellipsis">出图设置</span>
       </div>
       <div class="l3" ref="l3">
-        <a-form
-          :model="formState"
-          :label-col="labelCol"
-          :wrapper-col="wrapperCol"
-        >
+        <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
           <a-form-item label="成像质量">
-            <a-select
-              v-model:value="formState.dpi"
-              placeholder="选择成像质量"
-              style="width: 16vh"
-            >
+            <a-select v-model:value="formState.dpi" placeholder="选择成像质量" style="width: 16vh">
               <a-select-option value="300">300</a-select-option>
               <a-select-option value="120">120</a-select-option>
               <a-select-option value="100">100</a-select-option>
@@ -504,48 +420,25 @@ onMounted(() => {
             </a-select>
           </a-form-item>
           <a-form-item label="地图背景色">
-            <a-input
-              placeholder="请输入16进制颜色"
-              v-model:value="formState.fillcolor"
-            />
+            <a-input placeholder="请输入16进制颜色" v-model:value="formState.fillcolor" />
           </a-form-item>
           <a-form-item label="添加文件名">
-            <a-input
-              placeholder="请输入文件名"
-              v-model:value="formState.filename"
-            />
+            <a-input placeholder="请输入文件名" v-model:value="formState.filename" />
           </a-form-item>
           <a-form-item label="导出设置">
-            <a-button
-              size="small"
-              style="margin-right: 1vh; font-size: 1.2vh"
-              @click="exportImage"
-              type="primary"
-              >导出图片</a-button
-            >
-            <a-button
-              size="small"
-              style="font-size: 1.2vh"
-              @click="exportPDF"
-              type="primary"
-              >导出PDF</a-button
-            >
+            <a-button size="small" style="margin-right: 1vh; font-size: 1.2vh" @click="exportImage"
+              type="primary">导出图片</a-button>
+            <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
           </a-form-item>
         </a-form>
         <!-- <button @click="exportImage">导出图片</button>
                 <button @click="exportPDF">导出PDF</button> -->
       </div>
     </div>
-    <div
-      :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']"
-      v-show="!isFly"
-    >
+    <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']" v-show="!isFly">
       <div class="ButtonContent" @click="toolClick">
         <span class="label ellipsis"> 图层选择 </span>
-        <img
-          src="../assets/downArrow.svg"
-          :class="['arrow', activeKey ? 'active' : '']"
-        />
+        <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" />
       </div>
       <div class="AreaContainer" v-show="activeKey">
         <div class="title">
@@ -553,11 +446,7 @@ onMounted(() => {
           <img src="../assets/close.svg" class="close" @click="close" />
         </div>
         <div class="container">
-          <a-checkbox-group
-            v-model:value="checkedList"
-            @change="changeLayer"
-            :options="plainOptions"
-          />
+          <a-checkbox-group v-model:value="checkedList" @change="changeLayer" :options="plainOptions" />
         </div>
       </div>
     </div>
@@ -686,6 +575,7 @@ onMounted(() => {
 }
 
 .Mapping {
+
   .l1,
   .l2,
   .l3 {
@@ -792,8 +682,7 @@ onMounted(() => {
       height: 3.4vh;
       line-height: 3.4vh;
       // background: #2280cc;
-      background: url("/img/modal/header-middle.svg#svgView(preserveAspectRatio(none))")
-        no-repeat;
+      background: url("/img/modal/header-middle.svg#svgView(preserveAspectRatio(none))") no-repeat;
       text-align: left;
       padding-left: 1.4vh;
 
@@ -816,8 +705,7 @@ onMounted(() => {
 
     .container {
       // background: #07152fcc;
-      background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))")
-        no-repeat;
+      background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
       margin-top: -0.2vh;
       height: 40vh;
       padding: 3vh;
