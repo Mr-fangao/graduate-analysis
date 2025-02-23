@@ -1,8 +1,8 @@
 <!--
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-23 17:51:03
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-23 21:52:41
  * @Description:
 -->
 <script setup>
@@ -381,8 +381,8 @@ function loadL2Chart(l2data) {
             top: "center",
             itemGap: 18,
             selectedMode: false,
-            itemWidth: 10,
-            itemHeight: 10,
+            itemWidth: 6,
+            itemHeight: 6,
             // icon: 'pin',
             icon: "square",
             data: namesArray,
@@ -1741,7 +1741,7 @@ onMounted(() => {
         width: 90%;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
 
         .l2_right {
@@ -1750,7 +1750,7 @@ onMounted(() => {
         }
 
         .l2_left {
-            width: 60%;
+            width: 50%;
             height: 25vh;
         }
     }
