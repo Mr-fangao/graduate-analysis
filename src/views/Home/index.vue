@@ -1,8 +1,8 @@
 <!--
  * @Author: liqifeng
  * @Date: 2025-01-21 14:07:20
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-24 15:38:16
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-24 22:13:49
  * @Description: 
 -->
 <template>
@@ -71,8 +71,12 @@ const MenuList = [
         path: "/home/datapanel",
     },
     {
-        title: "空间分析",
+        title: "时空分析",
         path: "/home/analysis",
+    },
+    {
+        title: "信息查询",
+        path: "/home/query",
     },
     {
         title: "数据制图",
@@ -523,7 +527,7 @@ onMounted(() => {
                 font-size: 1.6vh;
                 font-family: puhui_SemiBold_75;
                 /*margin-right: 2vh;*/
-                margin-right: 4vh;
+                margin-right: 1.5vh;
 
                 &.active {
                     background: url("./assets/menu_hoverr.png") no-repeat;

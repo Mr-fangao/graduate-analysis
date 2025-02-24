@@ -1,8 +1,8 @@
 /*
  * @Author: liqifeng
  * @Date: 2025-01-21 10:10:22
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-23 18:09:37
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-24 22:12:42
  * @Description:
  */
 import {
@@ -33,6 +33,10 @@ const routes = [
         component: () => import("@/views/Home/components/DataPanel/index.vue"),
       },
       {
+        path: "query",
+        component: () => import("@/views/Home/components/Query/index.vue"),
+      },
+      {
         path: "analysis",
         component: () => import("@/views/Home/components/Analysis/index.vue"),
       },
@@ -40,10 +44,10 @@ const routes = [
         path: "mapping",
         component: () => import("@/views/Home/components/Mapping/index.vue"),
       },
-      // {
-      //   path: "manage",
-      //   component: () => import("@/views/Home/components/Manage.vue"),
-      // },
+      {
+        path: "manage",
+        // component: () => import("@/views/Home/components/Manage.vue"),
+      },
     ],
   },
 ];
