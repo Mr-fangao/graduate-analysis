@@ -5,7 +5,7 @@
         <div id="timeSlidercontainer" :style="'width:' + (timeLineList.length * 8 + 8) + 'vh;'">
             <div id="dhTitle">地信学院毕业生{{ selectname }}变化图
                 <div class="dataselect">
-                    <a-select class="r3select" ref="select" v-model:value="tasktvalue" @focus="focus" allowClear
+                    <a-select class="r3select" ref="select" v-model:value="tasktvalue"  allowClear
                         :placeholder="'生源地'" @change="handleChange">
                         <a-select-option v-for="(item, index) in taskstatus" :value="item.value" :key="index">{{item.name }}
                         </a-select-option>
@@ -291,7 +291,7 @@ onMounted(() => {
             background: transparent;
             // border: 1px solid #4d7bc7;
             color: #fff;
-            width: 9vh;
+            width: 10vh;
             height: 2.5vh;
             font-size: 1vh;
         }
@@ -317,7 +317,7 @@ onMounted(() => {
             }
 
             .ant-select-selector {
-                width: 9vh !important;
+                width: 10vh !important;
                 height: 2.5vh !important;
                 background-color: #ffffff00 !important;
                 border: 1px solid #2a579ab0 !important;
@@ -346,11 +346,13 @@ onMounted(() => {
             background-color: transparent !important;
             color: #fff !important;
             font-size: 1.2vh !important;
+            // height: 1.5vh !important;
         }
 
         .ant-select-item-option-selected {
             background: transparent !important;
             color: #fff !important;
+            height: 1.5vh !important;
         }
 
         .ant-select-item-option-active {

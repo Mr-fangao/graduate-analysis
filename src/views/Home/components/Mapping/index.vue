@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-18 17:36:39
+ * @LastEditTime: 2025-02-24 17:08:17
  * @Description:
 -->
 <script setup>
@@ -370,7 +370,7 @@ onMounted(() => {
         <span class="title-ellipsis">地图要素</span>
       </div>
       <div class="l2">
-        <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form :model="formState">
           <!-- <a-form-item label="Activity name">
                         <a-input v-model:value="formState.name" />
                     </a-form-item> -->
@@ -410,7 +410,7 @@ onMounted(() => {
         <span class="title-ellipsis">出图设置</span>
       </div>
       <div class="l3" ref="l3">
-        <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form :model="formState" >
           <a-form-item label="成像质量">
             <a-select v-model:value="formState.dpi" placeholder="选择成像质量" style="width: 16vh">
               <a-select-option value="300">300</a-select-option>
@@ -435,7 +435,7 @@ onMounted(() => {
                 <button @click="exportPDF">导出PDF</button> -->
       </div>
     </div>
-    <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']" v-show="!isFly">
+    <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']">
       <div class="ButtonContent" @click="toolClick">
         <span class="label ellipsis"> 图层选择 </span>
         <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" />
