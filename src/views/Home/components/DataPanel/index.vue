@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-23 21:52:41
+ * @LastEditTime: 2025-02-24 20:53:52
  * @Description:
 -->
 <script setup>
@@ -199,7 +199,7 @@ function loadL3Chart(data) {
                 splitNumber: 1,
                 nameTextStyle: {
                     //x坐标轴名称的字体样式
-                    fontSize: 12,
+                    fontSize: 8,
                     color: "#a3acb2",
                     padding: [0, 35, 10, 0],
                 },
@@ -215,7 +215,7 @@ function loadL3Chart(data) {
                 axisLabel: {
                     textStyle: {
                         color: "#a3acb2",
-                        fontSize: 12,
+                        fontSize: 10,
                     },
                 },
                 splitLine: {
@@ -398,7 +398,7 @@ function loadL2Chart(l2data) {
                     fill: "#f8f8f8", //文字的颜色
                     width: 3,
                     height: 3,
-                    fontSize: 18,
+                    fontSize: 15,
                     fontFamily: "puhui_ExtraBold_95",
                 },
             },
@@ -412,7 +412,7 @@ function loadL2Chart(l2data) {
                     fill: "#f8f8f8", //文字的颜色
                     width: 3,
                     height: 3,
-                    fontSize: 10,
+                    fontSize: 8,
                     fontFamily: "puhui_Regular_85",
                 },
             },
@@ -714,6 +714,13 @@ function loadR2Chart() {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
+        grid: {
+            left: '0%',
+            right: '0%',
+            bottom: '0%',
+            top: '0%',
+            containLabel: true
+        },
         legend: {
             x: 'center',
             y: 'bottom',
@@ -733,13 +740,20 @@ function loadR2Chart() {
             }
         },
         calculable: true,
+
         series: [
             {
-                name: '面积模式',
+                name: '比例',
                 type: 'pie',
-                radius: [20, 90],
+                radius: [15, 60],
                 center: ['50%', '50%'],
                 roseType: 'area',
+                labelLine: {
+                    show: true,
+                    length: 0,  // 第一段引导线的长度
+                    length2: 3, // 第二段引导线的长度
+                    smooth: true // 是否平滑
+                },
                 label: {
                     show: true,
                     color: '#fff',
@@ -748,7 +762,8 @@ function loadR2Chart() {
                     },
                     padding: [-3, -5, 0, 0],
                     textStyle: {
-                        lineHeight: 20
+                        lineHeight: 1,
+                        fontSize: 10,
                     }
                 },
                 data: [
@@ -834,13 +849,16 @@ function loadR3Chart() {
         legend: [
             {
                 // 图例
-                top: '2%',
+                top: '0%',
                 left: 'center', // 图例距离左侧距离(此处水平居中)
                 textStyle: {
                     // 图例文本样式
                     color: '#fff',
+                    fontSize: 8 // 设置文字大小
                 },
-                itemGap: 10,
+                itemGap: 5,
+                itemWidth: 5,
+                itemHeight: 5,
 
                 selectedMode: false, //图例点击失效
                 // data: ['脱机状态', '联机状态'],
@@ -848,11 +866,15 @@ function loadR3Chart() {
             },
             {
                 // 图例
-                bottom: '2%',
+                bottom: '0%',
                 left: 'center', // 图例距离左侧距离(此处水平居中)
+                itemGap: 5,
+                itemWidth: 5,
+                itemHeight: 5,
                 textStyle: {
                     // 图例文本样式
                     color: '#fff',
+                    fontSize: 8 // 设置文字大小
                 },
                 selectedMode: false, //图例点击失效
                 data: ['WebGIS', '数据生产', '外业测绘', '事业单位'],
@@ -879,8 +901,8 @@ function loadR3Chart() {
                 const bg = params[4]; // 背景区分联机与脱机
                 const status =
                     bg.seriesName === '已升学'
-                        ? `<span style="display:inline-block;color:#2087FE;">联机</span>`
-                        : `<span style="display:inline-block;color:#DC3239;">脱机</span>`;
+                        ? `<span style="display:inline-block;color:#2087FE;">已升学</span>`
+                        : `<span style="display:inline-block;color:#DC3239;">已就业</span>`;
                 return (
                     `${fullScreen.name}(${status})</br>` +
                     `${fullScreenColor}${fullScreen.seriesName}：${fullScreen.value}</br>` +
@@ -894,28 +916,28 @@ function loadR3Chart() {
             {
                 // 左边
                 show: false,
-                left: '2%',
-                top: 40,
-                bottom: 60,
+                left: '0%',
+                top:15,
+                bottom: 10,
                 containLabel: true,
-                width: '43%',
+                width: '40%',
             },
             {
                 // 中间
                 show: false,
-                left: '55%',
-                top: 60,
-                bottom: 60,
+                left: '59%',
+                top:24,
+                bottom: 10,
                 width: '14%',
             },
             {
                 // 右边
                 show: false,
-                right: '2%',
-                top:40,
-                bottom: 60,
+                right: '0%',
+                top:15,
+                bottom: 10,
                 containLabel: true,
-                width: '43%',
+                width: '40%',
             },
         ],
         // X轴线配置
@@ -938,7 +960,7 @@ function loadR3Chart() {
                     textStyle: {
                         // 标签样式
                         color: '#153D7D64',
-                        fontSize: 12,
+                        fontSize: 0,
                     },
                 },
                 splitLine: {
@@ -977,7 +999,7 @@ function loadR3Chart() {
                     show: true,
                     textStyle: {
                         color: '#153D7D64',
-                        fontSize: 12,
+                        fontSize: 0,
                     },
                 },
                 splitLine: {
@@ -1012,6 +1034,7 @@ function loadR3Chart() {
                     lineStyle: {
                         // 刻度线样式
                         color: '#11356D',
+                        fontSize: 100 // 设置文字大小
                     },
                 },
                 axisLabel: {
@@ -1036,7 +1059,7 @@ function loadR3Chart() {
                     textStyle: {
                         // 标签样式
                         color: '#cccccc',
-                        fontSize: 12,
+                        fontSize: 10,
                     },
                 },
                 data: myData,
@@ -1078,7 +1101,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F59A3F',
-                    fontSize: 10,
+                    fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1109,7 +1133,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F2C751',
-                    fontSize: 10,
+                    fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1140,7 +1165,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#296FFB',
-                    fontSize: 10,
+                    fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1171,7 +1197,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#4AA5EA',
-                    fontSize: 10,
+                     fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1196,11 +1223,11 @@ function loadR3Chart() {
                 name: '已就业', // 系列名称
                 type: 'bar',
                 // barGap: 5, // 柱间距离
-                barWidth: 21, // 柱子宽度
+                barWidth: 10, // 柱子宽度
                 xAxisIndex: 0, // 对应在X轴的grid索引
                 yAxisIndex: 0, // 对应在Y轴的grid索引
                 // stack: '1', // 相同就是堆叠
-                barGap: '-120%', //重叠
+                barGap: '-100%', //重叠
                 itemStyle: {
                     // 柱条样式。
                     // color: '#DC3239',
@@ -1227,7 +1254,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F59A3F',
-                    fontSize: 10,
+                     fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1258,7 +1286,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F2C751',
-                    fontSize: 10,
+                     fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1289,7 +1318,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#296FFB',
-                    fontSize: 10,
+                     fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1320,7 +1350,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#4AA5EA',
-                    fontSize: 10,
+                     fontSize: 8,
+                    padding: [0,0,-5,0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1345,11 +1376,11 @@ function loadR3Chart() {
                 name: '已升学', // 系列名称
                 type: 'bar',
                 // barGap: 5, // 柱间距离
-                barWidth: 21, // 柱子宽度
+                barWidth: 11, // 柱子宽度
                 xAxisIndex: 2, // 对应在X轴的grid索引
                 yAxisIndex: 2, // 对应在Y轴的grid索引
                 // stack: '2', // 相同就是堆叠
-                barGap: '-120%', //重叠
+                barGap: '-100%', //重叠
                 itemStyle: {
                     // 柱条样式。
                     // color: '#2087FE',
@@ -1447,8 +1478,8 @@ onMounted(() => {
                 </span></div>
             <div class="r2" ref="r2"></div>
             <div class="LabelContent"><span class="title-ellipsis">
-                2023地信学院毕业生去向
-            </span></div>
+                    2023地信学院毕业生去向
+                </span></div>
             <div class="r3" ref="r3">
             </div>
         </div>
@@ -1738,14 +1769,14 @@ onMounted(() => {
 
     .l2 {
         height: 25vh;
-        width: 90%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
 
         .l2_right {
-            width: 20%;
+            width: 50%;
             height: 25vh;
         }
 
