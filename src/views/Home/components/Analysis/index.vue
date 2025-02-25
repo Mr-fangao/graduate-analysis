@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-25 15:21:10
+ * @LastEditTime: 2025-02-25 15:22:14
  * @Description:
 -->
 <script setup>
@@ -228,6 +228,11 @@ onMounted(() => {
               </a-form-item>
               <a-form-item label="时间范围">
                 <a-range-picker v-model:value="formState.timerange" placeholder="" />
+              </a-form-item>
+              <a-form-item label="">
+                <a-button size="small" style="margin-right: 1vh; font-size: 1.2vh" @click="exportImage"
+                  type="primary">导出图片</a-button>
+                <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
               </a-form-item>
             </a-form>
           </div>

@@ -426,9 +426,9 @@ onMounted(() => {
             <a-input placeholder="请输入文件名" v-model:value="formState.filename" />
           </a-form-item>
           <a-form-item label="导出设置">
-            <a-button size="small" style="margin-right: 1vh; font-size: 1.2vh" @click="exportImage"
-              type="primary">导出图片</a-button>
-            <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
+            <a-button size="small" style="margin-left: 6vh;margin-right: 6vh;font-size: 1.2vh;" @click=""
+              type="primary">执行分析</a-button>
+            <a-button size="small" style="font-size: 1.2vh" @click="" type="primary">清除结果</a-button>
           </a-form-item>
         </a-form>
         <!-- <button @click="exportImage">导出图片</button>
