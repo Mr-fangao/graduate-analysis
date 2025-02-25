@@ -1,8 +1,8 @@
 <!--
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-25 15:22:14
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-25 21:06:46
  * @Description:
 -->
 <script setup>
@@ -230,7 +230,7 @@ onMounted(() => {
                 <a-range-picker v-model:value="formState.timerange" placeholder="" />
               </a-form-item>
               <a-form-item label="">
-                <a-button size="small" style="margin-right: 1vh; font-size: 1.2vh" @click="exportImage"
+                <a-button size="small" style="margin-right: 4vh; margin-left: 6vh;" @click="exportImage"
                   type="primary">导出图片</a-button>
                 <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
               </a-form-item>
