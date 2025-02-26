@@ -1,8 +1,8 @@
 /*
  * @Author: liqifeng
  * @Date: 2025-01-21 09:48:57
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-01-21 15:26:52
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-26 20:15:45
  * @Description: 
  */
 import { defineConfig , loadEnv} from 'vite';
@@ -19,6 +19,9 @@ export default defineConfig({
       less: {
         // 这里可以添加全局的 Less 变量或混入
         // additionalData: `@import "@/styles/variables.less";`
+      },
+      scss: {
+        // additionalData: `@import "@/styles/variables.scss";`
       }
     }
   },

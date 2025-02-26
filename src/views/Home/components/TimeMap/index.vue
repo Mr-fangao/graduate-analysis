@@ -137,7 +137,7 @@ function initmap() {
     });
     let layer = new FeatureLayer({
         id: '就业地',
-        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Earthquakes_Since1970/MapServer',
+        url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
     });
     featureLayer.value = layer;
     viewer.map.add(layer);

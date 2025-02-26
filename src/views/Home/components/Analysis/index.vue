@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-25 21:06:46
+ * @LastEditTime: 2025-02-26 20:05:08
  * @Description:
 -->
 <script setup>
@@ -35,8 +35,6 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleRangeSlider from "@arcgis/core/widgets/ScaleRangeSlider";
 import Zoom from "@arcgis/core/widgets/Zoom";
-import { fi } from "element-plus/es/locales.mjs";
-
 esriConfig.locale = "zh";
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
@@ -61,20 +59,20 @@ const dataList = ref(["生源地", "就业地"]);
 const plainOptions = ref([]);
 const checkedList = [
   {
-    label: "2024毕业生生源地分析图",
-    value: 'http://localhost:6080/arcgis/rest/services/2020生源地/MapServer/0'
+    label: "生源地核密度",
+    value: 'http://localhost:6080/arcgis/rest/services/生源地核密度2014/MapServer'
   },
   {
-    label: "2023毕业生生源地分析图",
-    value: "2022",
+    label: "标准差椭圆",
+    value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },
   {
-    label: "2022毕业生生源地分析图",
-    value: "2022",
+    label: "生源地聚类分析",
+    value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
   },
   {
     label: "2021毕业生生源地分析图",
-    value: "2021",
+    value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
   },
 ];
 const showLayerList = ref([]);
@@ -132,11 +130,10 @@ function changeLayer(checkedValues) {
   // 2. 处理需要显示的图层
   checkedValues.forEach((value) => {
     if (!loadedLayers[value]) {
-      let feature = new FeatureLayer({
+      let feature = new MapImageLayer({
         url: value,
       });
       view.map.add(feature);
-
       loadedLayers[value] = feature;
       // 添加到显示列表
       showLayerList.value.push({
@@ -230,9 +227,9 @@ onMounted(() => {
                 <a-range-picker v-model:value="formState.timerange" placeholder="" />
               </a-form-item>
               <a-form-item label="">
-                <a-button size="small" style="margin-right: 4vh; margin-left: 6vh;" @click="exportImage"
-                  type="primary">导出图片</a-button>
-                <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
+                <a-button size="small" style="margin-right: 4vh; margin-left: 6vh;font-size: 1.2vh"
+                  @click="startAnalysis" type="primary">开始分析</a-button>
+                <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">清除结果</a-button>
               </a-form-item>
             </a-form>
           </div>

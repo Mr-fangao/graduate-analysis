@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2025-01-21 10:10:22
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-24 22:12:42
+ * @LastEditTime: 2025-02-26 20:11:13
  * @Description:
  */
 import {
@@ -46,7 +46,7 @@ const routes = [
       },
       {
         path: "manage",
-        // component: () => import("@/views/Home/components/Manage.vue"),
+        component: () => import("@/views/Home/components/Manage/index.vue"),
       },
     ],
   },

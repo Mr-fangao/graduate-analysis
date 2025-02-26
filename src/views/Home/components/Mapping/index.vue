@@ -1,8 +1,8 @@
 <!--
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-24 17:36:20
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-02-26 20:02:36
  * @Description:
 -->
 <script setup>
@@ -65,23 +65,23 @@ const formState = reactive({
   fillcolor: "",
   filename: "",
 });
-const plainOptions = ref('2024毕业生生源地分析图');
+const plainOptions = ref([]);
 const checkedList = [
   {
-    label: "2024毕业生生源地分析图",
-    value: 'http://localhost:6080/arcgis/rest/services/2020生源地/MapServer/0'
+    label: "生源地核密度",
+    value: 'http://localhost:6080/arcgis/rest/services/生源地核密度2014/MapServer'
   },
   {
-    label: "2023毕业生生源地分析图",
-
+    label: "标准差椭圆",
+    value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },
   {
-    label: "2022毕业生生源地分析图",
-    value: "2022",
+    label: "生源地聚类分析",
+    value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
   },
   {
     label: "2021毕业生生源地分析图",
-    value: "2021",
+    value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
   },
 ];
 const showLayerList = ref([]);
@@ -255,7 +255,7 @@ function changeLayer(checkedValues) {
   // 2. 处理需要显示的图层
   checkedValues.forEach((value) => {
     if (!loadedLayers[value]) {
-      let feature = new FeatureLayer({
+      let feature = new MapImageLayer({
         url: value,
       });
       view.map.add(feature);
@@ -447,6 +447,11 @@ onMounted(() => {
         </div>
         <div class="container">
           <!-- <a-checkbox-group v-model:value="plainOptions" @change="changeLayer" :options="checkedList" /> -->
+          <el-checkbox-group v-model="plainOptions" @change="changeLayer">
+            <el-checkbox v-for="(item, index) in checkedList" :key="index" :label="item.label" :value="item.value">
+              {{ item.label }}
+            </el-checkbox>
+          </el-checkbox-group>
         </div>
       </div>
     </div>
