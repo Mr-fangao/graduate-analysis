@@ -88,6 +88,7 @@ function chooseyaer(item) {
     }
 }
 function handleChange(value) {
+    debugger;
     selectname.value = taskstatus.find(item => item.value === value).name;
     addTimeMap(taskstatus.find(item => item.value === value));
 }
@@ -101,7 +102,7 @@ function initmap() {
         }
     });
     webMap.load();
-    view.value = new MapView({
+    let viewer = new MapView({
         container: mapView.value,
         map: webMap,
         center: [116.3974, 39.9093], // 设置初始中心点
@@ -111,6 +112,7 @@ function initmap() {
             maxZoom: 15 // 最大缩放级别
         }
     });
+    view.value = viewer;
     // const wmtLayer = new WMSLayer({
     //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
     //     sublayers: [
@@ -133,22 +135,24 @@ function initmap() {
     }, (error) => {
         console.error('Map and View failed to load:', error);
     });
+    let layer = new FeatureLayer({
+        id: '就业地',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Earthquakes_Since1970/MapServer',
+    });
+    featureLayer.value = layer;
+    viewer.map.add(layer);
     setTimeout(() => {
-        const compass = new Compass({
-            view: view.value
-        });
-        view.value.ui.add(compass, "top-center");
         timeSlider = new TimeSlider({
             container: 'timeSlider', // 时间轴的容器
-            view: view,
+            view: viewer,
             mode: 'time-window',
             fullTimeExtent: {
                 start: new Date(1970, 0, 1),
                 end: new Date(),
             },
             timeExtent: {
-                start: new Date(timeLineList.value[0], 0, 1),
-                end: new Date(timeLineList.value[0], 12, 31),
+                start: new Date(1920, 0, 1),
+                end: new Date(2024, 12, 31),
             },
             stops: {
                 interval: {
@@ -157,22 +161,30 @@ function initmap() {
                 },
             },
         });
-        timeSlider.watch('timeExtent', (timeExtent) => {
-            // 当时间轴变化时，更新图层的时间过滤条件
-            featureLayer.timeExtent = timeExtent;
-        });
-        view.value.ui.add(timeSlider, 'bottom-center');
-    }, 0);
+        viewer.ui.add(timeSlider, 'bottom-center');
+        setTimeout(() => {
+            timeSlider.watch('timeExtent', (extent) => {
+                if (featureLayer.value) {
+                    featureLayer.value.timeExtent = extent;
+                    // console.log(featureLayer.value,extent);
+
+                }
+                // featureLayer.value.timeExtent = extent;
+            });
+        }, 200);
+        // view.value.ui.add(timeSlider, 'bottom-center');
+    }, 200);
     setTimeout(() => {
+
         currentYear.value = timeLineList.value[0];
-    }, 0);
+    }, 200);
 }
 function addTimeMap(item) {
-    if (view) {
+    if (view.value) {
         // 检查图层是否存在于地图中
         taskstatus.forEach((item) => {
-            if (view.map.findLayerById(item.name)) {
-                view.map.remove(view.map.findLayerById(item.name));
+            if (view.value.map.findLayerById(item.name)) {
+                view.value.map.remove(view.value.map.findLayerById(item.name));
             }
         });
         featureLayer = null;
@@ -181,7 +193,7 @@ function addTimeMap(item) {
         id: item.name,
         url: item.url,
     });
-    view.map.add(featureLayer);
+    view.value.map.add(featureLayer);
 }
 onMounted(() => {
     initmap();
