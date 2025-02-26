@@ -2,7 +2,7 @@
  * @Author: liqifeng
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-26 20:02:36
+ * @LastEditTime: 2025-02-26 22:00:17
  * @Description:
 -->
 <script setup>
@@ -68,19 +68,22 @@ const formState = reactive({
 const plainOptions = ref([]);
 const checkedList = [
   {
+    type: "img",
     label: "生源地核密度",
     value: 'http://localhost:6080/arcgis/rest/services/生源地核密度2014/MapServer'
   },
   {
-    label: "标准差椭圆",
+    label: "layer",
     value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },
   {
+    type: "img",
     label: "生源地聚类分析",
     value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
   },
   {
-    label: "2021毕业生生源地分析图",
+    type: "img",
+    label: "空间自相关分析",
     value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
   },
 ];
@@ -255,9 +258,17 @@ function changeLayer(checkedValues) {
   // 2. 处理需要显示的图层
   checkedValues.forEach((value) => {
     if (!loadedLayers[value]) {
-      let feature = new MapImageLayer({
-        url: value,
-      });
+      let type = checkedList.find((l) => l.value === value).type;
+      let feature = null;
+      if (type == 'img') {
+        feature = new MapImageLayer({
+          url: value,
+        });
+      } else if (type == 'layer') {
+        feature = new FeatureLayer({
+          url: value,
+        });
+      }
       view.map.add(feature);
 
       loadedLayers[value] = feature;
@@ -426,9 +437,9 @@ onMounted(() => {
             <a-input placeholder="请输入文件名" v-model:value="formState.filename" />
           </a-form-item>
           <a-form-item label="导出设置">
-            <a-button size="small" style="margin-left: 6vh;margin-right: 6vh;font-size: 1.2vh;" @click=""
-              type="primary">执行分析</a-button>
-            <a-button size="small" style="font-size: 1.2vh" @click="" type="primary">清除结果</a-button>
+            <a-button size="small" style="margin-left: 3vh;margin-right: 3vh;font-size: 1.2vh;" @click="exportImage"
+              type="primary">导出图片</a-button>
+            <a-button size="small" style="font-size: 1.2vh" @click="exportPDF" type="primary">导出PDF</a-button>
           </a-form-item>
         </a-form>
         <!-- <button @click="exportImage">导出图片</button>
