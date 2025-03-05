@@ -3,7 +3,7 @@
         <div id="viewDiv" ref="mapView"></div>
         <div class="timeSlider"></div>
         <div id="timeSlidercontainer" :style="'width:' + (timeLineList.length * 8 + 8) + 'vh;'">
-            <div id="dhTitle">地信学院毕业生{{ selectname }}变化图
+            <div id="dhTitle">滁州学院 地理信息与旅游学院毕业生{{ selectname }}变化图
                 <div class="dataselect">
                     <a-select class="r3select" ref="select" v-model:value="tasktvalue" allowClear :placeholder="'生源地'"
                         @change="handleChange">
@@ -60,7 +60,7 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 const mapView = ref(null);
 let timeSlider = null;
-const timeLineList = ref([2018, 2019, 2020, 2021, 2022, 2023]);
+const timeLineList = ref([2018, 2019, 2020, 2021, 2022, 2023, 2024]);
 const currentYear = ref(null);
 const selectname = ref(null);
 const tasktvalue = ref('0');
@@ -135,9 +135,11 @@ function initmap() {
     }, (error) => {
         console.error('Map and View failed to load:', error);
     });
+    
     let layer = new FeatureLayer({
         id: '就业地',
         url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
+        // url: 'http://localhost:6080/arcgis/rest/services/Placeoforigin/MapServer',
     });
     featureLayer.value = layer;
     viewer.map.add(layer);
@@ -175,7 +177,6 @@ function initmap() {
         // view.value.ui.add(timeSlider, 'bottom-center');
     }, 200);
     setTimeout(() => {
-
         currentYear.value = timeLineList.value[0];
     }, 200);
 }

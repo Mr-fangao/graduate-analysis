@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-24 20:53:52
+ * @LastEditTime: 2025-03-05 21:05:38
  * @Description:
 -->
 <script setup>
@@ -18,7 +18,7 @@ const loginStore = useLoginStore();
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 const flyCount = ref([
     { name: "统计城市数", value: 114, color: "#f5bc18", unit: " " },
-    { name: "数据年份数", value: 21341, color: "#0cc5c9", unit: " " },
+    { name: "数据年份数", value: 10, color: "#0cc5c9", unit: " " },
     { name: "毕业生总数", value: 2578, color: "#12c48f", unit: " " },
 ]);
 const l3Data = [
@@ -1469,16 +1469,16 @@ onMounted(() => {
         <div :class="['RightPanel', rightCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', rightCollapse ? 'active' : '']" @click="rightPanelClick"></div>
             <div class="LabelContent" style="margin-top: 2vh"><span class="title-ellipsis">
-                    2023地信学院毕业生就业分布
+                    2024地信学院毕业生就业分布
                 </span></div>
             <div class="r1" ref="r1">
             </div>
             <div class="LabelContent"><span class="title-ellipsis">
-                    2023地信学院毕业生生源地
+                    2024地信学院毕业生生源地
                 </span></div>
             <div class="r2" ref="r2"></div>
             <div class="LabelContent"><span class="title-ellipsis">
-                    2023地信学院毕业生去向
+                    2024地信学院毕业生去向
                 </span></div>
             <div class="r3" ref="r3">
             </div>
