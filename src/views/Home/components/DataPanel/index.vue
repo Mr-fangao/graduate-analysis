@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-05 21:05:38
+ * @LastEditors: liqifeng Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-06 14:01:58
  * @Description:
 -->
 <script setup>
@@ -590,7 +590,75 @@ function loadL2Chart(l2data) {
     loopShowTooltip(l2ChartItem, option, { loopSeries: true, seriesIndex: 0, loopStep: 2 });
 }
 function loadR1Chart() {
-    var source = [{ "industry": "银行", "name": "平安银行", "涨跌幅": -0.14, "量比": 0.83, "Amount": 87362.43 }, { "industry": "全国地产", "name": "万 科Ａ", "涨跌幅": 1.3, "量比": 1.69, "Amount": 197637.2 }, { "industry": "生物制药", "name": "国农科技", "涨跌幅": -3.39, "量比": 0.0, "Amount": 3449.41 }, { "industry": "环境保护", "name": "世纪星源", "涨跌幅": 10.1, "量比": 2.89, "Amount": 12274.01 }, { "industry": "区域地产", "name": "深振业Ａ", "涨跌幅": 1.44, "量比": 2.39, "Amount": 6369.07 }, { "industry": "酒店餐饮", "name": "全新好", "涨跌幅": -0.73, "量比": 1.3, "Amount": 2305.26 }, { "industry": "运输设备", "name": "神州高铁", "涨跌幅": 0.26, "量比": 0.89, "Amount": 4129.22 }, { "industry": "综合类", "name": "中国宝安", "涨跌幅": -0.52, "量比": 0.72, "Amount": 5128.63 }, { "industry": "建筑施工", "name": "*ST美丽", "涨跌幅": 2.04, "量比": 0.0, "Amount": 729.37 }, { "industry": "区域地产", "name": "深物业A", "涨跌幅": 4.24, "量比": 5.19, "Amount": 8691.59 }, { "industry": "玻璃", "name": "南 玻Ａ", "涨跌幅": 0.24, "量比": 0.74, "Amount": 2706.7 }, { "industry": "全国地产", "name": "沙河股份", "涨跌幅": 3.15, "量比": 3.65, "Amount": 8607.37 }, { "industry": "家用电器", "name": "深康佳Ａ", "涨跌幅": 0.47, "量比": 0.88, "Amount": 4960.5 }, { "industry": "文教休闲", "name": "深中华A", "涨跌幅": 0.44, "量比": 0.85, "Amount": 1076.83 }, { "industry": "装修装饰", "name": "*ST神城", "涨跌幅": 5.11, "量比": 0.0, "Amount": 6582.9 }, { "industry": "其他商业", "name": "深粮控股", "涨跌幅": -1.64, "量比": 1.3, "Amount": 5383.55 }, { "industry": "元器件", "name": "深华发Ａ", "涨跌幅": 1.93, "量比": 2.81, "Amount": 2101.73 }, { "industry": "电脑设备", "name": "深科技", "涨跌幅": -0.12, "量比": 0.6, "Amount": 8031.7 }, { "industry": "其他建材", "name": "深天地Ａ", "涨跌幅": 0.92, "量比": 1.4, "Amount": 2597.53 }, { "industry": "汽车服务", "name": "特 力Ａ", "涨跌幅": -0.58, "量比": 0.73, "Amount": 5263.19 }, { "industry": "其他商业", "name": "飞亚达Ａ", "涨跌幅": 0.51, "量比": 1.09, "Amount": 2195.08 }, { "industry": "火力发电", "name": "深圳能源", "涨跌幅": 0.64, "量比": 0.93, "Amount": 3636.08 }, { "industry": "医药商业", "name": "国药一致", "涨跌幅": -0.35, "量比": 1.22, "Amount": 4880.9 }, { "industry": "汽车配件", "name": "富奥股份", "涨跌幅": 0.42, "量比": 0.65, "Amount": 695.9 }, { "industry": "全国地产", "name": "大悦城", "涨跌幅": 2.29, "量比": 1.96, "Amount": 10547.66 }, { "industry": "元器件", "name": "深桑达Ａ", "涨跌幅": 1.6, "量比": 0.75, "Amount": 3038.67 }, { "industry": "综合类", "name": "神州数码", "涨跌幅": -0.3, "量比": 0.79, "Amount": 5104.54 }, { "industry": "环境保护", "name": "中国天楹", "涨跌幅": 1.76, "量比": 0.95, "Amount": 43531.08 }, { "industry": "全国地产", "name": "华联控股", "涨跌幅": 0.2, "量比": 0.76, "Amount": 4961.56 }, { "industry": "火力发电", "name": "深南电A", "涨跌幅": -2.98, "量比": 1.18, "Amount": 5699.69 }, { "industry": "广告包装", "name": "深大通", "涨跌幅": -3.94, "量比": 1.38, "Amount": 16266.95 }, { "industry": "轻工机械", "name": "中集集团", "涨跌幅": 0.0, "量比": 0.68, "Amount": 5116.99 }];
+    var source1 = [
+
+        { "industry": "银行", "name": "平安银行", "人数": -0.14, "量比": 0.83, "num": 87362.43 },
+        { "industry": "全国地产", "name": "万 科Ａ", "人数": 1.3, "量比": 1.69, "num": 197637.2 },
+        { "industry": "生物制药", "name": "国农科技", "人数": -3.39, "量比": 0.0, "num": 3449.41 },
+        { "industry": "环境保护", "name": "世纪星源", "人数": 10.1, "量比": 2.89, "num": 12274.01 },
+        { "industry": "区域地产", "name": "深振业Ａ", "人数": 1.44, "量比": 2.39, "num": 6369.07 },
+        { "industry": "酒店餐饮", "name": "全新好", "人数": -0.73, "量比": 1.3, "num": 2305.26 },
+        { "industry": "运输设备", "name": "神州高铁", "人数": 0.26, "量比": 0.89, "num": 4129.22 },
+        { "industry": "综合类", "name": "中国宝安", "人数": -0.52, "量比": 0.72, "num": 5128.63 },
+        { "industry": "建筑施工", "name": "*ST美丽", "人数": 2.04, "量比": 0.0, "num": 729.37 },
+        { "industry": "区域地产", "name": "深物业A", "人数": 4.24, "量比": 5.19, "num": 8691.59 },
+        { "industry": "玻璃", "name": "南 玻Ａ", "人数": 0.24, "量比": 0.74, "num": 2706.7 },
+        { "industry": "全国地产", "name": "沙河股份", "人数": 3.15, "量比": 3.65, "num": 8607.37 },
+        { "industry": "家用电器", "name": "深康佳Ａ", "人数": 0.47, "量比": 0.88, "num": 4960.5 },
+        { "industry": "文教休闲", "name": "深中华A", "人数": 0.44, "量比": 0.85, "num": 1076.83 },
+        { "industry": "装修装饰", "name": "*ST神城", "人数": 5.11, "量比": 0.0, "num": 6582.9 },
+        { "industry": "其他商业", "name": "深粮控股", "人数": -1.64, "量比": 1.3, "num": 5383.55 },
+        { "industry": "元器件", "name": "深华发Ａ", "人数": 1.93, "量比": 2.81, "num": 2101.73 },
+        { "industry": "电脑设备", "name": "深科技", "人数": -0.12, "量比": 0.6, "num": 8031.7 },
+        { "industry": "其他建材", "name": "深天地Ａ", "人数": 0.92, "量比": 1.4, "num": 2597.53 },
+        { "industry": "汽车服务", "name": "特 力Ａ", "人数": -0.58, "量比": 0.73, "num": 5263.19 },
+        { "industry": "其他商业", "name": "飞亚达Ａ", "人数": 0.51, "量比": 1.09, "num": 2195.08 },
+        { "industry": "火力发电", "name": "深圳能源", "人数": 0.64, "量比": 0.93, "num": 3636.08 },
+        { "industry": "医药商业", "name": "国药一致", "人数": -0.35, "量比": 1.22, "num": 4880.9 },
+        { "industry": "汽车配件", "name": "富奥股份", "人数": 0.42, "量比": 0.65, "num": 695.9 },
+        { "industry": "全国地产", "name": "大悦城", "人数": 2.29, "量比": 1.96, "num": 10547.66 },
+        { "industry": "元器件", "name": "深桑达Ａ", "人数": 1.6, "量比": 0.75, "num": 3038.67 },
+        { "industry": "综合类", "name": "神州数码", "人数": -0.3, "量比": 0.79, "num": 5104.54 },
+        { "industry": "环境保护", "name": "中国天楹", "人数": 1.76, "量比": 0.95, "num": 43531.08 },
+        { "industry": "全国地产", "name": "华联控股", "人数": 0.2, "量比": 0.76, "num": 4961.56 },
+        { "industry": "火力发电", "name": "深南电A", "人数": -2.98, "量比": 1.18, "num": 5699.69 },
+        { "industry": "广告包装", "name": "深大通", "人数": -3.94, "量比": 1.38, "num": 16266.95 },
+        { "industry": "轻工机械", "name": "中集集团", "人数": 0.0, "量比": 0.68, "num": 5116.99 }];
+    var source = [
+        { "industry": "采矿业", "name": "淮南市珍珠粉煤灰开发利用有限公司", "人数": -0.14, "量比": 0.83, "num": 2 },
+        { "industry": "电力", "name": "北京斯坦恩国际能源科技有限公司", "人数": 1.3, "量比": 1.69, "num": 3 },
+        { "industry": "房地产业", "name": "北京链家房地产经纪有限公司", "人数": -3.39, "量比": 0.0, "num": 2 },
+        { "industry": "公共管理", "name": "村官", "人数": 10.1, "量比": 2.89, "num": 2 },
+        { "industry": "建筑业", "name": "安徽省第四测绘院", "人数": 1.44, "量比": 2.39, "num": 6 },
+        { "industry": "交通运输", "name": "来安县农村公路管理局", "人数": -0.73, "量比": 1.3, "num": 10 },
+        { "industry": "教育", "name": "利辛县第六中学", "人数": 0.26, "量比": 0.89, "num": 4 },
+        { "industry": "金融业", "name": "中国工商银行股份有限公司", "人数": -0.52, "量比": 0.72, "num": 10 },
+        { "industry": "居民服务", "name": "*合肥博爱美容管理顾问有限公司", "人数": 2.04, "量比": 0.0, "num": 7 },
+        { "industry": "军队", "name": "中国人民武装警察部队黄金指挥部政治部", "人数": 4.24, "量比": 5.19, "num": 2 },
+        { "industry": "科学研究", "name": "安徽省煤田地质局水文勘探队", "人数": 0.24, "量比": 0.74, "num": 5 },
+        { "industry": "农业", "name": "全椒县国土资源局六镇所", "人数": 3.15, "量比": 3.65, "num": 4 },
+        { "industry": "批发和零售业", "name": "滁州市称心商贸有限公司", "人数": 0.47, "量比": 0.88, "num": 4 },
+        { "industry": "水利", "name": "安徽行测测绘科技有限公司", "人数": 0.44, "量比": 0.85, "num": 8 },
+        { "industry": "热力", "name": "宿州市华慧冷暖设备有限责任公司", "人数": 5.11, "量比": 0.0, "num": 6 },
+        { "industry": "燃气", "name": "安徽绿燃能源有限公司", "人数": -1.64, "量比": 1.3, "num": 8 },
+        { "industry": "水生产和供应", "name": "霍邱县自来水有限责任公司", "人数": 1.93, "量比": 2.81, "num": 2 },
+        { "industry": "社会保障", "name": "滁州市不动产登记中心", "人数": -0.12, "量比": 0.6, "num": 8 },
+        { "industry": "社会组织", "name": "五河县发展和改革委员会", "人数": 0.92, "量比": 1.4, "num": 2 },
+        { "industry": "仓储", "name": "长丰县跃华运输有限责任公司", "人数": -0.58, "量比": 0.73, "num": 5 },
+        { "industry": "邮政业", "name": "安徽省京邦达供应链科技有限公司", "人数": 0.51, "量比": 1.09, "num": 2 },
+        { "industry": "商业", "name": "合肥新桥国际机场有限公司", "人数": 0.64, "量比": 0.93, "num": 3 },
+        { "industry": "修理", "name": "舒城县阙店乡沐雪电子器材经营部", "人数": -0.35, "量比": 1.22, "num": 4 },
+        { "industry": "其他服务业", "name": "安徽浩朗物业管理有限公司", "人数": 0.42, "量比": 0.65, "num": 6 },
+        { "industry": "林业", "name": "滁州市洪德园林工程有限公司", "人数": 2.29, "量比": 1.96, "num": 10 },
+        { "industry": "牧业", "name": "明康汇生态农业集团有限公司", "人数": 1.6, "量比": 0.75, "num": 3 },
+        { "industry": "渔业", "name": "中国水产舟山海洋渔业有限公司", "人数": -0.3, "量比": 0.79, "num": 5 },
+        { "industry": "环境保护", "name": "中国天楹", "人数": 17, "量比": 0.95, "num": 17 },
+        { "industry": "公共设施管理", "name": "芜湖市自然资源和规划局", "人数": 0.2, "量比": 0.76, "num": 4 },
+        { "industry": "技术服务业", "name": "苏交科集团股份有限公司", "人数": -2.98, "量比": 1.18, "num": 5 },
+        { "industry": "房地产业", "name": "上海沪顺房地产经纪事务所第一分所", "人数": -3.94, "量比": 1.38, "num": 8 },
+        { "industry": "教育", "name": "北京中公教育科技有限公司天长分公司", "人数": 0.0, "量比": 0.68, "num": 5 }
+    ];
+    // var source = [{ "industry": "银行", "name": "平安银行", "涨跌幅": -0.14, "量比": 0.83, "Amount": 87362.43 }, { "industry": "全国地产", "name": "万 科Ａ", "涨跌幅": 1.3, "量比": 1.69, "Amount": 197637.2 }, { "industry": "生物制药", "name": "国农科技", "涨跌幅": -3.39, "量比": 0.0, "Amount": 3449.41 }, { "industry": "环境保护", "name": "世纪星源", "涨跌幅": 10.1, "量比": 2.89, "Amount": 12274.01 }, { "industry": "区域地产", "name": "深振业Ａ", "涨跌幅": 1.44, "量比": 2.39, "Amount": 6369.07 }, { "industry": "酒店餐饮", "name": "全新好", "涨跌幅": -0.73, "量比": 1.3, "Amount": 2305.26 }, { "industry": "运输设备", "name": "神州高铁", "涨跌幅": 0.26, "量比": 0.89, "Amount": 4129.22 }, { "industry": "综合类", "name": "中国宝安", "涨跌幅": -0.52, "量比": 0.72, "Amount": 5128.63 }, { "industry": "建筑施工", "name": "*ST美丽", "涨跌幅": 2.04, "量比": 0.0, "Amount": 729.37 }, { "industry": "区域地产", "name": "深物业A", "涨跌幅": 4.24, "量比": 5.19, "Amount": 8691.59 }, { "industry": "玻璃", "name": "南 玻Ａ", "涨跌幅": 0.24, "量比": 0.74, "Amount": 2706.7 }, { "industry": "全国地产", "name": "沙河股份", "涨跌幅": 3.15, "量比": 3.65, "Amount": 8607.37 }, { "industry": "家用电器", "name": "深康佳Ａ", "涨跌幅": 0.47, "量比": 0.88, "Amount": 4960.5 }, { "industry": "文教休闲", "name": "深中华A", "涨跌幅": 0.44, "量比": 0.85, "Amount": 1076.83 }, { "industry": "装修装饰", "name": "*ST神城", "涨跌幅": 5.11, "量比": 0.0, "Amount": 6582.9 }, { "industry": "其他商业", "name": "深粮控股", "涨跌幅": -1.64, "量比": 1.3, "Amount": 5383.55 }, { "industry": "元器件", "name": "深华发Ａ", "涨跌幅": 1.93, "量比": 2.81, "Amount": 2101.73 }, { "industry": "电脑设备", "name": "深科技", "涨跌幅": -0.12, "量比": 0.6, "Amount": 8031.7 }, { "industry": "其他建材", "name": "深天地Ａ", "涨跌幅": 0.92, "量比": 1.4, "Amount": 2597.53 }, { "industry": "汽车服务", "name": "特 力Ａ", "涨跌幅": -0.58, "量比": 0.73, "Amount": 5263.19 }, { "industry": "其他商业", "name": "飞亚达Ａ", "涨跌幅": 0.51, "量比": 1.09, "Amount": 2195.08 }, { "industry": "火力发电", "name": "深圳能源", "涨跌幅": 0.64, "量比": 0.93, "Amount": 3636.08 }, { "industry": "医药商业", "name": "国药一致", "涨跌幅": -0.35, "量比": 1.22, "Amount": 4880.9 }, { "industry": "汽车配件", "name": "富奥股份", "涨跌幅": 0.42, "量比": 0.65, "Amount": 695.9 }, { "industry": "全国地产", "name": "大悦城", "涨跌幅": 2.29, "量比": 1.96, "Amount": 10547.66 }, { "industry": "元器件", "name": "深桑达Ａ", "涨跌幅": 1.6, "量比": 0.75, "Amount": 3038.67 }, { "industry": "综合类", "name": "神州数码", "涨跌幅": -0.3, "量比": 0.79, "Amount": 5104.54 }, { "industry": "环境保护", "name": "中国天楹", "涨跌幅": 1.76, "量比": 0.95, "Amount": 43531.08 }, { "industry": "全国地产", "name": "华联控股", "涨跌幅": 0.2, "量比": 0.76, "Amount": 4961.56 }, { "industry": "火力发电", "name": "深南电A", "涨跌幅": -2.98, "量比": 1.18, "Amount": 5699.69 }, { "industry": "广告包装", "name": "深大通", "涨跌幅": -3.94, "量比": 1.38, "Amount": 16266.95 }, { "industry": "轻工机械", "name": "中集集团", "涨跌幅": 0.0, "量比": 0.68, "Amount": 5116.99 }];
     var temp = {};
     for (var i = 0; i < source.length; i++) {
         var industry = source[i]["industry"];
@@ -601,8 +669,7 @@ function loadR1Chart() {
     }
 
     var data = [];
-    var colors = ['#7591CC', '#5CC9CC', '#CC355B'],
-        idx = 0;
+    var colors = ['#7591CC', '#5CC9CC', '#CC355B', '#CC3FFF', '#CCFF3F'], idx = 0;
     for (var industry in temp) {
         if (!!industry && !!temp[industry] && temp[industry].length > 0) {
             var item = {
@@ -615,8 +682,8 @@ function loadR1Chart() {
             }
             for (var i = 0; i < temp[industry].length; i++) {
                 var name = temp[industry][i]["name"],
-                    change = temp[industry][i]["涨跌幅"],
-                    sname = name[i].length;
+                    change = temp[industry][i]["人数"],
+                    sname = temp[industry][i]["num"];
                 item["children"].push({
                     name: industry + '-' + name,
                     value: sname,
@@ -667,12 +734,12 @@ function loadR1Chart() {
             //每一层级呈现的样式  
             label: {
                 show: true,
-                fontSize: 12,
+                fontSize: 10,
                 color: '#FFFFFF',
                 formatter: function (params) {
                     var arr = [
                         params.name,
-                        '涨跌幅: ' + params.value
+                        '人数: ' + params.value
                     ];
                     return arr.join('\n');
                 }
@@ -917,7 +984,7 @@ function loadR3Chart() {
                 // 左边
                 show: false,
                 left: '0%',
-                top:15,
+                top: 15,
                 bottom: 10,
                 containLabel: true,
                 width: '40%',
@@ -926,7 +993,7 @@ function loadR3Chart() {
                 // 中间
                 show: false,
                 left: '59%',
-                top:24,
+                top: 24,
                 bottom: 10,
                 width: '14%',
             },
@@ -934,7 +1001,7 @@ function loadR3Chart() {
                 // 右边
                 show: false,
                 right: '0%',
-                top:15,
+                top: 15,
                 bottom: 10,
                 containLabel: true,
                 width: '40%',
@@ -1102,7 +1169,7 @@ function loadR3Chart() {
                     position: 'top',
                     color: '#F59A3F',
                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1134,7 +1201,7 @@ function loadR3Chart() {
                     position: 'top',
                     color: '#F2C751',
                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1166,7 +1233,7 @@ function loadR3Chart() {
                     position: 'top',
                     color: '#296FFB',
                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1197,8 +1264,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#4AA5EA',
-                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    fontSize: 8,
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1254,8 +1321,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F59A3F',
-                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    fontSize: 8,
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1286,8 +1353,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#F2C751',
-                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    fontSize: 8,
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1318,8 +1385,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#296FFB',
-                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    fontSize: 8,
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。
@@ -1350,8 +1417,8 @@ function loadR3Chart() {
                     show: true,
                     position: 'top',
                     color: '#4AA5EA',
-                     fontSize: 8,
-                    padding: [0,0,-5,0], // 标注文字内边距
+                    fontSize: 8,
+                    padding: [0, 0, -5, 0], // 标注文字内边距
                 },
                 itemStyle: {
                     // 柱条样式。

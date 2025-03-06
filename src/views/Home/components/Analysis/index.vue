@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-26 21:16:21
+ * @LastEditors: liqifeng Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-06 14:21:14
  * @Description:
 -->
 <script setup>
@@ -65,18 +65,25 @@ const checkedList = [
   },
   {
     label: "layer",
+    label: "生源地标准差椭圆",
     value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },
   {
     type: "img",
     label: "生源地聚类分析",
-    value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
+    value: "http://localhost:6080/arcgis/rest/services/高低聚类2023单位/MapServer",
   },
   {
     type: "img",
-    label: "空间自相关分析",
+    label: "生源地空间自相关分析",
     value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
   },
+  {
+    type: "img",
+    label: "生源地冷热点分析",
+    value: "http://localhost:6080/arcgis/rest/services/生源地冷热点分析2014/MapServer",
+  }
+
 ];
 const showLayerList = ref([]);
 // const formState.size = ref('A4')
