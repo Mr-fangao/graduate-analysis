@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 17:43:56
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-06 21:15:26
  * @Description:
 -->
 <script setup>
@@ -33,6 +33,9 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleRangeSlider from "@arcgis/core/widgets/ScaleRangeSlider";
 import Zoom from "@arcgis/core/widgets/Zoom";
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import HeatmapRenderer from '@arcgis/core/renderers/HeatmapRenderer';
+import Legend from '@arcgis/core/widgets/Legend';
 esriConfig.locale = "zh";
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
@@ -47,78 +50,78 @@ const taskstatus = [
   { status: 2, statusname: "执行失败", function: "详情", color: "#dc2828" },
 ]
 const taskData = ref([
-    {
-      name: "吕严兵",
-      sex: "男",
-      phone: "13126738821",
-      major: "测绘工程",
-      sourcePlace: "安徽省潜山县",
-      destinationPlace: "江苏省南京市",
-      remarks: "考取研究生(河海大学)"
-    },
-    {
-      name: "杨良柱",
-      sex: "男",
-      phone: "15156446629",
-      major: "地理科学",
-      sourcePlace: "安徽省宿松县",
-      destinationPlace: "湖北省武穴市",
-      remarks: "教学人员"
-    },
-    {
-      name: "周露露",
-      sex: "女",
-      phone: "13956561465",
-      major: "地理信息科学",
-      sourcePlace: "安徽省郎溪县",
-      destinationPlace: "浙江省平湖市",
-      remarks: "公务员"
-    },
-    {
-      name: "周杰",
-      sex: "男",
-      phone: "14790090524",
-      major: "地理科学",
-      sourcePlace: "安徽省六安市金安区",
-      destinationPlace: "安徽省安庆市",
-      remarks: "其他专业技术人员"
-    },
-    {
-      name: "顾承越",
-      sex: "男",
-      phone: "18019845207",
-      major: "地理科学",
-      sourcePlace: "安徽省五河县",
-      destinationPlace: "江苏省南京市",
-      remarks: "考取研究生（南京信息工程大学）"
-    },
-    {
-      name: "黄磊",
-      sex: "男",
-      phone: "14790090543",
-      major: "地理信息科学",
-      sourcePlace: "安徽省巢湖市",
-      destinationPlace: "浙江省杭州市",
-      remarks: "其他专业技术人员"
-    },
-    {
-      name: "陈林英",
-      sex: "女",
-      phone: "18019845386",
-      major: "旅游管理",
-      sourcePlace: "广东省罗定市",
-      destinationPlace: "安徽省滁州市",
-      remarks: "商业和服务业人员"
-    },
-    {
-      name: "高玉凤",
-      sex: "女",
-      phone: "18255061525",
-      major: "酒店管理",
-      sourcePlace: "安徽省舒城县",
-      destinationPlace: "安徽省合肥市",
-      remarks: "教学人员"
-    }
+  {
+    name: "吕严兵",
+    sex: "男",
+    phone: "13126738821",
+    major: "测绘工程",
+    sourcePlace: "安徽省潜山县",
+    destinationPlace: "江苏省南京市",
+    remarks: "考取研究生(河海大学)"
+  },
+  {
+    name: "杨良柱",
+    sex: "男",
+    phone: "15156446629",
+    major: "地理科学",
+    sourcePlace: "安徽省宿松县",
+    destinationPlace: "湖北省武穴市",
+    remarks: "教学人员"
+  },
+  {
+    name: "周露露",
+    sex: "女",
+    phone: "13956561465",
+    major: "地理信息科学",
+    sourcePlace: "安徽省郎溪县",
+    destinationPlace: "浙江省平湖市",
+    remarks: "公务员"
+  },
+  {
+    name: "周杰",
+    sex: "男",
+    phone: "14790090524",
+    major: "地理科学",
+    sourcePlace: "安徽省六安市金安区",
+    destinationPlace: "安徽省安庆市",
+    remarks: "其他专业技术人员"
+  },
+  {
+    name: "顾承越",
+    sex: "男",
+    phone: "18019845207",
+    major: "地理科学",
+    sourcePlace: "安徽省五河县",
+    destinationPlace: "江苏省南京市",
+    remarks: "考取研究生（南京信息工程大学）"
+  },
+  {
+    name: "黄磊",
+    sex: "男",
+    phone: "14790090543",
+    major: "地理信息科学",
+    sourcePlace: "安徽省巢湖市",
+    destinationPlace: "浙江省杭州市",
+    remarks: "其他专业技术人员"
+  },
+  {
+    name: "陈林英",
+    sex: "女",
+    phone: "18019845386",
+    major: "旅游管理",
+    sourcePlace: "广东省罗定市",
+    destinationPlace: "安徽省滁州市",
+    remarks: "商业和服务业人员"
+  },
+  {
+    name: "高玉凤",
+    sex: "女",
+    phone: "18255061525",
+    major: "酒店管理",
+    sourcePlace: "安徽省舒城县",
+    destinationPlace: "安徽省合肥市",
+    remarks: "教学人员"
+  }
 ]);
 const taskData2 = ref(
   [
@@ -246,7 +249,10 @@ function initmap() {
       maxZoom: 15, // 最大缩放级别
     },
   });
-
+  const legend = new Legend({
+    view: view,
+    container: 'legendDiv',
+  });
   view.when(() => {
     var compass = new Compass({
       view: view,
@@ -262,6 +268,38 @@ function initmap() {
     // view.ui.add(scaleBar, "top-left");
   });
 }
+let geojsonLayer = null;
+function showHeatMap() {
+  if (geojsonLayer) {
+    view.map.remove(geojsonLayer);
+  }
+  const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
+  console.log(url);
+
+  geojsonLayer = new GeoJSONLayer({
+    url: url,
+    renderer: new HeatmapRenderer({
+      field: (!formState.datamodel || formState.datamodel == 0) ? '生源数' : '就业数', // 假设GeoJSON中有magnitude字段
+      colorStops: [
+        { ratio: 0, color: 'rgba(0, 255, 0, 0)' },
+        { ratio: 0.5, color: 'rgba(255, 255, 0, 0.5)' },
+        { ratio: 1, color: 'rgba(255, 0, 0, 1)' },
+      ],
+      radius: 20,
+    }),
+  });
+
+  view.map.add(geojsonLayer);
+}
+function clearHeatMap() {
+  if (geojsonLayer) {
+    view.map.remove(geojsonLayer);
+  }
+}
+const datamodel = ref(1);
+const formState = reactive({
+  datamodel: null,
+});
 onMounted(() => {
   if (MenuIndex.value == "/home/query") {
     initmap();
@@ -271,36 +309,96 @@ onMounted(() => {
 <template>
   <div class="Query">
     <div id="queryview" ref="mapView"></div>
+    <div id="legendDiv"></div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
       <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
-        <span class="title-ellipsis">版式布局</span>
+        <span class="title-ellipsis">查询对象</span>
       </div>
       <div class="l1">
-        <a-input class="r3input" allowClear v-model:value="taskname" placeholder="请输入任务名称"
-          style="width: 20vh; height: 3vh" />
-        <a-select class="r3select" ref="select" v-model:value="tasktype" @focus="focus" allowClear :placeholder="''">
-          <a-select-option v-for="(item, index) in taskstatus" :value="item.status">{{ item.statusname }}
-          </a-select-option>
-        </a-select>
+        <a-form :model="formState">
+          <a-form-item label="查询数据：">
+            <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择查询数据">
+              <a-select-option value="0">生源地</a-select-option>
+              <a-select-option value="1">就业地</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="学生学院：">
+            <a-select style="width: 18vh" v-model:value="formState.scalebar" placeholder="选择学院">
+              <a-select-option value="2">地理信息与旅游学院</a-select-option>
+              <a-select-option value="1">文学院</a-select-option>
+              <a-select-option value="0.75">土木学院</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="毕业年份">
+            <a-select style="width: 18vh" v-model:value="formState.scalebar" placeholder="选择毕业年份">
+              <a-select-option value="2">2024</a-select-option>
+              <a-select-option value="1">2023</a-select-option>
+              <a-select-option value="0.75">2022</a-select-option>
+            </a-select>
+          </a-form-item>
+          <!-- <a-form-item label="是否就业">
+            <a-radio-group v-model:value="formState.direction">
+              <a-radio value="portrait">是</a-radio>
+              <a-radio value="landscape">否</a-radio>
+            </a-radio-group>
+          </a-form-item> -->
+          <a-form-item label="">
+            <a-button size="small" style="margin-left: 6vh;margin-right: 3vh;font-size: 1.2vh" @click="showHeatMap"
+              type="primary">查询</a-button>
+            <a-button size="small" style="font-size: 1.2vh;" @click="clearHeatMap" type="primary">重置</a-button>
+          </a-form-item>
+        </a-form>
       </div>
       <div class="LabelContent">
-        <span class="title-ellipsis">地图要素</span>
+        <span class="title-ellipsis">地图参数设置</span>
       </div>
-      <div class="l2">
+      <div class="l1">
+        <a-form :model="formState">
+          <a-form-item label="参数一">
+            <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择参数">
+              <a-select-option value="0">生源地</a-select-option>
+              <a-select-option value="1">就业地</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="参数一权重">
+            <a-input placeholder="输入权重(0-1)" style="width: 15vh" v-model:value="formState.top" />
+          </a-form-item>
+          <a-form-item label="参数二">
+            <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择参数">
+              <a-select-option value="0">生源地</a-select-option>
+              <a-select-option value="1">就业地</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="参数二权重">
+            <a-input placeholder="输入权重(0-1)" style="width: 15vh" v-model:value="formState.top" />
+          </a-form-item>
+        </a-form>
       </div>
       <div class="LabelContent">
         <span class="title-ellipsis">查询结果 --总计461条</span>
       </div>
       <div class="l3" ref="l3">
-        <el-table :data="taskData" height="100%" width="1000" :stripe="true" ref="warningtable">
+        <el-table v-if="!formState.datamodel || formState.datamodel == 0" :data="taskData" height="100%" width="1000"
+          :stripe="true" ref="warningtable">
           <el-table-column label="姓名" align="center" width="40" prop="name" />
-            <el-table-column label="性别" align="center" width="30" prop="sex" />
-            <el-table-column label="联系方式" width="60"  align="center" prop="phone" />
-            <el-table-column label="专业名称" width="60" align="center" prop="major" />
-            <el-table-column label="生源地" align="center" prop="sourcePlace" />
-            <el-table-column label="就业地" align="center" prop="destinationPlace" />
-            <el-table-column label="备注" align="center" prop="remarks" />
+          <el-table-column label="性别" align="center" width="30" prop="sex" />
+          <el-table-column label="联系方式" width="60" align="center" prop="phone" />
+          <el-table-column label="专业名称" width="60" align="center" prop="major" />
+          <el-table-column label="生源地" align="center" prop="sourcePlace" />
+          <el-table-column label="就业地" align="center" prop="destinationPlace" />
+          <el-table-column label="备注" align="center" prop="remarks" />
+        </el-table>
+        <el-table v-if="formState.datamodel == 1" :data="taskData2" height="100%" width="1000" :stripe="true"
+          ref="warningtable">
+          <el-table-column label="姓名" align="center" width="40" prop="name" />
+          <el-table-column label="专业" align="center" prop="major" />
+          <el-table-column label="籍贯" align="center" prop="address" />
+          <!-- <el-table-column label="年龄" align="center" prop="age" /> -->
+          <el-table-column label="性别" align="center" prop="sex" />
+          <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
+          <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
+          <!-- <el-table-column label="专业" align="center" prop="major" /> -->
         </el-table>
       </div>
     </div>
@@ -326,9 +424,26 @@ onMounted(() => {
 
 <style lang="less">
 .Query {
-  .LeftPanel{
+  .LeftPanel {
     width: 42vh;
   }
+
+  #legendDiv {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #6aabe74f;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .ant-form-horizontal .ant-form-item-label {
+    flex-grow: 0;
+    width: 10vh;
+  }
+
   .UavControl {
     width: 142vh;
     // height: 27vh;

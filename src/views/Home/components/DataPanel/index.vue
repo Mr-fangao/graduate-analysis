@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 14:01:58
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-06 21:20:13
  * @Description:
 -->
 <script setup>
@@ -812,7 +812,7 @@ function loadR2Chart() {
             {
                 name: '比例',
                 type: 'pie',
-                radius: [15, 60],
+                radius: [25, 80],
                 center: ['50%', '50%'],
                 roseType: 'area',
                 labelLine: {
@@ -841,7 +841,7 @@ function loadR2Chart() {
                     { value: 30, name: '四川省' },
                     { value: 64, name: '天津市' },
                     { value: 16, name: '宁夏' },
-                    { value: 77, name: '安徽省' },
+                    { value: 1377, name: '安徽省' },
                     { value: 116, name: '山东省' },
                     { value: 103, name: '山西省' },
                     { value: 12, name: '广东省' },
