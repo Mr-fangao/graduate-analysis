@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 16:31:30
+ * @LastEditTime: 2025-03-06 17:43:56
  * @Description:
 -->
 <script setup>
@@ -40,6 +40,190 @@ let view = null;
 const mapView = ref(null);
 const activeKey = ref(false);
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
+const taskstatus = [
+  { status: -1, statusname: "正在执行", function: "详情", color: "#69adfc" },
+  { status: 0, statusname: "待执行", function: "立即执行", color: "#69c9fb" },
+  { status: 1, statusname: "执行完成", function: "回放", color: "#0df6a0" },
+  { status: 2, statusname: "执行失败", function: "详情", color: "#dc2828" },
+]
+const taskData = ref([
+    {
+      name: "吕严兵",
+      sex: "男",
+      phone: "13126738821",
+      major: "测绘工程",
+      sourcePlace: "安徽省潜山县",
+      destinationPlace: "江苏省南京市",
+      remarks: "考取研究生(河海大学)"
+    },
+    {
+      name: "杨良柱",
+      sex: "男",
+      phone: "15156446629",
+      major: "地理科学",
+      sourcePlace: "安徽省宿松县",
+      destinationPlace: "湖北省武穴市",
+      remarks: "教学人员"
+    },
+    {
+      name: "周露露",
+      sex: "女",
+      phone: "13956561465",
+      major: "地理信息科学",
+      sourcePlace: "安徽省郎溪县",
+      destinationPlace: "浙江省平湖市",
+      remarks: "公务员"
+    },
+    {
+      name: "周杰",
+      sex: "男",
+      phone: "14790090524",
+      major: "地理科学",
+      sourcePlace: "安徽省六安市金安区",
+      destinationPlace: "安徽省安庆市",
+      remarks: "其他专业技术人员"
+    },
+    {
+      name: "顾承越",
+      sex: "男",
+      phone: "18019845207",
+      major: "地理科学",
+      sourcePlace: "安徽省五河县",
+      destinationPlace: "江苏省南京市",
+      remarks: "考取研究生（南京信息工程大学）"
+    },
+    {
+      name: "黄磊",
+      sex: "男",
+      phone: "14790090543",
+      major: "地理信息科学",
+      sourcePlace: "安徽省巢湖市",
+      destinationPlace: "浙江省杭州市",
+      remarks: "其他专业技术人员"
+    },
+    {
+      name: "陈林英",
+      sex: "女",
+      phone: "18019845386",
+      major: "旅游管理",
+      sourcePlace: "广东省罗定市",
+      destinationPlace: "安徽省滁州市",
+      remarks: "商业和服务业人员"
+    },
+    {
+      name: "高玉凤",
+      sex: "女",
+      phone: "18255061525",
+      major: "酒店管理",
+      sourcePlace: "安徽省舒城县",
+      destinationPlace: "安徽省合肥市",
+      remarks: "教学人员"
+    }
+]);
+const taskData2 = ref(
+  [
+    {
+      name: "王佳伟",
+      address: "安徽省合肥市瑶海区",
+      age: 28,
+      sex: "男",
+      homeaddress: "合肥市蜀山区长江西路100号",
+      phone: "13800138000",
+      major: "计算机科学与技术",
+      workunit: "阿里巴巴集团"
+    },
+    {
+      name: "李亦娜",
+      address: "安徽省芜湖市镜湖区",
+      age: 32,
+      sex: "女",
+      homeaddress: "芜湖市弋江区中山南路200号",
+      phone: "13900139000",
+      major: "软件工程",
+      workunit: "腾讯科技"
+    },
+    {
+      name: "张强",
+      address: "安徽省蚌埠市龙子湖区",
+      age: 25,
+      sex: "男",
+      homeaddress: "蚌埠市蚌山区淮河路300号",
+      phone: "13700137000",
+      major: "电子信息工程",
+      workunit: "华为技术有限公司"
+    },
+    {
+      name: "刘慧敏",
+      address: "安徽省淮南市田家庵区",
+      age: 30,
+      sex: "女",
+      homeaddress: "淮南市大通区洞山路500号",
+      phone: "13600136000",
+      major: "人工智能",
+      workunit: "字节跳动"
+    },
+    {
+      name: "陈磊",
+      address: "安徽省马鞍山市花山区",
+      age: 27,
+      sex: "男",
+      homeaddress: "马鞍山市雨山区湖东路300号",
+      phone: "13500135000",
+      major: "数据科学",
+      workunit: "网易公司"
+    },
+    {
+      name: "杨丽娟",
+      address: "安徽省淮北市相山区",
+      age: 29,
+      sex: "女",
+      homeaddress: "淮北市杜集区人民路100号",
+      phone: "13400134000",
+      major: "网络安全",
+      workunit: "百度在线"
+    },
+    {
+      name: "赵瑞鹏",
+      address: "安徽省铜陵市铜官区",
+      age: 26,
+      sex: "男",
+      homeaddress: "铜陵市义安区五松山路200号",
+      phone: "13300133000",
+      major: "云计算",
+      workunit: "京东集团"
+    },
+    {
+      name: "黄丽丽",
+      address: "安徽省安庆市迎江区",
+      age: 31,
+      sex: "女",
+      homeaddress: "安庆市大观区德宽路50号",
+      phone: "13200132000",
+      major: "物联网工程",
+      workunit: "小米科技"
+    },
+    {
+      name: "周敏涛",
+      address: "安徽省黄山市屯溪区",
+      age: 33,
+      sex: "男",
+      homeaddress: "黄山市徽州区永佳大道100号",
+      phone: "13100131000",
+      major: "金融学",
+      workunit: "平安银行"
+    },
+    {
+      name: "徐静怡",
+      address: "安徽省阜阳市颍州区",
+      age: 24,
+      sex: "女",
+      homeaddress: "阜阳市颍泉区颍州北路200号",
+      phone: "13000130000",
+      major: "市场营销",
+      workunit: "美团点评"
+    }
+  ],
+);
 // 左边列表折叠按钮
 function leftPanelClick() {
   leftCollapse.value = !leftCollapse.value;
@@ -93,6 +277,12 @@ onMounted(() => {
         <span class="title-ellipsis">版式布局</span>
       </div>
       <div class="l1">
+        <a-input class="r3input" allowClear v-model:value="taskname" placeholder="请输入任务名称"
+          style="width: 20vh; height: 3vh" />
+        <a-select class="r3select" ref="select" v-model:value="tasktype" @focus="focus" allowClear :placeholder="''">
+          <a-select-option v-for="(item, index) in taskstatus" :value="item.status">{{ item.statusname }}
+          </a-select-option>
+        </a-select>
       </div>
       <div class="LabelContent">
         <span class="title-ellipsis">地图要素</span>
@@ -100,35 +290,45 @@ onMounted(() => {
       <div class="l2">
       </div>
       <div class="LabelContent">
-        <span class="title-ellipsis">出图设置</span>
+        <span class="title-ellipsis">查询结果 --总计461条</span>
       </div>
       <div class="l3" ref="l3">
+        <el-table :data="taskData" height="100%" width="1000" :stripe="true" ref="warningtable">
+          <el-table-column label="姓名" align="center" width="40" prop="name" />
+            <el-table-column label="性别" align="center" width="30" prop="sex" />
+            <el-table-column label="联系方式" width="60"  align="center" prop="phone" />
+            <el-table-column label="专业名称" width="60" align="center" prop="major" />
+            <el-table-column label="生源地" align="center" prop="sourcePlace" />
+            <el-table-column label="就业地" align="center" prop="destinationPlace" />
+            <el-table-column label="备注" align="center" prop="remarks" />
+        </el-table>
       </div>
     </div>
-    <div class="UavControl">
+    <!-- <div class="UavControl">
       <div class="UavContainer">
         <div class="container">
           <div class="c1" :style="uavControlEnable ? '' : 'pointer-events: none'">
-            <div class="LabelContent"><span class="ellipsis">无人机控制</span></div>
+            <div class="LabelContent"><span class="ellipsis">查询结果</span></div>
             <div class="content">
-              <div class="l1">
-
-              </div>
-              <div class="l2">
-
-              </div>
-              <div class="l3">
+              <div class="l1" style="width:29vh">
+                <el-table :data="taskData" height="100%" :stripe="true" ref="warningtable">
+                  <el-table-column prop="name" label="名称" />
+                  <el-table-column prop="flyLineName" label="航线名称" />
+                </el-table>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <style lang="less">
 .Query {
+  .LeftPanel{
+    width: 42vh;
+  }
   .UavControl {
     width: 142vh;
     // height: 27vh;
@@ -317,6 +517,100 @@ onMounted(() => {
     font-size: 1.2vh;
     align-items: center;
     padding: 1.5vh;
+
+    :deep(.el-table) {
+      width: 37vh !important;
+      background-color: transparent !important;
+      border-bottom: none;
+      color: #ffffffb3 !important;
+
+      .cell {
+        line-height: normal !important;
+      }
+
+      .row-highlight {
+        background-color: #009adc80 !important;
+        /* 设置高亮背景色 */
+      }
+
+      tr {
+        background-color: transparent !important;
+      }
+
+      td {
+        text-align: center;
+        border-bottom: none;
+        /*padding:6px 0px;*/
+        padding: 0;
+        height: 3.5vh !important;
+        line-height: 3.5vh !important;
+        font-size: 1.2vh;
+      }
+
+      .el-table__header th {
+        // background-color: #011213b3 !important;
+        background-color: transparent !important;
+        color: #ffffff !important;
+        text-align: center;
+        border-bottom: none !important;
+        font-size: "puhui_Regular_55";
+        height: 3.5vh !important;
+        line-height: 3.5vh !important;
+        padding: 0;
+        font-size: 1.3vh;
+      }
+
+      .cell {
+        padding: 0;
+      }
+
+      .el-table__row {
+        // background-color: #1c3d5170 !important;
+
+        &:hover td {
+          background-color: rgba(50, 177, 192, 0.5);
+        }
+      }
+
+      .el-table__row--striped td {
+        background-color: #1d33479c !important;
+
+        &:hover td {
+          background-color: rgba(50, 177, 192, 0.5);
+        }
+      }
+
+      .el-table__inner-wrapper::before {
+        height: 0;
+      }
+
+      .el-tag.el-tag--success {
+        background: transparent;
+        border: none;
+        color: #3cc41c;
+      }
+
+      .el-tag.el-tag--warning {
+        background: transparent;
+        border: none;
+        color: #ff9940;
+      }
+    }
+
+    .r3input {
+      background: transparent;
+      border: 1px solid #4d7bc7;
+      color: #fff;
+    }
+
+    .r3select {
+      background: transparent;
+      // border: 1px solid #4d7bc7;
+      color: #fff;
+      width: 9vh;
+      height: 3vh;
+      font-size: 1vh;
+    }
   }
 
   .LabelContent {
