@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-25 21:54:07
+ * @LastEditors: liqifeng Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-06 16:31:30
  * @Description:
 -->
 <script setup>
@@ -21,8 +21,6 @@ import {
 } from "vue";
 import useLoginStore from "@/store/login.js";
 import { storeToRefs } from "pinia";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
@@ -48,9 +46,6 @@ function leftPanelClick() {
   rightCollapse.value = !rightCollapse.value;
 }
 function initmap() {
-  // const map = new Map({
-  //     basemap: 'streets-night-vector',
-  // });
   const webMap = new WebMap({
     portalItem: {
       id: "1211472e6c3d45fe95793af7ad7d3d89", // 替换为实际的 portalId
@@ -110,11 +105,84 @@ onMounted(() => {
       <div class="l3" ref="l3">
       </div>
     </div>
+    <div class="UavControl">
+      <div class="UavContainer">
+        <div class="container">
+          <div class="c1" :style="uavControlEnable ? '' : 'pointer-events: none'">
+            <div class="LabelContent"><span class="ellipsis">无人机控制</span></div>
+            <div class="content">
+              <div class="l1">
+
+              </div>
+              <div class="l2">
+
+              </div>
+              <div class="l3">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="less">
 .Query {
+  .UavControl {
+    width: 142vh;
+    // height: 27vh;
+    height: 32vh;
+    position: absolute;
+    left: 35vh;
+    bottom: 3vh;
+    pointer-events: none;
+
+    .UavContainer {
+      /*width: 174vh;*/
+      /*height: 27vh;*/
+      width: 142vh;
+
+      // background: red;
+      margin: 0 auto;
+
+      .container {
+        /*width: 170vh;*/
+        /*height: 27vh;*/
+        background: url("./assets/bg.png") no-repeat;
+        background-size: 100% 100%;
+        padding: 0.5vh;
+        // display: flex;
+        pointer-events: all;
+      }
+    }
+
+    .LabelContent {
+      // margin-top: 0.5vh;
+      width: 32vh;
+      height: 3.24vh;
+      background: url("./assets/labelBg.png");
+      background-size: 100% 100%;
+      // margin-left: 1vh;
+      font-size: 1.5vh;
+      font-family: puhui_Heavy_105;
+      font-style: italic;
+      padding-left: 1.7vh;
+      color: #fff;
+      line-height: 3.24vh;
+      letter-spacing: 0.1vh;
+      display: flex;
+    }
+
+    .content {
+      /*height: 22vh;*/
+      height: 29vh;
+      width: 100%;
+      // background: red;
+      background: #07152f1f;
+    }
+  }
+
   .esri-scale-bar {
     bottom: 0;
     right: 0;
@@ -144,6 +212,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     color: #fff;
+    opacity: 0;
   }
 
   .esri-widget {
