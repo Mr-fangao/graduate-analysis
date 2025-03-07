@@ -135,7 +135,6 @@ function initmap() {
     }, (error) => {
         console.error('Map and View failed to load:', error);
     });
-    
     let layer = new FeatureLayer({
         id: '就业地',
         url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
@@ -301,11 +300,10 @@ onMounted(() => {
 #dhTitle {
     color: #fff;
     padding-top: 1.2vh;
-    font-size: 1.4vh;
+    font-size: 1.8vh;
     letter-spacing: 0.2.5vh;
     text-align: center;
     font-family: puhui_Medium_65;
-
     .dataselect {
         letter-spacing: 0vh;
         position: absolute;
