@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 15:22:19
+ * @LastEditTime: 2025-03-07 17:27:53
  * @Description:
 -->
 <script setup>
@@ -82,7 +82,7 @@ const checkedList = [
   {
     type: "img",
     label: "生源地冷热点分析",
-    value: "http://localhost:6080/arcgis/rest/services/生源地冷热点分析2014/MapServer",
+    value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
   }
 
 ];
