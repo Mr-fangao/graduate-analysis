@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 21:15:26
+ * @LastEditors: liqifeng Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-07 11:27:21
  * @Description:
 -->
 <script setup>
@@ -36,9 +36,9 @@ import Zoom from "@arcgis/core/widgets/Zoom";
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import HeatmapRenderer from '@arcgis/core/renderers/HeatmapRenderer';
 import Legend from '@arcgis/core/widgets/Legend';
-esriConfig.locale = "zh";
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
+esriConfig.locale = "zh";
 let view = null;
 const mapView = ref(null);
 const activeKey = ref(false);
@@ -227,6 +227,52 @@ const taskData2 = ref(
     }
   ],
 );
+const taskData3 = ref(
+  [
+    {
+      name: "曹家月",
+      address: "安徽省淮南市",
+      year: 2023,
+      school: "安徽理工大学"
+    },
+    {
+      name: "夏奇亮",
+      address: "安徽省合肥市",
+      year: 2023,
+      school: "安徽大学"
+    },
+    {
+      name: "李昕悦",
+      address: "江苏省南京市",
+      year: 2023,
+      school: "南京信息工程大学"
+    },
+    {
+      name: "姜雯",
+      address: "上海市",
+      year: 2023,
+      school: "上海电机学院"
+    },
+    {
+      name: "杨再冉",
+      address: "湖北省武汉市",
+      year: 2023,
+      school: "江汉大学"
+    },
+    {
+      name: "廖文慧",
+      address: "山西省太原市",
+      year: 2023,
+      school: "太原师范学院"
+    },
+    {
+      name: "丁飞",
+      address: "福建省福州市",
+      year: 2023,
+      school: "福州大学"
+    },
+  ],
+);
 // 左边列表折叠按钮
 function leftPanelClick() {
   leftCollapse.value = !leftCollapse.value;
@@ -269,31 +315,53 @@ function initmap() {
   });
 }
 let geojsonLayer = null;
+let flylayer = null;
 function showHeatMap() {
-  if (geojsonLayer) {
-    view.map.remove(geojsonLayer);
+  clearHeatMap();
+  let url = '';
+  switch (formState.datamodel) {
+    case 0:
+      url = '/public/生源地3.json';
+      break;
+    case 1:
+      url = '/public/就业地3.json';
+      break;
+    case 2:
+      break;
+    default:
+      url = '/public/生源地3.json';
+      break;
   }
-  const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
-  console.log(url);
+  // const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
+  // console.log(url);
+  if (formState.datamodel == 2) {
+    flylayer = new FeatureLayer({
+      url: 'http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer',
+    });
+    view.map.add(flylayer);
+  } else {
+    geojsonLayer = new GeoJSONLayer({
+      url: url,
+      renderer: new HeatmapRenderer({
+        field: (!formState.datamodel || formState.datamodel == 0) ? '生源数' : '就业数', // 假设GeoJSON中有magnitude字段
+        colorStops: [
+          { ratio: 0, color: 'rgba(0, 255, 0, 0)' },
+          { ratio: 0.5, color: 'rgba(255, 255, 0, 0.5)' },
+          { ratio: 1, color: 'rgba(255, 0, 0, 1)' },
+        ],
+        radius: 20,
+      }),
+    });
+    view.map.add(geojsonLayer);
+  }
 
-  geojsonLayer = new GeoJSONLayer({
-    url: url,
-    renderer: new HeatmapRenderer({
-      field: (!formState.datamodel || formState.datamodel == 0) ? '生源数' : '就业数', // 假设GeoJSON中有magnitude字段
-      colorStops: [
-        { ratio: 0, color: 'rgba(0, 255, 0, 0)' },
-        { ratio: 0.5, color: 'rgba(255, 255, 0, 0.5)' },
-        { ratio: 1, color: 'rgba(255, 0, 0, 1)' },
-      ],
-      radius: 20,
-    }),
-  });
-
-  view.map.add(geojsonLayer);
 }
 function clearHeatMap() {
   if (geojsonLayer) {
     view.map.remove(geojsonLayer);
+  }
+  if (flylayer) {
+    view.map.remove(geojsonLayer)
   }
 }
 const datamodel = ref(1);
@@ -309,7 +377,7 @@ onMounted(() => {
 <template>
   <div class="Query">
     <div id="queryview" ref="mapView"></div>
-    <div id="legendDiv"></div>
+    <div v-if="datamodel && datamodel != 2" id="legendDiv"></div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
       <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
@@ -321,6 +389,7 @@ onMounted(() => {
             <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择查询数据">
               <a-select-option value="0">生源地</a-select-option>
               <a-select-option value="1">就业地</a-select-option>
+              <a-select-option value="2">考研信息</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="学生学院：">
@@ -396,6 +465,16 @@ onMounted(() => {
           <el-table-column label="籍贯" align="center" prop="address" />
           <!-- <el-table-column label="年龄" align="center" prop="age" /> -->
           <el-table-column label="性别" align="center" prop="sex" />
+          <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
+          <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
+          <!-- <el-table-column label="专业" align="center" prop="major" /> -->
+        </el-table> <el-table v-if="formState.datamodel == 2" :data="taskData3" height="100%" width="1000" :stripe="true"
+          ref="warningtable">
+          <el-table-column label="姓名" align="center" width="40" prop="name" />
+          <el-table-column label="毕业年份" width="50" align="center" prop="year" />
+          <el-table-column label="录取学校" align="center" prop="school" />
+          <!-- <el-table-column label="年龄" align="center" prop="age" /> -->
+          <el-table-column label="地址" align="center" prop="address" />
           <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
           <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
           <!-- <el-table-column label="专业" align="center" prop="major" /> -->
