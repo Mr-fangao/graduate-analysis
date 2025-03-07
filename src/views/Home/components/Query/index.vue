@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 14:51:38
+ * @LastEditTime: 2025-03-07 16:01:20
  * @Description:
 -->
 <script setup>
@@ -273,6 +273,80 @@ const taskData3 = ref(
     },
   ],
 );
+const taskData4 = ref([
+  {
+    name: "李亦娜",
+    sex: "男",
+    phone: "13126738821",
+    major: "测绘工程",
+    sourcePlace: "安徽省潜山县",
+    destinationPlace: "江苏省南京市",
+    remarks: "考取研究生(河海大学)"
+  },
+  {
+    name: "杨良柱",
+    sex: "男",
+    phone: "15156446629",
+    major: "地理科学",
+    sourcePlace: "安徽省宿松县",
+    destinationPlace: "湖北省武穴市",
+    remarks: "教学人员"
+  },
+  {
+    name: "张强",
+    sex: "女",
+    phone: "13956561465",
+    major: "地理信息科学",
+    sourcePlace: "安徽省郎溪县",
+    destinationPlace: "浙江省平湖市",
+    remarks: "公务员"
+  },
+  {
+    name: "杨丽娟",
+    sex: "男",
+    phone: "14790090524",
+    major: "地理科学",
+    sourcePlace: "安徽省六安市金安区",
+    destinationPlace: "安徽省安庆市",
+    remarks: "其他专业技术人员"
+  },
+  {
+    name: "顾承越",
+    sex: "男",
+    phone: "18019845207",
+    major: "地理科学",
+    sourcePlace: "安徽省五河县",
+    destinationPlace: "江苏省南京市",
+    remarks: "考取研究生（南京信息工程大学）"
+  },
+  {
+    name: "吴磊",
+    sex: "男",
+    phone: "14790090543",
+    major: "地理信息科学",
+    sourcePlace: "安徽省巢湖市",
+    destinationPlace: "浙江省杭州市",
+    remarks: "其他专业技术人员"
+  },
+  {
+    name: "陈林英",
+    sex: "女",
+    phone: "18019845386",
+    major: "旅游管理",
+    sourcePlace: "广东省罗定市",
+    destinationPlace: "安徽省滁州市",
+    remarks: "商业和服务业人员"
+  },
+  {
+    name: "高玉凤",
+    sex: "女",
+    phone: "18255061525",
+    major: "酒店管理",
+    sourcePlace: "安徽省舒城县",
+    destinationPlace: "安徽省合肥市",
+    remarks: "教学人员"
+  }
+]);
 // 左边列表折叠按钮
 function leftPanelClick() {
   leftCollapse.value = !leftCollapse.value;
@@ -321,21 +395,25 @@ function showHeatMap() {
   clearHeatMap();
   let url = '';
   switch (formState.datamodel) {
-    case 0:
+    case '0':
       url = '/public/生源地3.json';
       break;
-    case 1:
+    case '1':
       url = '/public/就业地3.json';
       break;
-    case 2:
+    case '2':
+      url = '/public/考研.json';
+      break;
+    case '3':
       break;
     default:
+      console.log(formState.datamodel);
       url = '/public/生源地3.json';
       break;
   }
   // const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
   // console.log(url);
-  if (formState.datamodel == 2) {
+  if (formState.datamodel == 3) {
     const layerUrls = [
       "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/0",
       "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/1",
@@ -348,15 +426,26 @@ function showHeatMap() {
       flylayer.push(layer);
       view.map.add(layer);
     });
-    // flylayer = new FeatureLayer({
-    //   url: 'http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer',
-    // });
-    // view.map.add(flylayer);
   } else {
+    let name = '';
+    switch (formState.datamodel) {
+      case '0':
+        name = '生源数';
+        break;
+      case '1':
+        name = '就业数';
+        break;
+      case '2':
+        name = '考研信息';
+        break;
+      default:
+        name = '生源数';
+        break;
+    }
     geojsonLayer = new GeoJSONLayer({
       url: url,
       renderer: new HeatmapRenderer({
-        field: (!formState.datamodel || formState.datamodel == 0) ? '生源数' : '就业数', // 假设GeoJSON中有magnitude字段
+        // field: name,
         colorStops: [
           { ratio: 0, color: 'rgba(0, 255, 0, 0)' },
           { ratio: 0.5, color: 'rgba(255, 255, 0, 0.5)' },
@@ -368,6 +457,9 @@ function showHeatMap() {
     });
     view.map.add(geojsonLayer);
   }
+}
+function showData() {
+  
 }
 function clearHeatMap() {
   if (geojsonLayer) {
@@ -383,10 +475,10 @@ function clearHeatMap() {
 const datamodel = ref(1);
 const formState = reactive({
   datamodel: null,
-  num1:null,
-  num2:null,
-  year:null,
-  c:null,
+  num1: null,
+  num2: null,
+  year: null,
+  c: null,
 });
 onMounted(() => {
   if (MenuIndex.value == "/home/query") {
@@ -434,7 +526,7 @@ onMounted(() => {
             </a-radio-group>
           </a-form-item> -->
           <a-form-item label="">
-            <a-button size="small" style="margin-left: 6vh;margin-right: 3vh;font-size: 1.2vh" @click="showHeatMap"
+            <a-button size="small" style="margin-left: 6vh;margin-right: 3vh;font-size: 1.2vh" @click="showData"
               type="primary">查询</a-button>
             <a-button size="small" style="font-size: 1.2vh;" @click="clearHeatMap" type="primary">重置</a-button>
           </a-form-item>
@@ -466,7 +558,13 @@ onMounted(() => {
         </a-form>
       </div>
       <div class="LabelContent">
-        <span class="title-ellipsis">查询结果 --总计461条</span>
+        <span class="title-ellipsis">查询结果</span>
+        <a-button size="small" style="margin-left: 19vh;
+    margin-right: 3vh;
+    font-size: 1.2vh;
+    margin-top: 1px;
+    height: 2.5vh" @click="showHeatMap"
+        type="primary">{{ formState.datamodel&&formState.datamodel==3?'绘制迁徙图':'绘制热力图' }}</a-button>
       </div>
       <div class="l3" ref="l3">
         <el-table v-if="!formState.datamodel || formState.datamodel == 0" :data="taskData" height="100%" width="1000"
@@ -490,13 +588,25 @@ onMounted(() => {
           <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
           <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
           <!-- <el-table-column label="专业" align="center" prop="major" /> -->
-        </el-table> <el-table v-if="formState.datamodel == 2" :data="taskData3" height="100%" width="1000"
-          :stripe="true" ref="warningtable">
+        </el-table>
+        <el-table v-if="formState.datamodel == 2" :data="taskData3" height="100%" width="1000" :stripe="true"
+          ref="warningtable">
           <el-table-column label="姓名" align="center" width="40" prop="name" />
           <el-table-column label="毕业年份" width="50" align="center" prop="year" />
           <el-table-column label="录取学校" align="center" prop="school" />
           <!-- <el-table-column label="年龄" align="center" prop="age" /> -->
           <el-table-column label="地址" align="center" prop="address" />
+          <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
+          <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
+          <!-- <el-table-column label="专业" align="center" prop="major" /> -->
+        </el-table>
+        <el-table v-if="formState.datamodel == 3" :data="taskData4" height="100%" width="1000" :stripe="true"
+          ref="warningtable">
+          <el-table-column label="姓名" align="center" width="40" prop="name" />
+          <el-table-column label="生源地" align="center" prop="sourcePlace" />
+          <el-table-column label="就业地" align="center" prop="destinationPlace" />
+          <el-table-column label="专业名称" width="60" align="center" prop="major" />
+          <!-- <el-table-column label="联系方式" width="60" align="center" prop="phone" /> -->
           <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
           <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
           <!-- <el-table-column label="专业" align="center" prop="major" /> -->
@@ -575,7 +685,7 @@ onMounted(() => {
 
     .LabelContent {
       // margin-top: 0.5vh;
-      width: 32vh;
+      width: 42vh;
       height: 3.24vh;
       background: url("./assets/labelBg.png");
       background-size: 100% 100%;
@@ -830,7 +940,7 @@ onMounted(() => {
   }
 
   .LabelContent {
-    width: 32vh;
+    width: 42vh;
     height: 3.24vh;
     background: url("../assets/labelBg.png");
     background-size: 100% 100%;
