@@ -188,13 +188,13 @@ function addTimeMap(item) {
                 view.value.map.remove(view.value.map.findLayerById(item.name));
             }
         });
-        featureLayer = null;
+        featureLayer.value = null;
     }
     featureLayer.value = new FeatureLayer({
         id: item.name,
         url: item.url,
     });
-    view.value.map.add(featureLayer);
+    view.value.map.add(featureLayer.value);
 }
 onMounted(() => {
     initmap();

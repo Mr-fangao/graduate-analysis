@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: wyy Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 14:21:14
+ * @LastEditors: liqifeng Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-07 15:10:24
  * @Description:
 -->
 <script setup>
@@ -64,7 +64,7 @@ const checkedList = [
     value: 'http://localhost:6080/arcgis/rest/services/生源地核密度2014/MapServer'
   },
   {
-    label: "layer",
+    type: "layer",
     label: "生源地标准差椭圆",
     value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },

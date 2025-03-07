@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 13:48:43
+ * @LastEditTime: 2025-03-07 14:51:38
  * @Description:
 -->
 <script setup>
@@ -315,7 +315,7 @@ function initmap() {
   });
 }
 let geojsonLayer = null;
-let flylayer = null;
+let flylayer = [];
 //编写一个加载地图服务的方法
 function showHeatMap() {
   clearHeatMap();
@@ -336,10 +336,22 @@ function showHeatMap() {
   // const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
   // console.log(url);
   if (formState.datamodel == 2) {
-    flylayer = new FeatureLayer({
-      url: 'http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer',
+    const layerUrls = [
+      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/0",
+      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/1",
+      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/2"
+    ];
+    layerUrls.forEach(url => {
+      let layer = new FeatureLayer({
+        url: url,
+      });
+      flylayer.push(layer);
+      view.map.add(layer);
     });
-    view.map.add(flylayer);
+    // flylayer = new FeatureLayer({
+    //   url: 'http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer',
+    // });
+    // view.map.add(flylayer);
   } else {
     geojsonLayer = new GeoJSONLayer({
       url: url,
@@ -361,13 +373,20 @@ function clearHeatMap() {
   if (geojsonLayer) {
     view.map.remove(geojsonLayer);
   }
-  if (flylayer) {
-    view.map.remove(geojsonLayer)
+  if (flylayer.length > 0) {
+    flylayer.forEach(item => {
+      view.map.remove(item);
+    });
+    // view.map.remove(geojsonLayer)
   }
 }
 const datamodel = ref(1);
 const formState = reactive({
   datamodel: null,
+  num1:null,
+  num2:null,
+  year:null,
+  c:null,
 });
 onMounted(() => {
   if (MenuIndex.value == "/home/query") {
@@ -378,7 +397,7 @@ onMounted(() => {
 <template>
   <div class="Query">
     <div id="queryview" ref="mapView"></div>
-    <div v-if="datamodel && datamodel != 2" id="legendDiv"></div>
+    <div v-if="formState.datamodel && formState.datamodel != 2" id="legendDiv"></div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
       <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
@@ -394,14 +413,14 @@ onMounted(() => {
             </a-select>
           </a-form-item>
           <a-form-item label="学生学院：">
-            <a-select style="width: 18vh" v-model:value="formState.scalebar" placeholder="选择学院">
+            <a-select style="width: 18vh" v-model:value="formState.c" placeholder="选择学院">
               <a-select-option value="2">地理信息与旅游学院</a-select-option>
               <a-select-option value="1">文学院</a-select-option>
               <a-select-option value="0.75">土木学院</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="毕业年份">
-            <a-select style="width: 18vh" v-model:value="formState.scalebar" placeholder="选择毕业年份">
+            <a-select style="width: 18vh" v-model:value="formState.year" placeholder="选择毕业年份">
               <a-select-option value="2">2024</a-select-option>
               <a-select-option value="1">2023</a-select-option>
               <a-select-option value="0.75">2022</a-select-option>
@@ -426,7 +445,7 @@ onMounted(() => {
       <div class="l1">
         <a-form :model="formState">
           <a-form-item label="参数一">
-            <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择参数">
+            <a-select style="width: 18vh" v-model:value="formState.num1" placeholder="选择参数">
               <a-select-option value="0">生源地</a-select-option>
               <a-select-option value="1">就业地</a-select-option>
             </a-select>
@@ -435,7 +454,7 @@ onMounted(() => {
             <a-input placeholder="输入权重(0-1)" style="width: 15vh" v-model:value="formState.top" />
           </a-form-item>
           <a-form-item label="参数二">
-            <a-select style="width: 18vh" v-model:value="formState.datamodel" placeholder="选择参数">
+            <a-select style="width: 18vh" v-model:value="formState.num2" placeholder="选择参数">
               <a-select-option value="0">生源地</a-select-option>
               <a-select-option value="1">就业地</a-select-option>
             </a-select>
@@ -470,8 +489,8 @@ onMounted(() => {
           <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
           <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
           <!-- <el-table-column label="专业" align="center" prop="major" /> -->
-        </el-table> <el-table v-if="formState.datamodel == 2" :data="taskData3" height="100%" width="1000" :stripe="true"
-          ref="warningtable">
+        </el-table> <el-table v-if="formState.datamodel == 2" :data="taskData3" height="100%" width="1000"
+          :stripe="true" ref="warningtable">
           <el-table-column label="姓名" align="center" width="40" prop="name" />
           <el-table-column label="毕业年份" width="50" align="center" prop="year" />
           <el-table-column label="录取学校" align="center" prop="school" />
