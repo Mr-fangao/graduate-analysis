@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 11:27:21
+ * @LastEditTime: 2025-03-07 13:47:32
  * @Description:
 -->
 <script setup>
@@ -316,6 +316,7 @@ function initmap() {
 }
 let geojsonLayer = null;
 let flylayer = null;
+//编写一个加载地图服务的方法
 function showHeatMap() {
   clearHeatMap();
   let url = '';
@@ -347,6 +348,7 @@ function showHeatMap() {
         colorStops: [
           { ratio: 0, color: 'rgba(0, 255, 0, 0)' },
           { ratio: 0.5, color: 'rgba(255, 255, 0, 0.5)' },
+          { ratio: 0.7, color: 'rgba(255, 255, 0, 0.8)' },
           { ratio: 1, color: 'rgba(255, 0, 0, 1)' },
         ],
         radius: 20,
@@ -354,7 +356,6 @@ function showHeatMap() {
     });
     view.map.add(geojsonLayer);
   }
-
 }
 function clearHeatMap() {
   if (geojsonLayer) {
@@ -465,6 +466,7 @@ onMounted(() => {
           <el-table-column label="籍贯" align="center" prop="address" />
           <!-- <el-table-column label="年龄" align="center" prop="age" /> -->
           <el-table-column label="性别" align="center" prop="sex" />
+
           <!-- <el-table-column label="家庭地址" align="center" prop="homeaddress" /> -->
           <!-- <el-table-column label="联系方式" align="center" prop="phone" /> -->
           <!-- <el-table-column label="专业" align="center" prop="major" /> -->
