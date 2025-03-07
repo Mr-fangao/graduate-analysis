@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: liqifeng Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 15:10:24
+ * @LastEditTime: 2025-03-07 15:22:19
  * @Description:
 -->
 <script setup>
@@ -68,6 +68,7 @@ const checkedList = [
     label: "生源地标准差椭圆",
     value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
   },
+  
   {
     type: "img",
     label: "生源地聚类分析",

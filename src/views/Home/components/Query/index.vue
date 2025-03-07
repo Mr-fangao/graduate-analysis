@@ -397,7 +397,7 @@ onMounted(() => {
 <template>
   <div class="Query">
     <div id="queryview" ref="mapView"></div>
-    <div v-if="formState.datamodel && formState.datamodel != 2" id="legendDiv"></div>
+    <div v-if="formState.datamodel && formState.datamodel != 3" id="legendDiv"></div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
       <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
@@ -410,6 +410,7 @@ onMounted(() => {
               <a-select-option value="0">生源地</a-select-option>
               <a-select-option value="1">就业地</a-select-option>
               <a-select-option value="2">考研信息</a-select-option>
+              <a-select-option value="3">轨迹信息</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="学生学院：">
