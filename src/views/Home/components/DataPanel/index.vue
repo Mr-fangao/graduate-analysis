@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 21:20:13
+ * @LastEditTime: 2025-03-08 21:33:43
  * @Description:
 -->
 <script setup>
@@ -17,9 +17,9 @@ const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 const flyCount = ref([
-    { name: "统计城市数", value: 114, color: "#f5bc18", unit: " " },
-    { name: "数据年份数", value: 10, color: "#0cc5c9", unit: " " },
-    { name: "毕业生总数", value: 2578, color: "#12c48f", unit: " " },
+    { name: "统计城市数", value: 114, color: "#f5bc18", unit: "个" },
+    { name: "数据年份数", value: 10, color: "#0cc5c9", unit: "年" },
+    { name: "毕业生总数", value: 2578, color: "#12c48f", unit: "位" },
 ]);
 const l3Data = [
     {

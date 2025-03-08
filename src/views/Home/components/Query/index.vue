@@ -1,8 +1,8 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: wyy Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 16:01:20
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-08 21:29:01
  * @Description:
 -->
 <script setup>
@@ -459,7 +459,46 @@ function showHeatMap() {
   }
 }
 function showData() {
-  
+  clearHeatMap();
+  let url = '';
+  switch (formState.datamodel) {
+    case '0':
+      url = '/public/生源地3.json';
+      break;
+    case '1':
+      url = '/public/就业地3.json';
+      break;
+    case '2':
+      url = '/public/考研.json';
+      break;
+    case '3':
+      break;
+    default:
+      url = '/public/生源地3.json';
+      break;
+  }
+  // const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
+  // console.log(url);
+  if (formState.datamodel == 3) {
+    return
+  } else {
+    geojsonLayer = new GeoJSONLayer({
+      url: url, // 替换为你的 GeoJSON 文件路径
+      renderer: {
+        type: 'simple',
+        symbol: {
+          type: 'simple-marker',
+          color: [226, 119, 40],  // 点的颜色
+          size: 3,                // 点的大小
+          outline: {
+            color: [255, 255, 255],  // 点的边框颜色
+            width: 1                 // 点的边框宽度
+          }
+        }
+      }
+    });
+    view.map.add(geojsonLayer);
+  }
 }
 function clearHeatMap() {
   if (geojsonLayer) {
@@ -563,8 +602,9 @@ onMounted(() => {
     margin-right: 3vh;
     font-size: 1.2vh;
     margin-top: 1px;
-    height: 2.5vh" @click="showHeatMap"
-        type="primary">{{ formState.datamodel&&formState.datamodel==3?'绘制迁徙图':'绘制热力图' }}</a-button>
+    height: 2.5vh" @click="showHeatMap" type="primary">{{ formState.datamodel && formState.datamodel == 3 ? '绘制迁徙图' :
+      '绘制热力图'
+          }}</a-button>
       </div>
       <div class="l3" ref="l3">
         <el-table v-if="!formState.datamodel || formState.datamodel == 0" :data="taskData" height="100%" width="1000"
@@ -613,6 +653,26 @@ onMounted(() => {
         </el-table>
       </div>
     </div>
+    <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']">
+      <div class="ButtonContent" @click="toolClick">
+        <span class="label ellipsis"> 空间查询 </span>
+        <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" />
+      </div>
+      <div class="AreaContainer" v-show="activeKey">
+        <div class="title">
+          <span>图层列表</span>
+          <img src="../assets/close.svg" class="close" @click="close" />
+        </div>
+        <div class="container">
+          <!-- <a-checkbox-group v-model:value="plainOptions" @change="changeLayer" :options="checkedList" /> -->
+          <el-checkbox-group v-model="plainOptions" @change="changeLayer">
+            <el-checkbox v-for="(item, index) in checkedList" :key="index" :label="item.label" :value="item.value">
+              {{ item.label }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </div>
+    </div>
     <!-- <div class="UavControl">
       <div class="UavContainer">
         <div class="container">
@@ -638,7 +698,12 @@ onMounted(() => {
   .LeftPanel {
     width: 42vh;
   }
-
+  .AreaSelect {
+    z-index: 99;
+    position: absolute;
+    left: 43px !important;
+    top: 10vh!important;
+}
   #legendDiv {
     position: absolute;
     bottom: 20px;

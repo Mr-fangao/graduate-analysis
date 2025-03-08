@@ -1,7 +1,6 @@
 <template>
     <div id="time-map">
         <div id="viewDiv" ref="mapView"></div>
-        <div v-if="selectname=='就业地'" id="legendDiv"></div>
         <div class="timeSlider"></div>
         <div id="timeSlidercontainer" :style="'width:' + (timeLineList.length * 8 + 8) + 'vh;'">
             <div id="dhTitle">滁州学院 地理信息与旅游学院毕业生{{ selectname }}变化图
@@ -52,7 +51,6 @@ import esriConfig from '@arcgis/core/config';
 import WebMap from '@arcgis/core/WebMap';
 import Compass from '@arcgis/core/widgets/Compass';
 import WMSLayer from '@arcgis/core/layers/WMSLayer';
-import Legend from '@arcgis/core/widgets/Legend';
 import useLoginStore from "@/store/login.js";
 import { storeToRefs } from 'pinia';
 const loginStore = useLoginStore();
@@ -64,46 +62,35 @@ const mapView = ref(null);
 let timeSlider = null;
 const timeLineList = ref([2018, 2019, 2020, 2021, 2022, 2023, 2024]);
 const currentYear = ref(null);
-const selectname = ref('生源地');
+const selectname = ref(null);
 const tasktvalue = ref('0');
-let featureLayer =null;
-let view = null;
+const featureLayer = ref(null);
+const view = ref(null);
 const taskstatus = [
-{
-        name: '生源地',
-        value: '0',
-        url: 'http://localhost:6080/arcgis/rest/services/Placeoforigin/MapServer',
-    },
     {
         name: '就业地',
-        value: '1',
-        // url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
-        url: 'http://localhost:6080/arcgis/rest/services/时间轴地图_行业分类/MapServer ',
+        value: '0',
+        url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
     },
-    
+    {
+        name: '生源地',
+        value: '1',
+        url: 'http://localhost:6080/arcgis/rest/services/Placeoforigin/MapServer',
+    },
 ];
 function chooseyaer(item) {
-    // currentYear.value = item;
-    // if (timeSlider) {
-    //     timeSlider.timeExtent = {
-    //         start: new Date(currentYear.value, 0, 1),
-    //         end: new Date(currentYear.value, 12, 31),
-    //     }
-    // }
+    currentYear.value = item;
+    if (timeSlider) {
+        timeSlider.timeExtent = {
+            start: new Date(currentYear.value, 0, 1),
+            end: new Date(currentYear.value, 12, 31),
+        }
+    }
 }
 function handleChange(value) {
-    let url = taskstatus.find(item => item.value === value).url;
-    console.log(url);
-    if(featureLayer){
-        view.map.remove(featureLayer);
-    }
-    let layer = new FeatureLayer({
-        url:url,
-    });
-    featureLayer = layer;
-    view.map.add(layer);
+    debugger;
     selectname.value = taskstatus.find(item => item.value === value).name;
-    // addTimeMap(taskstatus.find(item => item.value === value));
+    addTimeMap(taskstatus.find(item => item.value === value));
 }
 function initmap() {
     const map = new Map({
@@ -115,7 +102,7 @@ function initmap() {
         }
     });
     webMap.load();
-    view = new MapView({
+    let viewer = new MapView({
         container: mapView.value,
         map: webMap,
         center: [116.3974, 39.9093], // 设置初始中心点
@@ -125,73 +112,88 @@ function initmap() {
             maxZoom: 15 // 最大缩放级别
         }
     });
-    const legend = new Legend({
-    view: view,
-    container: 'legendDiv',
-  });
+    view.value = viewer;
+    // const wmtLayer = new WMSLayer({
+    //     url: "http://localhost:6080/arcgis/services/2020生源地/MapServer/WMSServer",
+    //     sublayers: [
+    //         {
+    //             name: "行政边界数据", // 替换为实际图层名称
+    //             visible: true,
+    //         },
+    //         {
+    //             name: "行政边界_省级",
+    //             visible: true,
+    //         }
+    //     ],
+    //     spatialReference: { wkid: 4326 }, // 坐标系
+    //     // version: "1.3.0" // WMS 版本
+    // });
+
     // map.add(wmtLayer);
-    view.when(() => {
+    view.value.when(() => {
         console.log('Map and View are ready');
     }, (error) => {
         console.error('Map and View failed to load:', error);
     });
     let layer = new FeatureLayer({
-        url:'http://localhost:6080/arcgis/rest/services/Placeoforigin/MapServer',
+        id: '就业地',
+        url: 'http://localhost:6080/arcgis/rest/services/Locationoftheunit/MapServer',
+        // url: 'http://localhost:6080/arcgis/rest/services/Placeoforigin/MapServer',
     });
-    featureLayer = layer;
-    view.map.add(layer);
-    // setTimeout(() => {
-    //     timeSlider = new TimeSlider({
-    //         container: 'timeSlider', // 时间轴的容器
-    //         view: viewer,
-    //         mode: 'time-window',
-    //         fullTimeExtent: {
-    //             start: new Date(1970, 0, 1),
-    //             end: new Date(),
-    //         },
-    //         timeExtent: {
-    //             start: new Date(1920, 0, 1),
-    //             end: new Date(2024, 12, 31),
-    //         },
-    //         stops: {
-    //             interval: {
-    //                 value: 1,
-    //                 unit: 'years',
-    //             },
-    //         },
-    //     });
-    //     viewer.ui.add(timeSlider, 'bottom-center');
-    //     setTimeout(() => {
-    //         timeSlider.watch('timeExtent', (extent) => {
-    //             if (featureLayer.value) {
-    //                 featureLayer.value.timeExtent = extent;
-    //                 // console.log(featureLayer.value,extent);
+    featureLayer.value = layer;
+    viewer.map.add(layer);
+    setTimeout(() => {
+        timeSlider = new TimeSlider({
+            container: 'timeSlider', // 时间轴的容器
+            view: viewer,
+            mode: 'time-window',
+            fullTimeExtent: {
+                start: new Date(1970, 0, 1),
+                end: new Date(),
+            },
+            timeExtent: {
+                start: new Date(1920, 0, 1),
+                end: new Date(2024, 12, 31),
+            },
+            stops: {
+                interval: {
+                    value: 1,
+                    unit: 'years',
+                },
+            },
+        });
+        viewer.ui.add(timeSlider, 'bottom-center');
+        setTimeout(() => {
+            timeSlider.watch('timeExtent', (extent) => {
+                if (featureLayer.value) {
+                    featureLayer.value.timeExtent = extent;
+                    // console.log(featureLayer.value,extent);
 
-    //             }
-    //             // featureLayer.value.timeExtent = extent;
-    //         });
-    //     }, 200);
-    //     // view.value.ui.add(timeSlider, 'bottom-center');
-    // }, 200);
+                }
+                // featureLayer.value.timeExtent = extent;
+            });
+        }, 200);
+        // view.value.ui.add(timeSlider, 'bottom-center');
+    }, 200);
     setTimeout(() => {
         currentYear.value = timeLineList.value[0];
     }, 200);
 }
 function addTimeMap(item) {
-    // if (view.value) {
-    //     // 检查图层是否存在于地图中
-    //     taskstatus.forEach((item) => {
-    //         if (view.value.map.findLayerById(item.name)) {
-    //             view.value.map.remove(view.value.map.findLayerById(item.name));
-    //         }
-    //     });
-    //     featureLayer.value = null;
-    // }
-    // featureLayer.value = new FeatureLayer({
-    //     id: item.name,
-    //     url: item.url,
-    // });
-    // view.value.map.add(featureLayer.value);
+    if (view.value) {
+        // 检查图层是否存在于地图中
+        taskstatus.forEach((item) => {
+            if (view.value.map.findLayerById(item.name)) {
+                view.value.map.remove(view.value.map.findLayerById(item.name));
+            }
+        });
+        featureLayer.value = null;
+    }
+    featureLayer.value = new FeatureLayer({
+        id: item.name,
+        url: item.url,
+    });
+    view.value.map.add(featureLayer.value);
 }
 onMounted(() => {
     initmap();
@@ -200,18 +202,6 @@ onMounted(() => {
 </script>
 
 <style lang="less">
-#time-map {
-    #legendDiv {
-    position: absolute;
-    bottom: 20px;
-    right: 300px;
-    background: #6aabe74f;
-    padding: 10px;
-    /* border: 1px solid #ccc; */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-}
 .time-map {
     position: relative;
     width: 100%;

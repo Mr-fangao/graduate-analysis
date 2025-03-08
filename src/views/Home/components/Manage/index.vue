@@ -1,12 +1,13 @@
 <!--
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
- * @LastEditors: wyy Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-06 14:49:55
+ * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
+ * @LastEditTime: 2025-03-07 21:33:20
  * @Description:
 -->
 <script setup>
 import Bus from "@/buss/eventBus";
+import { ElMessage, ElMessageBox, ElNotification, ElLoading } from "element-plus";
 import {
   ref,
   onMounted,
@@ -450,6 +451,11 @@ function resetQuery() {
 function handleDelete(row) {
   const sourceIds = row.id ? [row.id] : ids.value;
   const roleNames = row.name || names.value;
+  ElMessageBox.confirm('是否确认删除名称为"' + row.name + '"的数据项?', "系统提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  });
 }
 
 // 关闭弹框
