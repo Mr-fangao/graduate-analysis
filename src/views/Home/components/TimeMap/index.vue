@@ -204,12 +204,14 @@ onMounted(() => {
     #legendDiv {
     position: absolute;
     bottom: 20px;
-    right: 300px;
+    right: 240px;
     background: #6aabe74f;
     padding: 10px;
     /* border: 1px solid #ccc; */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    font-size: 8px;
+    color: #FFF;
   }
 }
 .time-map {

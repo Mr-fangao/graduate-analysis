@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-07 21:33:20
+ * @LastEditTime: 2025-03-09 13:08:53
  * @Description:
 -->
 <script setup>
@@ -48,6 +48,22 @@ const delenabled = ref(false);
 const selectnum = ref(0);
 const fileName = ref('');
 const fileInput = ref(null);
+const selectedFile = ref(null);
+const openAdd = ref(false);
+
+// 触发文件输入框的点击事件
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+// 处理文件选择
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    selectedFile.value = file;
+    // 你可以在这里处理文件，例如上传或读取文件内容
+  }
+};
 const selectFile = () => {
   fileInput.value.click();
 };
@@ -426,7 +442,7 @@ function getList() {
       },
       {
         menuId: "1007",
-        menuName: "数据制图",
+        menuName: "专题制图",
         routePath: "/mapping",
         icon: "mapping-icon",
         permissionLevel: "用户",
@@ -554,6 +570,15 @@ function handleSelect(key, keyPath) {
       break;
   }
 }
+function handleDialogCloseAdd(){
+  openAdd.value = false;
+}
+function cancelAdd() {
+  openAdd.value = false;
+}
+function uploadData(){
+  openAdd.value = true;
+}
 onBeforeMount(async () => {
 
 });
@@ -609,6 +634,18 @@ onMounted(() => {
                 :style="!delenabled ? 'cursor: not-allowed;' : ''" :disabled="!delenabled">
                 <!-- <svg-icon iconClass="delete_s"></svg-icon> -->
                 <span>删除选中</span>
+              </button>
+            </el-col>
+            <el-col :span="1.5" class="buttoncol">
+              <button class="specialButton add" @click="uploadData" style=" width: 12vh;">
+                <!-- <svg-icon iconClass="add"></svg-icon> -->
+                <span>导入</span>
+              </button>
+            </el-col>
+            <el-col :span="1.5" class="buttoncol">
+              <button class="specialButton add" @click="addAirport" style=" width: 12vh;">
+                <!-- <svg-icon iconClass="add"></svg-icon> -->
+                <span>导出</span>
               </button>
             </el-col>
           </el-row>
@@ -804,7 +841,28 @@ onMounted(() => {
         </div>
       </template>
     </el-dialog>
-
+    <el-dialog :title="'生源地数据导入'" @close="handleDialogCloseAdd" v-model="openAdd" top="10vh" width="75vh" append-to-body
+      :close-on-click-modal="false">
+      <el-form ref="deptRef" :model="airspaceForm" :rules="orderFormRules" label-width="12vh">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="数据导入:" prop="file">
+              <el-button style="margin: 0 1vh;" @click="triggerFileInput">选择文件</el-button>
+              <div v-if="selectedFile">
+                已选择文件: {{ selectedFile.name }}
+              </div>
+              <input type="file" ref="fileInput" style="display: none;" @change="handleFileChange" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <template #footer v-if="modalTitle != '项目详情'">
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm" style="margin: 0 1vh;">确 定</el-button>
+          <el-button @click="cancelAdd" style="margin: 0 1vh;">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <style lang="less">

@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-08 21:29:01
+ * @LastEditTime: 2025-03-09 14:05:32
  * @Description:
 -->
 <script setup>
@@ -656,7 +656,7 @@ onMounted(() => {
     <div :class="['AreaSelect', leftCollapse ? 'closeLeftPanel' : 'openLeftPanel']">
       <div class="ButtonContent" @click="toolClick">
         <span class="label ellipsis"> 空间查询 </span>
-        <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" />
+        <!-- <img src="../assets/downArrow.svg" :class="['arrow', activeKey ? 'active' : '']" /> -->
       </div>
       <div class="AreaContainer" v-show="activeKey">
         <div class="title">
@@ -664,7 +664,6 @@ onMounted(() => {
           <img src="../assets/close.svg" class="close" @click="close" />
         </div>
         <div class="container">
-          <!-- <a-checkbox-group v-model:value="plainOptions" @change="changeLayer" :options="checkedList" /> -->
           <el-checkbox-group v-model="plainOptions" @change="changeLayer">
             <el-checkbox v-for="(item, index) in checkedList" :key="index" :label="item.label" :value="item.value">
               {{ item.label }}
@@ -698,12 +697,14 @@ onMounted(() => {
   .LeftPanel {
     width: 42vh;
   }
+
   .AreaSelect {
     z-index: 99;
     position: absolute;
     left: 43px !important;
-    top: 10vh!important;
-}
+    top: 10vh !important;
+  }
+
   #legendDiv {
     position: absolute;
     bottom: 20px;
@@ -1053,21 +1054,27 @@ onMounted(() => {
     position: relative;
     left: 0;
     top: 0;
-    width: 11.2vh;
-    height: 3.2vh;
+    width: 12.2vh;
+    height: 4.2vh;
     background: #07152fcc;
     border-radius: 4px;
     line-height: 3.2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .label {
-      font-size: 1.6vh;
+      font-size: 1.8vh;
       font-family: puhui_Regular_55;
       color: #ffffffcc;
       width: 10vh;
       height: 3.2vh;
       line-height: 3.2vh;
       display: inline-block;
-      margin-left: 1.3vh;
+      /* margin-left: 1.3vh; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .arrow {

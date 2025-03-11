@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2025-01-21 14:07:20
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-02-24 22:13:49
+ * @LastEditTime: 2025-03-09 12:59:53
  * @Description: 
 -->
 <template>
@@ -79,7 +79,7 @@ const MenuList = [
         path: "/home/query",
     },
     {
-        title: "数据制图",
+        title: "专题制图",
         path: "/home/mapping",
     },
     {

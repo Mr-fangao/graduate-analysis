@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-08 21:33:43
+ * @LastEditTime: 2025-03-09 13:59:49
  * @Description:
 -->
 <script setup>
@@ -17,6 +17,9 @@ const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
 const flyCount = ref([
+    { name: "就业行业数", value: 15, color: "#f5bc18", unit: "个" },
+    { name: "考研总人数", value: 351, color: "#0cc5c9", unit: "位" },
+    { name: "毕业去向数", value: 16, color: "#12c48f", unit: "个" },
     { name: "统计城市数", value: 114, color: "#f5bc18", unit: "个" },
     { name: "数据年份数", value: 10, color: "#0cc5c9", unit: "年" },
     { name: "毕业生总数", value: 2578, color: "#12c48f", unit: "位" },
@@ -1472,6 +1475,10 @@ function rightPanelClick() {
     leftCollapse.value = !leftCollapse.value;
     rightCollapse.value = !rightCollapse.value;
 }
+const isshowtime = ref(false);
+function isShowTime() {
+    isshowtime.value = !isshowtime.value;
+}
 onMounted(() => {
     if (MenuIndex.value == "/home/datapanel") {
         window.addEventListener("resize", winResize);
@@ -1504,16 +1511,16 @@ onMounted(() => {
 </script>
 <template>
     <div class="Main">
-        <TimeMap></TimeMap>
+        <TimeMap v-if="isshowtime"></TimeMap>
         <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
             <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
             <div class="LabelContent" style="margin-top: 2vh">
                 <span class="title-ellipsis">数据总览</span>
             </div>
             <div class="l1">
-                <div class="item" v-for="(item, index) in flyCount" :key="index">
+                <div class="item" v-for="(item, index) in flyCount" :key="index" @click="isShowTime">
                     <div class="i1"
-                        :style="'background: url(/img/Main/flycount0' + index + '.png)no-repeat;background-size: 100%;'">
+                        :style="'background: url(/img/Main/flycount0' + (flyCount.length - 1 - index) + '.png)no-repeat;background-size: 100%;'">
                     </div>
                     <div :style="'color:' + item.color + ' ;background-color:' + item.color + '4D' + ';'" class="i2">
                         <span style="color: #fff; text-align: center; margin: auto">{{ item.name }}</span>
@@ -1862,9 +1869,10 @@ onMounted(() => {
         justify-content: center;
         color: #fff;
         font-size: 1.2vh;
+        flex-wrap: wrap;
 
         .item {
-            height: 95%;
+            height: 50%;
             width: 8.5vh;
             margin: auto 0.8vh;
             display: flex;
@@ -1873,10 +1881,10 @@ onMounted(() => {
             justify-content: center;
 
             .i1 {
-                width: 7vh;
-                height: 7vh;
+                width: 5vh;
+                height: 5vh;
                 background-size: 100%;
-                margin: 1.5vh 1.5vh 0.3vh 1.5vh;
+                margin: 0.5vh 1.5vh 0.3vh 1.5vh;
                 background-repeat: no-repeat;
             }
 
@@ -1893,7 +1901,7 @@ onMounted(() => {
             }
 
             .i3 {
-                margin: 1vh;
+                margin: 0;
 
                 span {
                     font-size: 1.2vh;
