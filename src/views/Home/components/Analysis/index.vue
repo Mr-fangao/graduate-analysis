@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-08 20:34:00
+ * @LastEditTime: 2025-03-19 21:12:46
  * @Description:
 -->
 <script setup>
@@ -35,6 +35,7 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleRangeSlider from "@arcgis/core/widgets/ScaleRangeSlider";
 import Zoom from "@arcgis/core/widgets/Zoom";
+import Legend from '@arcgis/core/widgets/Legend';
 esriConfig.locale = "zh";
 const { proxy } = getCurrentInstance();
 const loginStore = useLoginStore();
@@ -60,18 +61,18 @@ const plainOptions = ref([]);
 const checkedList = [
   {
     type: "img",
-    label: "生源地核密度",
-    value: 'http://localhost:6080/arcgis/rest/services/生源地核密度2014/MapServer'
+    label: "2024年生源地核密度分析",
+    value: 'http://localhost:6080/arcgis/rest/services/2024年生源地核密度分析/MapServer'
   },
   {
     type: "layer",
-    label: "生源地标准差椭圆",
-    value: "http://localhost:6080/arcgis/rest/services/标准差椭圆生源地2014/MapServer",
+    label: "2024年就业地标准差椭圆分析",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地标准差椭圆分析/MapServer",
   },
   {
     type: "img",
-    label: "生源地聚类分析",
-    value: "http://localhost:6080/arcgis/rest/services/高低聚类2023单位/MapServer",
+    label: "2024年就业地高低聚类分析",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地高低聚类分析/MapServer",
   },
   {
     type: "img",
@@ -81,9 +82,38 @@ const checkedList = [
   {
     type: "img",
     label: "生源地冷热点分析",
-    value: "http://localhost:6080/arcgis/rest/services/生源地聚类分析2014/MapServer",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
+  },
+  {
+    type: "img",
+    label: "2024年就业地高低聚类分析",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地高低聚类分析/MapServer",
+  },
+  {
+    type: "img",
+    label: "生源地空间自相关分析",
+    value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
+  },
+  {
+    type: "img",
+    label: "生源地冷热点分析",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
+  },
+  {
+    type: "img",
+    label: "2014年就业地填色图",
+    value: "http://localhost:6080/arcgis/rest/services/2014年就业地填色图/MapServer",
+  },
+  {
+    type: "img",
+    label: "2024年就业地荧光图",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地荧光图/MapServer",
+  },
+  {
+    type: "img",
+    label: "2024年生源地聚合图",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
   }
-
 ];
 const showLayerList = ref([]);
 // const formState.size = ref('A4')
@@ -107,7 +137,10 @@ function initmap() {
       maxZoom: 15, // 最大缩放级别
     },
   });
-
+  const legend = new Legend({
+    view: view,
+    container: 'legendDiv',
+  });
   view.when(() => {
     var compass = new Compass({
       view: view,
@@ -210,6 +243,7 @@ onMounted(() => {
 <template>
   <div class="Mapping">
     <div id="mappingview" ref="mapView"></div>
+    <div id="legendDiv"></div>
     <div :class="['FlyPanel']">
       <!-- <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div> -->
       <div class="title">
@@ -289,6 +323,17 @@ onMounted(() => {
   </div>
 </template>
 <style lang="less" scoped>
+#legendDiv {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #6aabe74f;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
 :deep(.ant-select .ant-select-selector) {
   height: 3.5vh !important;
   background-color: #ffffff00 !important;

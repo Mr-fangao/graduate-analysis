@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-09 14:05:32
+ * @LastEditTime: 2025-03-19 21:11:43
  * @Description:
 -->
 <script setup>
@@ -444,6 +444,7 @@ function showHeatMap() {
     }
     geojsonLayer = new GeoJSONLayer({
       url: url,
+      title: name + "热力图", // 设置图例名称
       renderer: new HeatmapRenderer({
         // field: name,
         colorStops: [
@@ -461,20 +462,36 @@ function showHeatMap() {
 function showData() {
   clearHeatMap();
   let url = '';
+  // switch (formState.datamodel) {
+  //   case '0':
+  //     url = '/public/生源地3.json';
+  //     break;
+  //   case '1':
+  //     url = '/public/就业地3.json';
+  //     break;
+  //   case '2':
+  //     url = '/public/考研.json';
+  //     break;
+  //   case '3':
+  //     break;
+  //   default:
+  //     url = '/public/生源地3.json';
+  //     break;
+  // }
   switch (formState.datamodel) {
     case '0':
-      url = '/public/生源地3.json';
+      url = 'http://localhost:6080/arcgis/rest/services/2024年毕业生生源地数据/MapServer';
       break;
     case '1':
-      url = '/public/就业地3.json';
+      url = 'http://localhost:6080/arcgis/rest/services/2024年就业地数据/MapServer';
       break;
     case '2':
-      url = '/public/考研.json';
+      url = 'http://localhost:6080/arcgis/rest/services/2024年毕业生生源地数据/MapServer';
       break;
     case '3':
       break;
     default:
-      url = '/public/生源地3.json';
+      url = 'http://localhost:6080/arcgis/rest/services/2024年毕业生生源地数据/MapServer';
       break;
   }
   // const url = (!formState.datamodel || formState.datamodel == 0) ? '/public/生源地3.json' : '/public/就业地3.json';
@@ -482,21 +499,25 @@ function showData() {
   if (formState.datamodel == 3) {
     return
   } else {
-    geojsonLayer = new GeoJSONLayer({
-      url: url, // 替换为你的 GeoJSON 文件路径
-      renderer: {
-        type: 'simple',
-        symbol: {
-          type: 'simple-marker',
-          color: [226, 119, 40],  // 点的颜色
-          size: 3,                // 点的大小
-          outline: {
-            color: [255, 255, 255],  // 点的边框颜色
-            width: 1                 // 点的边框宽度
-          }
-        }
-      }
+    geojsonLayer = new FeatureLayer({
+      url: url,
     });
+    view.map.add(geojsonLayer);
+    // geojsonLayer = new GeoJSONLayer({
+    //   url: url, // 替换为你的 GeoJSON 文件路径
+    //   renderer: {
+    //     type: 'simple',
+    //     symbol: {
+    //       type: 'simple-marker',
+    //       color: [226, 119, 40],  // 点的颜色
+    //       size: 3,                // 点的大小
+    //       outline: {
+    //         color: [255, 255, 255],  // 点的边框颜色
+    //         width: 1                 // 点的边框宽度
+    //       }
+    //     }
+    //   }
+    // });
     view.map.add(geojsonLayer);
   }
 }
@@ -528,7 +549,7 @@ onMounted(() => {
 <template>
   <div class="Query">
     <div id="queryview" ref="mapView"></div>
-    <div v-if="formState.datamodel && formState.datamodel != 3" id="legendDiv"></div>
+    <div id="legendDiv"></div>
     <div :class="['LeftPanel', leftCollapse ? 'closed' : 'opened']">
       <div :class="['collapse', leftCollapse ? 'active' : '']" @click="leftPanelClick"></div>
       <div class="LabelContent" style="margin-top: 2vh">
