@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:34:22
+ * @LastEditTime: 2025-03-19 21:40:58
  * @Description:
 -->
 <script setup>
@@ -76,27 +76,12 @@ const checkedList = [
   },
   {
     type: "img",
-    label: "生源地空间自相关分析",
-    value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
+    label: "2024年就业地空间自相关分析",
+    value: "http://localhost:6080/arcgis/rest/services/2024年就业地空间自相关分析/MapServer",
   },
   {
     type: "img",
-    label: "生源地冷热点分析",
-    value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
-  },
-  {
-    type: "img",
-    label: "2024年就业地高低聚类分析",
-    value: "http://localhost:6080/arcgis/rest/services/2024年就业地高低聚类分析/MapServer",
-  },
-  {
-    type: "img",
-    label: "生源地空间自相关分析",
-    value: "http://localhost:6080/arcgis/rest/services/空间自相关2014/MapServer",
-  },
-  {
-    type: "img",
-    label: "生源地冷热点分析",
+    label: "2024年就业地热点分析",
     value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
   },
   {
@@ -112,7 +97,7 @@ const checkedList = [
   {
     type: "img",
     label: "2024年生源地聚合图",
-    value: "http://localhost:6080/arcgis/rest/services/2024年就业地热点分析/MapServer",
+    value: "http://localhost:6080/arcgis/rest/services/2024年生源地聚合图/MapServer",
   }
 ];
 const showLayerList = ref([]);

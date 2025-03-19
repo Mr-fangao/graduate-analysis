@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:29:30
+ * @LastEditTime: 2025-03-19 21:42:16
  * @Description:
 -->
 <script setup>
@@ -415,9 +415,9 @@ function showHeatMap() {
   // console.log(url);
   if (formState.datamodel == 3) {
     const layerUrls = [
-      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/0",
-      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/1",
-      "http://localhost:6080/arcgis/rest/services/2023轨迹线数据/MapServer/2"
+      "http://localhost:6080/arcgis/rest/services/2024年毕业生轨迹/MapServer/0",
+      "http://localhost:6080/arcgis/rest/services/2024年毕业生轨迹/MapServer/1",
+      "http://localhost:6080/arcgis/rest/services/2024年毕业生轨迹/MapServer/2"
     ];
     layerUrls.forEach(url => {
       let layer = new FeatureLayer({
