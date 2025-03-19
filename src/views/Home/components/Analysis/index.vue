@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:12:46
+ * @LastEditTime: 2025-03-19 21:34:22
  * @Description:
 -->
 <script setup>
@@ -142,9 +142,9 @@ function initmap() {
     container: 'legendDiv',
   });
   view.when(() => {
-    var compass = new Compass({
-      view: view,
-    });
+    // var compass = new Compass({
+    //   view: view,
+    // });
     // 将指南针添加到MapView的左上角
     view.ui.add(compass, "top-left");
     // const scaleBar = new ScaleBar({
@@ -687,7 +687,7 @@ onMounted(() => {
 
   .AreaContainer {
     position: relative;
-    width: 30vh;
+    width: 35vh;
     left: 0;
     top: 0.8vh;
 
@@ -722,7 +722,7 @@ onMounted(() => {
       // background: #07152fcc;
       background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
       margin-top: -0.2vh;
-      height: 40vh;
+      height: 55vh;
       padding: 3vh;
     }
   }

@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:11:43
+ * @LastEditTime: 2025-03-19 21:29:30
  * @Description:
 -->
 <script setup>
@@ -43,7 +43,7 @@ let view = null;
 const mapView = ref(null);
 const activeKey = ref(false);
 const { leftCollapse, rightCollapse, MenuIndex } = storeToRefs(loginStore);
-const taskstatus = [
+const taskstatus = [ 
   { status: -1, statusname: "正在执行", function: "详情", color: "#69adfc" },
   { status: 0, statusname: "待执行", function: "立即执行", color: "#69c9fb" },
   { status: 1, statusname: "执行完成", function: "回放", color: "#0df6a0" },
@@ -1114,7 +1114,7 @@ onMounted(() => {
 
   .AreaContainer {
     position: relative;
-    width: 30vh;
+    width: 35vh;
     left: 0;
     top: 0.8vh;
 
@@ -1149,7 +1149,7 @@ onMounted(() => {
       // background: #07152fcc;
       background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
       margin-top: -0.2vh;
-      height: 40vh;
+      height: 55vh;
       padding: 3vh;
     }
   }
