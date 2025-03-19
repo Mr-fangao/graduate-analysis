@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:41:59
+ * @LastEditTime: 2025-03-19 21:51:14
  * @Description:
 -->
 <script setup>
@@ -497,45 +497,9 @@ onMounted(() => {
 
 <style lang="less">
 .Mapping {
-  .esri-scale-bar {
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    height: 30px;
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-  }
-
-  .esri-compass {
-    top: 100px !important;
-    right: 25px !important;
-    position: absolute !important;
-    height: 65px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    color: #fff !important;
-  }
-
-  .esri-zoom {
-    bottom: 100px;
-    right: 25px;
-    position: absolute;
-    height: 65px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-  }
-
   .esri-widget {
     position: absolute;
     color: #fff;
-  }
-
-  .esri-widget--button {
-    background-color: #266ad165;
-    margin-bottom: 1vh;
   }
 }
 

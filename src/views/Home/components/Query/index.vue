@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:42:16
+ * @LastEditTime: 2025-03-19 21:47:52
  * @Description:
 -->
 <script setup>
@@ -796,16 +796,16 @@ onMounted(() => {
     }
   }
 
-  .esri-scale-bar {
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    height: 30px;
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-  }
+  // .esri-scale-bar {
+  //   bottom: 0;
+  //   right: 0;
+  //   position: absolute;
+  //   height: 30px;
+  //   width: 100px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   color: #fff;
+  // }
 
   .esri-compass {
     top: 100px !important;
@@ -833,10 +833,10 @@ onMounted(() => {
     color: #fff;
   }
 
-  .esri-widget--button {
-    background-color: #266ad165;
-    margin-bottom: 1vh;
-  }
+  // .esri-widget--button {
+  //   background-color: #266ad165;
+  //   margin-bottom: 1vh;
+  // }
 }
 
 .ant-checkbox-group {
@@ -1149,7 +1149,7 @@ onMounted(() => {
       // background: #07152fcc;
       background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
       margin-top: -0.2vh;
-      height: 55vh;
+      height: 50vh;
       padding: 3vh;
     }
   }

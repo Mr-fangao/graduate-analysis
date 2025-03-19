@@ -2,7 +2,7 @@
  * @Author: wyy
  * @Date: 2024-08-26 09:37:14
  * @LastEditors: Mr-fangao Mr.undefine@protonmail.com
- * @LastEditTime: 2025-03-19 21:40:58
+ * @LastEditTime: 2025-03-19 21:48:54
  * @Description:
 -->
 <script setup>
@@ -127,9 +127,9 @@ function initmap() {
     container: 'legendDiv',
   });
   view.when(() => {
-    // var compass = new Compass({
-    //   view: view,
-    // });
+    var compass = new Compass({
+      view: view,
+    });
     // 将指南针添加到MapView的左上角
     view.ui.add(compass, "top-left");
     // const scaleBar = new ScaleBar({
@@ -367,46 +367,46 @@ onMounted(() => {
 }
 
 .Mapping {
-  .esri-scale-bar {
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    height: 30px;
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-  }
+  // .esri-scale-bar {
+  //   bottom: 0;
+  //   right: 0;
+  //   position: absolute;
+  //   height: 30px;
+  //   width: 100px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   color: #fff;
+  // }
 
-  .esri-compass {
-    top: 100px !important;
-    right: 25px !important;
-    position: absolute !important;
-    height: 65px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    color: #fff !important;
-  }
+  // .esri-compass {
+  //   top: 100px !important;
+  //   right: 25px !important;
+  //   position: absolute !important;
+  //   height: 65px !important;
+  //   display: flex !important;
+  //   flex-direction: column !important;
+  //   color: #fff !important;
+  // }
 
-  .esri-zoom {
-    bottom: 100px;
-    right: 25px;
-    position: absolute;
-    height: 65px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-  }
+  // .esri-zoom {
+  //   bottom: 100px;
+  //   right: 25px;
+  //   position: absolute;
+  //   height: 65px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   color: #fff;
+  // }
 
   .esri-widget {
     position: absolute;
     color: #fff;
   }
 
-  .esri-widget--button {
-    background-color: #266ad165;
-    margin-bottom: 1vh;
-  }
+  // .esri-widget--button {
+  //   background-color: #266ad165;
+  //   margin-bottom: 1vh;
+  // }
 }
 
 .ant-checkbox-group {
@@ -707,7 +707,7 @@ onMounted(() => {
       // background: #07152fcc;
       background: url("/img/modal/body-big.svg#svgView(preserveAspectRatio(none))") no-repeat;
       margin-top: -0.2vh;
-      height: 55vh;
+      height: 50vh;
       padding: 3vh;
     }
   }
